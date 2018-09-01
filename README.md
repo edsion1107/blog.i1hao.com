@@ -1,6 +1,6 @@
 # README.md
 
-[![Build Status](https://travis-ci.org/edsion1107/edsion.github.io.svg?branch=master)](https://travis-ci.org/edsion1107/edsion.github.io)
+[![Build Status](https://travis-ci.com/edsion1107/blog.i1hao.com.svg?branch=master)](https://travis-ci.com/edsion1107/blog.i1hao.com)
 
 ## 环境和工具
 
