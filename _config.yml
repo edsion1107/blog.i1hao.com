@@ -5,9 +5,9 @@
 # Site
 title: edsion的博客
 subtitle: 分享和发现互联网<br>测试开发那些事
-description: 软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。-- 托尼·霍尔，1996
+description: 软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996
 keywords:
-author: edsion@i1hao.com
+author: <a href="mailto:edsion@i1hao.com">edsion</a>
 language: 
   - zh-Hans
   - zh-CN
@@ -81,11 +81,16 @@ theme_config:
   footer:
     powered:
       enable: false
+    icon:
+      name: heart
+      animated: true
+      color: "#ff0000"
     theme:
       enable: true
       version: true
     since: 2018
     custom_text: <a href="http://www.miitbeian.gov.cn/">辽ICP备18000098号</a>&nbsp&nbsp<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155">辽公网安备21029602000155号</a>
+  seo: true
   menu:
     home: / || home
     tags: /tags/ || tags
@@ -94,7 +99,8 @@ theme_config:
   menu_settings:
     icons: true
     badges: true
-  scheme: Gemini
+  # scheme: Gemini
+  scheme: Mist
   social:
     GitHub: https://github.com/edsion1107 || github
     E-Mail: mailto:edsion@i1hao.com || envelope
@@ -104,7 +110,7 @@ theme_config:
     wrap: true
   sidebar:
     display: always
-    b2t: false  # 回到顶部（sidebar无法始终显示，所以页面太长就无法显示了）
+    b2t: false  # 回到顶部（sidebar无法始终显示，所以还是用独立按钮比较好
     scrollpercent: true  # 独立的回到顶部按钮，也可以显示进度
   save_scroll: true
   codeblock:
@@ -118,7 +124,14 @@ theme_config:
   reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
   wechatpay: /images/wechat-reward-image.png
   alipay: /images/alipay-reward-image.png
-
+  
+  highlight_theme: normal
+  font:
+    enable: true
+    global:
+      external: true
+      family: Source Code Pro
+      size: 
   # Baidu Analytics ID
   baidu_analytics: 955e82b575b82c10ad113786238055b3
   # Google Analytics
