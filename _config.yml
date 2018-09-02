@@ -99,13 +99,13 @@ theme_config:
     GitHub: https://github.com/edsion1107 || github
     E-Mail: mailto:edsion@i1hao.com || envelope
   toc:
-    enable: true
+    enable: true 
     number: true
     wrap: true
   sidebar:
     display: always
-    b2t: true
-    scrollpercent: true
+    b2t: false  # 回到顶部（sidebar无法始终显示，所以页面太长就无法显示了）
+    scrollpercent: true  # 独立的回到顶部按钮，也可以显示进度
   save_scroll: true
   codeblock:
     copy_button:

@@ -33,7 +33,7 @@ npm install    # 安装的依赖已在 package.json 中定义
 
 ```bash
 yarn global add hexo    # 全局安装
-yarn install    # 安装的依赖已在 yarn.lock 中定义
+yarn install    # 安装的依赖已在 package.json 中定义
 ```
 
 ### 安装 NexT 主题（为git仓库添加子模块）
@@ -57,7 +57,7 @@ git pull
 # 方式一（本地安装了hexo）：
 hexo new xxxx
 # 方式二（未安装hexo）：
-touch xxxx.md   # 注意命名不使用下划线，而是使用中划线“-”
+touch xxxx.md   # 注意命名不使用下划线，而是使用中划线“-”，而且全部用小写字母
 mkdir xxxx  # 创建同名资源文件夹
 ```
 
@@ -71,7 +71,7 @@ hexo server
 
 ### 发布
 
-#### 手动（需安装 hexo ）
+#### 手动（需安装 hexo 和 插件 ）—— 已废弃，因为不再使用 hexo-deployer-git 插件
 
 ```bash
 hexo clean
