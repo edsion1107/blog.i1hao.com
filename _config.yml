@@ -89,7 +89,10 @@ theme_config:
       enable: true
       version: true
     since: 2018
-    custom_text: <a href="http://www.miitbeian.gov.cn/">辽ICP备18000098号</a>&nbsp&nbsp<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155">辽公网安备21029602000155号</a>
+    custom_text: <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155">辽公网安备21029602000155号</a>
+    beian:
+      enable: true
+      icp: 辽ICP备18000098号
   seo: true
   menu:
     home: / || home
@@ -104,6 +107,7 @@ theme_config:
   social:
     GitHub: https://github.com/edsion1107 || github
     E-Mail: mailto:edsion@i1hao.com || envelope
+    Weibo: https://weibo.com/1962828603 || weibo
   toc:
     enable: true 
     number: true
@@ -117,13 +121,17 @@ theme_config:
     copy_button:
       enable: true
       show_result: true
-  post_copyright:
-    enable: true
-    license: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a>
+  creative_commons:
+    license: by-nc-sa
+    sidebar: true
+    post: true
   # pangu: true
-  reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
-  wechatpay: /images/wechat-reward-image.png
-  alipay: /images/alipay-reward-image.png
+  read_more_btn: true
+  reward:
+    enable: true
+    comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+    wechatpay: /images/wechat-reward-image.png
+    alipay: /images/alipay-reward-image.png
   
   highlight_theme: normal
   font:
