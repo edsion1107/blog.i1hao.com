@@ -99,6 +99,7 @@ theme_config:
     tags: /tags/ || tags
     categories: /categories/ || th
     archives: /archives/ || archive
+    sitemap: /sitemap.xml || sitemap
   menu_settings:
     icons: true
     badges: true
