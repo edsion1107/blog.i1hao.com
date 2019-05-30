@@ -25,23 +25,7 @@ tags:
 
 将代码 clone 到本地，可以找到文档`OVERVIEW.TXT`，这里详细介绍了整个 adb 服务的结构：
 
-```mermaid
-sequenceDiagram
-    participant ADB client
-    participant ADB server
-    participant ADB daemon (adbd)
-    
-    alt protocol
-    ADB client -> ADB server: tcp
-    ADB server -> ADB client: unix套接字
-    end
-    
-    alt Transports
-		ADB server -> ADB daemon (adbd): USB transports
-		ADB daemon (adbd) -> ADB server: Local transports
-		end
-
-```
+{% asset_img Jietu20190530-210218.png %}
 
 
 
@@ -90,16 +74,7 @@ ADB client 执行的命令（在这被叫做 service ）被分为两类：Host S
 
 计划中的方案B：
 
-```mermaid
-sequenceDiagram
-    participant Proxy server
-    participant ADB server
-    participant ADB daemon (adbd)
-    
-    Proxy server -> ADB server: Unix域套接字
-		ADB server -> ADB daemon (adbd): USB transports
-
-```
+{% asset_img Jietu20190530-210247.png %}
 
 
 
