@@ -115,8 +115,13 @@ theme_config:
     wrap: true
   sidebar:
     display: always
-    b2t: false  # 回到顶部（sidebar无法始终显示，所以还是用独立按钮比较好
-    scrollpercent: true  # 独立的回到顶部按钮，也可以显示进度
+    # b2t: false  # 回到顶部（sidebar无法始终显示，所以还是用独立按钮比较好
+    # scrollpercent: true  # 独立的回到顶部按钮，也可以显示进度
+  back2top:
+    enable: true
+    sidebar: false
+    scrollpercent: false
+
   save_scroll: true
   codeblock:
     copy_button:
