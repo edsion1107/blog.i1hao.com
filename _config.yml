@@ -115,12 +115,10 @@ theme_config:
     wrap: true
   sidebar:
     display: always
-    # b2t: false  # 回到顶部（sidebar无法始终显示，所以还是用独立按钮比较好
-    # scrollpercent: true  # 独立的回到顶部按钮，也可以显示进度
   back2top:
     enable: true
     sidebar: false
-    scrollpercent: false
+    scrollpercent: true
 
   save_scroll: true
   codeblock:
@@ -131,14 +129,24 @@ theme_config:
     license: by-nc-sa
     sidebar: true
     post: true
-  # pangu: true
+    language: deed.zh
+  post_meta:
+    item_text: true
+    created_at: true
+    updated_at:
+      enable: true
+      another_day: true
+    categories: true
+  han: true
+  pangu: true
   read_more_btn: true
-  reward:
+  reward_settings:
     enable: true
+    animation: false
     comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+  reward:
     wechatpay: /images/wechat-reward-image.png
     alipay: /images/alipay-reward-image.png
-  
   highlight_theme: normal
   font:
     enable: true
@@ -151,3 +159,12 @@ theme_config:
   # Google Analytics
   google_analytics: UA-124909298-1
 
+  reading_progress:
+    enable: true
+    color: "#37c6c0"
+    height: 2px
+
+  quicklink:
+    enable: true
+    home: true
+    archive: true
