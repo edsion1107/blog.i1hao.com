@@ -10,7 +10,10 @@ cache:
 
 install:
   - yarn install
-
+  - git clone --depth=1 https://github.com/theme-next/theme-next-han themes/next/source/lib/Han
+  - git clone --depth=1 https://github.com/theme-next/theme-next-quicklink.git themes/next/source/lib/quicklink
+  - git clone --depth=1 https://github.com/theme-next/theme-next-pangu.git themes/next/source/lib/pangu
+  - git clone --depth=1 https://github.com/theme-next/theme-next-reading-progress themes/next/source/lib/reading_progress
 script:
   - hexo clean
   - hexo generate
