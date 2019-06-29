@@ -32,7 +32,7 @@ mkdir WeworkWeatherReport
 cd WeworkWeatherReport
 # 这里用的是pipenv安装的，如果觉得麻烦或者不熟悉此命令，也可以按照官方的演示直接用pip安装
 # 即：用"pip install"替换文中"pipenv install"，"scf"替换文中"pipenv run scf"
-$pipenv install --python 3.6 -i https://mirrors.cloud.tencent.com/pypi/simple scf
+$pipenv install --python 3.6 --pypi-mirror https://mirrors.cloud.tencent.com/pypi/simple scf
 Creating a virtualenv for this project…
 Pipfile: /Users/edsion/Documents/WeworkWeatherReport/Pipfile
 Using /Users/edsion/.pyenv/versions/3.6.8/bin/python3 (3.6.8) to create virtualenv…
