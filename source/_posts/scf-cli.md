@@ -76,7 +76,9 @@ SCF CLI, version 0.0.3
 
 目前通过控制台可以看到地域有广州、上海、香港、北京、成都。如果有用到腾讯云的其它服务，例如云服务器CVM、对象存储COS，建议可用区保持一致，即使将来收费，按照良心云的套路同可用区内的流量应该是免费的。
 
-> 这里文档有个小坑，并没有写明可用区的名称，所以参考了[COS文档中关于地域的说明](https://cloud.tencent.com/document/product/436/6224)。我是用的上海，所以地域是`ap-shanghai`。
+> ~~这里文档有个小坑，并没有写明可用区的名称，所以参考了[COS文档中关于地域的说明](https://cloud.tencent.com/document/product/436/6224)。我是用的上海，所以地域是`ap-shanghai`。~~
+>
+> 这里有个坑，SCF的文档中没有对于可用区的说明，
 
 ### 配置CLI
 
@@ -127,8 +129,10 @@ $ tree
 
 首先，确保你的企业微信已更新到最新（2.8.7）。然后拉一个群（至少3个人），在群里点右上角，添加成员的下方会多出来一个“群机器人”。按照提示填写一些基本信息即可完成创建（比较简单，看图吧）：
 
-{% asset_img IMG_0526.png %}{% asset_img IMG_0527.png %}{% asset_img IMG_0528.png %}{% asset_img IMG_0529.png %}
-
+{% asset_img IMG_0526.png %}
+{% asset_img IMG_0527.png %}
+{% asset_img IMG_0528.png %}
+{% asset_img IMG_0529.png %}
 
 最后，拿到`webhook`地址就算完成了。
 
@@ -370,8 +374,6 @@ deploy default end
 最后，在腾讯云的控制台中添加触发方式，测试通过后本次目标宣布正式达成。
 
 {% asset_img 006tNc79ly1g4h8l0ivz3j30kp0lb3ze.jpg %}
-
-
 
 ## 几个小技巧
 
