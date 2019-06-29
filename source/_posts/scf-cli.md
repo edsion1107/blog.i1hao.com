@@ -32,7 +32,7 @@ mkdir WeworkWeatherReport
 cd WeworkWeatherReport
 # 这里用的是pipenv安装的，如果觉得麻烦或者不熟悉此命令，也可以按照官方的演示直接用pip安装
 # 即：用"pip install"替换文中"pipenv install"，"scf"替换文中"pipenv run scf"
-$pipenv install --python 3.6 --pypi-mirror https://mirrors.cloud.tencent.com/pypi/simple scf
+$pipenv install --python 3.6 -i https://mirrors.cloud.tencent.com/pypi/simple scf
 Creating a virtualenv for this project…
 Pipfile: /Users/edsion/Documents/WeworkWeatherReport/Pipfile
 Using /Users/edsion/.pyenv/versions/3.6.8/bin/python3 (3.6.8) to create virtualenv…
@@ -78,7 +78,7 @@ SCF CLI, version 0.0.3
 
 > ~~这里文档有个小坑，并没有写明可用区的名称，所以参考了[COS文档中关于地域的说明](https://cloud.tencent.com/document/product/436/6224)。我是用的上海，所以地域是`ap-shanghai`。~~
 >
-> 这里有个坑，SCF的文档中没有对于可用区的说明，
+> 这里有个坑，SCF的文档中没有对于可用区的说明，而是沿用了【腾讯云API文档】中关于[地域](https://cloud.tencent.com/document/api/583/17238#.E5.9C.B0.E5.9F.9F.E5.88.97.E8.A1.A8)的定义。
 
 ### 配置CLI
 
