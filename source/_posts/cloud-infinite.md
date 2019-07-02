@@ -19,6 +19,8 @@ tags:
 对于数据万象我在之前的一篇文章[薅羊毛党的胜利 —— 合理利用腾讯云搭建服务
 ](https://blog.i1hao.com/2018/06/29/qcloud-free/)提到过。
 
+<!-- more -->
+
 >如果看完这篇文章觉得有帮助，欢迎点击我的推广链接：[https://cloud.tencent.com/redirect.php?redirect=10371&cps_key=d61d10b4df29eee56b529f879e701bb2](https://cloud.tencent.com/redirect.php?redirect=10371&cps_key=d61d10b4df29eee56b529f879e701bb2)，购买腾讯云相关服务，谢谢支持。
 
 ## 第一步，开启相关服务，并进行配置
