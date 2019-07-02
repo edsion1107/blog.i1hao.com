@@ -57,7 +57,8 @@ tags:
 
 至于 CDN 的配置，要去[内容分发网络的控制台](https://console.cloud.tencent.com/cdn)，在对应域名的“高级配置”中开启：
 <picture><source srcset="https://img.blog.i1hao.com/cdn_console.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/cdn_console.png?imageView2/format/png" type="image/png"><img src="cdn_console"></picture>
-> 上图中还开启了HTTP2.0，也能一定程度上提高速度，建议开启。
+
+> 上图中还开启了HTTP2.0，也能一定程度上提高访问速度，建议开启。
 
 稍等约5分钟，等待 CDN 部署完成。
 
@@ -90,7 +91,7 @@ tags:
 数据万象添加水印后的图片链接为：`https://img.blog.i1hao.com/IMG_0526.png?watermark/2/text/YmxvZy5pMWhhby5jb20%3D`
 <picture><source srcset="https://img.blog.i1hao.com/20190702225242.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702225242.png?imageView2/format/png" type="image/png"><img src="20190702225242"></picture>
 
-后面这两个链接能访问，并且结果格式或显示不正确，可能是参数问题，或者样式分隔符设置问题，可以通过查看[数据万象文档中心](https://cloud.tencent.com/document/product/460/6929)，进行排查。
+后面这两个链接能访问，并且结果格式或显示不正确，可能是参数问题，或者样式分隔符设置问题，可以通过根据[数据万象文档](https://cloud.tencent.com/document/product/460/6929)，进行排查。
 
 > 图片上传后首次访问，可能由于 CDN 回源，或图片处理，速度不够理想，之后就没问题了。当然也可以手动去刷 CDN 缓存进行“预热”。
 > 我这里只是用了数据万象中“图片格式转换”这一个功能，根据API在URL中附加参数，还可以实现图片缩放、裁剪、缩略图、文字和图像水印、获取EXIF信息、盲水印等等，很多高级的功能。
@@ -99,7 +100,7 @@ tags:
 
 macOS 上的 [iPic](https://apps.apple.com/cn/app/ipic-markdown-%E5%9B%BE%E5%BA%8A-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7/id1101244278?mt=12) 产品理念、执行力，都非常令人佩服，难能可贵的还是由独立开发者完成的。之后涌现大量模仿者都或多或少受到了一定的启发。
 
-因为需要考虑到 webp 并非所有浏览器都兼容，所以我采用的是在 Markdown 中插入 html 的方案来解决的。另外还可以通过 JS 来检测，但考虑到可能得改 hexo 代码，担心版本升级的时候还要自己处理冲突，所以没有采用。
+因为需要考虑到 webp 并非所有浏览器都兼容，所以我采用的是在 Markdown 中插入 html 的方案来解决的。另外还可以通过 JS 来检测，但是需要修改 hexo 代码，担心版本升级的时候还要自己处理冲突，所以没有采用。
 
 纯html代码解决兼容性的示例代码如下：
 
@@ -111,7 +112,7 @@ macOS 上的 [iPic](https://apps.apple.com/cn/app/ipic-markdown-%E5%9B%BE%E5%BA%
 </picture>
 ```
 
-非常抱歉的是，我目前采用的是[PicGo](https://github.com/Molunerfinn/PicGo)，因为通过它的“自定义链接格式”功能，可以生成模版代码，能提高一些效率。但是 PicGo 唯一令我不太满意的就是，我在配置腾讯云COS为图床时，遇到了点小问题，如果是新手可能会卡很久。
+非常遗憾的是，我没有使用 iPic，而是[PicGo](https://github.com/Molunerfinn/PicGo)，因为通过它的“自定义链接格式”功能，可以生成模版代码，能提高一些效率。但是 PicGo 唯一令我不太满意的就是，我在配置腾讯云COS为图床时，遇到了点小问题，如果是新手可能会卡在这里一会。
 
 配置参照下图：
 <picture><source srcset="https://img.blog.i1hao.com/20190702233755.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702233755.png?imageView2/format/png" type="image/png"><img src="20190702233755"></picture>
@@ -154,6 +155,6 @@ vscode 对于程序员来说很容易上手，我只安装了`Markdown All in On
 
 通过我目前这套方案，可以较好做到博客文章和图片资源的分离，并且在支持 webp 的浏览器上得到更好的体验；大量使用免费资源，降低部署和维护博客的成本；使用COS存储图片，还可以降低博客迁移成本。何乐而不为呢？
 
-当然，缺点也不是没有，比如 vscode 如果作为 markdown 编辑器，距离专业的 Typora 还是有一定的差距，不支持 TOC 自动生成目录，不支持导出成PDF、图片等格式；访客达到一定程度后，可能会产生 CDN 费用。
+当然，缺点也不是没有，比如 vscode 如果作为 markdown 编辑器，距离专业的 Typora 还是有一定的差距，不支持 TOC 自动生成目录，不支持导出成PDF、图片等格式；访客达到一定量级后，可能会产生 CDN 费用。
 
-如果大家还有其它方案，欢迎一起讨论，通过 Github 的 Issues 或[博客](https://blog.i1hao.com)上的其它联系方式都可以。
+如果大家还有其它方案，欢迎一起讨论，通过 Github 的 Issues 或[博客](https://blog.i1hao.com)上的其它方式都可以联系到我。
