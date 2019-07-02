@@ -70,7 +70,7 @@ SCF CLI, version 0.0.3
 
 基于安全考虑，这里需要使用“子账户”。打开[腾讯云控制台](https://console.cloud.tencent.com/cam) - 访问管理 - 用户 - 新建用户，随便起个名字，例如`scf-admin`，勾选“编程访问”后点击下一步。从策略列表中选取策略关联，搜索“scf”相关策略，根据需要勾选。用户创建完成后，回到用户列表，点击该用户选择“API密钥”，即可看到SecretId和SecretKey。
 
-{% asset_img 006tNc79ly1g4h2imn34hj316o0prwh6.jpg %}
+<picture><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h2imn34hj316o0prwh6.jpg?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h2imn34hj316o0prwh6.jpg?imageView2/format/png" type="image/png"><img src="006tNc79ly1g4h2imn34hj316o0prwh6"></picture>
 
 ### 产品期望所属的地域
 
@@ -129,10 +129,14 @@ $ tree
 
 首先，确保你的企业微信已更新到最新（2.8.7）。然后拉一个群（至少3个人），在群里点右上角，添加成员的下方会多出来一个“群机器人”。按照提示填写一些基本信息即可完成创建（比较简单，看图吧）：
 
-{% asset_img IMG_0526.png %}
-{% asset_img IMG_0527.png %}
-{% asset_img IMG_0528.png %}
-{% asset_img IMG_0529.png %}
+<picture>
+  <source srcset="https://img.blog.i1hao.com/IMG_0526.png?imageView2/format/webp" type="image/webp">
+  <source srcset="https://img.blog.i1hao.com/IMG_0526.png?imageView2/format/png" type="image/png">
+  <img src="IMG_0526.png">
+</picture>
+<picture><source srcset="https://img.blog.i1hao.com/IMG_0527.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/IMG_0527.png?imageView2/format/png" type="image/png"><img src="IMG_0527"></picture>
+<picture><source srcset="https://img.blog.i1hao.com/IMG_0528.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/IMG_0528.png?imageView2/format/png" type="image/png"><img src="IMG_0528"></picture>
+<picture><source srcset="https://img.blog.i1hao.com/IMG_0529.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/IMG_0529.png?imageView2/format/png" type="image/png"><img src="IMG_0529"></picture>
 
 最后，拿到`webhook`地址就算完成了。
 
@@ -147,7 +151,7 @@ $ curl 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=acd8cabe-xxx-xxx' -
 {"errcode":0,"errmsg":"ok"}
 ```
 
-{% asset_img 006tNc79ly1g4h45msshjj30n01ds75e.jpg %}
+<picture><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h45msshjj30n01ds75e.jpg?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h45msshjj30n01ds75e.jpg?imageView2/format/png" type="image/png"><img src="006tNc79ly1g4h45msshjj30n01ds75e"></picture>
 
 ## 编写和调试代码，实现通过免费API获取天气和推送消息
 
@@ -275,7 +279,7 @@ if __name__ == '__main__':
 
 本地运行结果如下：
 
-{% asset_img 006tNc79ly1g4h7b54oh2j307f06wmxw.jpg %}
+<picture><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h7b54oh2j307f06wmxw.jpg?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h7b54oh2j307f06wmxw.jpg?imageView2/format/png" type="image/png"><img src="006tNc79ly1g4h7b54oh2j307f06wmxw"></picture>
 
 > 关于本地调试，因为场景过于简单，我是直接在pycharm中配置环境变量后运行的。如果需要对事件来源（event）等参数进行调试，可以使用 SCF CLI 的 `native invoke` 和`local invoke`，具体请查阅[文档](https://cloud.tencent.com/document/product/583/35402)。
 
@@ -355,7 +359,7 @@ deploy default end
 
 如无异常，此时在[腾讯云的控制台](https://console.cloud.tencent.com/scf/list?rid=4&ns=default)中已经可以看到刚创建的`WeworkWeatherReport`“函数”：
 
-{% asset_img 006tNc79ly1g4h8d82i7uj31d10aljss.jpg %}
+<picture><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h8d82i7uj31d10aljss.jpg?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h8d82i7uj31d10aljss.jpg?imageView2/format/png" type="image/png"><img src="006tNc79ly1g4h8d82i7uj31d10aljss"></picture>
 
 如果代码需要更新，要重新执行打包-部署的流程，但是部署时需要添加`--forced`参数：
 
@@ -373,7 +377,7 @@ deploy default end
 
 最后，在腾讯云的控制台中添加触发方式，测试通过后本次目标宣布正式达成。
 
-{% asset_img 006tNc79ly1g4h8l0ivz3j30kp0lb3ze.jpg %}
+<picture><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h8l0ivz3j30kp0lb3ze.jpg?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/006tNc79ly1g4h8l0ivz3j30kp0lb3ze.jpg?imageView2/format/png" type="image/png"><img src="006tNc79ly1g4h8l0ivz3j30kp0lb3ze"></picture>
 
 ## 几个小技巧
 

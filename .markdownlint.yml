@@ -1,0 +1,2 @@
+MD013: false    # 允许超过80个字符
+MD033: false    # 允许插入html代码
