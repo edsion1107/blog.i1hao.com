@@ -145,8 +145,8 @@ theme_config:
     animation: false
     comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
   reward:
-    wechatpay: /images/wechat-reward-image.png
-    alipay: /images/alipay-reward-image.png
+    wechatpay: https://img.blog.i1hao.com/wechat-reward-image.png
+    alipay: https://img.blog.i1hao.com/20190707155823.png
   highlight_theme: normal
   font:
     enable: true
@@ -158,7 +158,7 @@ theme_config:
   baidu_analytics: 955e82b575b82c10ad113786238055b3
   # Google Analytics
   google_analytics: UA-124909298-1
-
+  google_site_verification: google7cd1ef65e5733b3c.html
   reading_progress:
     enable: true
     color: "#37c6c0"
