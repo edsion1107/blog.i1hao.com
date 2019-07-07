@@ -7,7 +7,7 @@
 ### 必备
 
 - [git](https://git-scm.com/downloads)
-- [vscode](https://code.visualstudio.com/download) 和 [Typora](https://typora.io)（ markdown 编辑器，根据喜好选择）
+- [vscode](https://code.visualstudio.com/download) ~~和 [Typora](https://typora.io)（ markdown 编辑器，根据喜好选择）~~
 
 ### 可选
 
