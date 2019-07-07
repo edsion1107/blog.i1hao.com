@@ -156,7 +156,7 @@ theme_config:
       size: 
   # Baidu Analytics ID
   baidu_analytics: 955e82b575b82c10ad113786238055b3
-  
+
   # Google Analytics
   google_analytics:
     tracking_id: UA-124909298-1
@@ -172,3 +172,6 @@ theme_config:
     enable: true
     home: true
     archive: true
+    delay: true
+    timeout: 3000
+    priority: true
