@@ -158,7 +158,7 @@ theme_config:
   baidu_analytics: 955e82b575b82c10ad113786238055b3
   # Google Analytics
   google_analytics: UA-124909298-1
-  google_site_verification: google7cd1ef65e5733b3c.html
+  google_site_verification: 7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8
   reading_progress:
     enable: true
     color: "#37c6c0"
