@@ -156,8 +156,12 @@ theme_config:
       size: 
   # Baidu Analytics ID
   baidu_analytics: 955e82b575b82c10ad113786238055b3
+  
   # Google Analytics
-  google_analytics: UA-124909298-1
+  google_analytics:
+    tracking_id: UA-124909298-1
+    localhost_ignored: true
+
   google_site_verification: 7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8
   reading_progress:
     enable: true
