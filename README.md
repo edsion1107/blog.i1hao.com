@@ -42,6 +42,13 @@ yarn install    # 安装的依赖已在 package.json 中定义
 git submodule add https://github.com/theme-next/hexo-theme-next.git   themes/next
 ```
 
+> 如果对主题有个性化修改（非通用方案，无法提交 pr 到主题仓库），先fork主题的仓库到自己名下，再做修改。
+
+修改 submodule URL 的步骤：
+
+1. 修改`.gitmodules`文件中对应模块的 url 属性(推荐使用 https，使用 git 会导致 travis-ci 执行 `git submodule update --init --recursive`出错 );
+2. 使用`git submodule sync`命令，将新的URL更新到文件`.git/config`；
+
 ### 更新NexT主题
 
 ```bash
