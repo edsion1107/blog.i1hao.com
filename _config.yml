@@ -175,3 +175,9 @@ theme_config:
     delay: true
     timeout: 3000
     priority: true
+
+  live2d:
+    enable: true
+    modelId: 2
+    modelTexturesId: 1
+    modelStorage: true
