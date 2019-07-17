@@ -14,6 +14,7 @@ install:
   - git clone --depth=1 https://github.com/theme-next/theme-next-quicklink.git themes/next/source/lib/quicklink
   - git clone --depth=1 https://github.com/theme-next/theme-next-pangu.git themes/next/source/lib/pangu
   - git clone --depth=1 https://github.com/theme-next/theme-next-reading-progress themes/next/source/lib/reading_progress
+  - git clone --depth=1 https://github.com/edsion1107/theme-next-live2d.git themes/next/source/lib/live2d
 script:
   - hexo clean
   - hexo generate
