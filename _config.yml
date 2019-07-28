@@ -114,7 +114,7 @@ theme_config:
     number: true
     wrap: true
   sidebar:
-    display: always
+    display: hide
   back2top:
     enable: true
     sidebar: false
@@ -181,3 +181,5 @@ theme_config:
     modelId: 2
     modelTexturesId: 1
     modelStorage: true
+    waifuEdgeSide: "right:80"
+    aboutPageUrl: 'https://github.com/edsion1107/theme-next-live2d'

@@ -79,7 +79,7 @@ hexo server
 
 ### 发布
 
-#### 手动（需安装 hexo 和 插件 ）—— 已废弃，因为不再使用 hexo-deployer-git 插件
+#### ~~手动（需安装 hexo 和 插件 ）~~—— 已废弃，因为不再使用 hexo-deployer-git 插件
 
 ```bash
 hexo clean
