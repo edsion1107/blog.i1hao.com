@@ -156,6 +156,10 @@ theme_config:
       size: 
   # Baidu Analytics ID
   baidu_analytics: 955e82b575b82c10ad113786238055b3
+  
+  # Baidu Webmaster tools verification.
+  # See: https://ziyuan.baidu.com/site
+  baidu_site_verification: nbJQD3t9R8
 
   # Google Analytics
   google_analytics:
