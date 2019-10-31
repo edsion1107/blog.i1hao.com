@@ -9,7 +9,7 @@ tags:
 
 开始想到的笨办法，是通过 request 这个 fixture，拿到执行的case所在文件、行数等，去解析文件读取。
 
-翻了半天 pytest 文档中没有找到有用的信息，最后调试时无意发现通过以下代码读取 docstring（__doc__）：
+翻了半天 pytest 文档中没有找到有用的信息，最后经过调试发现可以通过以下代码实现：
 
 ```python
 request._pyfuncitem._obj.__doc__
