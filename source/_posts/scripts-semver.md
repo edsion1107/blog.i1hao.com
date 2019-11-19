@@ -247,7 +247,40 @@ def archive():
 
 根据前面的步骤，我们已经能够做到在代码中添加版本号了，只要在代码里**尽量靠前**添加 print 一下或者写入 log 即可。
 
-但是如果在 pytest 中使用，因为框架的加载机制，并不一定能够真正显示出来。如果放在case的log里，一方面反复打印也没必要，另一方面如果是 fixture 、甚至是 `pytest_addoption`、`pytest_collection_modifyitems`等 hook 的函数中出错，也没法看到版本号。所以我目前采用的方案是在 conftest.py 里添加`pytest_cmdline_main`这个函数（基本上是第一个加载的 hook 了），在这里打印版本号到终端的标准输出（将来也许能找到更好的方案），来保证始终能显示版本号。
+但是如果在 pytest 中使用，因为框架的加载机制，并不一定能够真正显示出来。如果放在 case 的 log 里，一方面反复打印也没必要，另一方面如果是 fixture 、甚至是 `pytest_addoption`、`pytest_collection_modifyitems`等 hook 的函数中出错，也没法看到版本号。所以我目前采用的方案是在 conftest.py 里添加`pytest_cmdline_main`这个函数（基本上是第一个加载的 hook 了），在这里打印版本号到终端的标准输出（将来也许能找到更好的方案），来保证始终能显示版本号。
+
+## 其他
+
+### 1. 常见问题——权限错误
+
+（以zip文件为例），如果压缩包解压以后文件权限错误（常见于shell脚本“丢失”可执行权限），首先通过`zipinfo`查看压缩包内文件权限。如果压缩包内权限正确，则说明解压的时候需要添加参数，使其保留权限；如果压缩包内权限错误，说明打包时出现问题。对于打包前本地文件权限正确，但是打包后权限丢失，可能是git忽略了权限，可以通过`git config -l`和`git config --local -l`查看`core.filemode`的配置。如果`core.filemode=false`，说明git忽略了文件权限，需要通过`git config core.filemode true`或`git config --local core.filemode true`修改配置。
+
+### 2. （推荐）commit message
+
+参考[Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
+
+#### Format
+
+推荐通过`git commit -e`或GUI提交，代替`git commit -m "xxx"`，这样不容易格式错误。
+
+```TEXT
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+#### Type
+
+- feat: A new feature
+- fix: A bug fix
+- docs: Documentation only changes
+- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- refactor: A code change that neither fixes a bug nor adds a feature
+- perf: A code change that improves performance
+- test: Adding missing or correcting existing tests
+- chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
 
 ## 结语
 
