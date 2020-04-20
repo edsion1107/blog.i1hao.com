@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans,zh-CN,default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="nbJQD3t9R8"/>
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"/>
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="stylesheet" href="/lib/live2d/assets/waifu.css"/>
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Uiautomator2 源码分析引言关于著名的软件测试金字塔理论，可以看一下 The Practical Test Pyramid 这篇文章，译文在这里。 对于UI自动化测试，根据其实现原理可以大致分为：基于坐标的（monkeyrunner）、基于控件的（uiautomator）、基于图像识别的（sikuli）等。针对不同的测试场景，不同方案各有其用武之地。 Android Uiautomato">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Uiautomator2 源码分析">
+<meta property="og:url" content="https://blog.i1hao.com/2018/12/28/uiautomator2-codes/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="Uiautomator2 源码分析引言关于著名的软件测试金字塔理论，可以看一下 The Practical Test Pyramid 这篇文章，译文在这里。 对于UI自动化测试，根据其实现原理可以大致分为：基于坐标的（monkeyrunner）、基于控件的（uiautomator）、基于图像识别的（sikuli）等。针对不同的测试场景，不同方案各有其用武之地。 Android Uiautomato">
+<meta property="article:published_time" content="2018-12-28T11:09:48.000Z">
+<meta property="article:modified_time" content="2020-04-20T12:13:35.647Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="uiautomator2">
+<meta name="twitter:card" content="summary">
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="edsion的博客" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://blog.i1hao.com/2018/12/28/uiautomator2-codes/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Uiautomator2 源码分析 | edsion的博客</title>
+  
+
+
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124909298-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-124909298-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">edsion的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;归档&lt;span class&#x3D;&quot;badge&quot;&gt;17&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-tags&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;标签&lt;span class&#x3D;&quot;badge&quot;&gt;34&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-th&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;分类&lt;span class&#x3D;&quot;badge&quot;&gt;3&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sitemap.xml" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-sitemap&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;站点地图</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/12/28/uiautomator2-codes/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>"/>
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Uiautomator2 源码分析
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-28 19:09:48" itemprop="dateCreated datePublished" datetime="2018-12-28T19:09:48+08:00">2018-12-28</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-20 20:13:35" itemprop="dateModified" datetime="2020-04-20T20:13:35+08:00">2020-04-20</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Uiautomator2-源码分析"><a href="#Uiautomator2-源码分析" class="headerlink" title="Uiautomator2 源码分析"></a>Uiautomator2 源码分析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>关于著名的软件测试金字塔理论，可以看一下 <a href="https://martinfowler.com/articles/practical-test-pyramid.html" target="_blank" rel="noopener">The Practical Test Pyramid</a> 这篇文章，译文在<a href="https://mp.weixin.qq.com/s/Dee2j_lhNkOSnkflagBohg" target="_blank" rel="noopener">这里</a>。</p>
+<p>对于UI自动化测试，根据其实现原理可以大致分为：基于坐标的（monkeyrunner）、基于控件的（uiautomator）、基于图像识别的（sikuli）等。针对不同的测试场景，不同方案各有其用武之地。</p>
+<p><a href="https://github.com/openatx/uiautomator2" target="_blank" rel="noopener">Android Uiautomator2 Python Wrapper</a> 是基于 Google uiautomator2 库实现的自动化测试框架。该框架主要解决了两大痛点：</p>
+<ol>
+<li>测试脚本只能使用Java语言 </li>
+<li>测试脚本必须每次被上传到设备上运行</li>
+</ol>
+<p>其实现原理就是在手机上运行了一个 http 服务器，将 uiautomator 中的功能开放出来，然后再将这些 http 接口，封装成 Python 库。</p>
+<a id="more"></a>
+
+<h2 id="Python-基础知识"><a href="#Python-基础知识" class="headerlink" title="Python 基础知识"></a>Python 基础知识</h2><h3 id="类和实例"><a href="#类和实例" class="headerlink" title="类和实例"></a>类和实例</h3><p>面向对象最重要的概念就是类（Class）和实例（Instance），必须牢记类是抽象的模板，比如Student类，而实例是根据类创建出来的一个个具体的“对象”，每个对象都拥有相同的方法，但各自的数据可能不同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, score)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.score = score</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_grade</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.score &gt;= <span class="number">90</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'A'</span></span><br><span class="line">        <span class="keyword">elif</span> self.score &gt;= <span class="number">60</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'B'</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'C'</span></span><br><span class="line">        </span><br><span class="line">lisa = Student(<span class="string">'Lisa'</span>, <span class="number">99</span>)</span><br><span class="line">bart = Student(<span class="string">'Bart'</span>, <span class="number">59</span>)</span><br><span class="line">print(lisa.name, lisa.get_grade())</span><br><span class="line">print(bart.name, bart.get_grade())</span><br><span class="line"></span><br><span class="line">=========================</span><br><span class="line">Lisa A</span><br><span class="line">Bart C</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="魔术方法-call"><a href="#魔术方法-call" class="headerlink" title="魔术方法__call__"></a>魔术方法<code>__call__</code></h3><p>什么是魔术方法？他们是面向对象的 Python 的一切。他们是可以给你的类增加”magic”的特殊方法。他们总是被双下划线所包围(e.g. <code>__init__</code> 或者 <code>__lt__</code>)。</p>
+<p>你也许已经知道，在 Python 中，方法也是一种高等的对象。这意味着他们也可以被传递到方法中就像其他对象一样。这是一个非常惊人的特性。 在Python中，一个特殊的魔术方法可以让类的实例的行为表现的像函数一样，你可以调用他们，将一个函数当做一个参数传到另外一个函数中等等。这是一个非常强大的特性让Python编程更加舒适甜美。 <code>__call__(self, [args...])</code></p>
+<p>允许一个类的实例像函数一样被调用。实质上说，这意味着 <code>x()</code> 与 <code>x.__call__()</code> 是相同的。注意 <code>__call__</code> 参数可变。这意味着你可以定义 <code>__call__</code> 为其他你想要的函数，无论有多少个参数。</p>
+<p><code>__call__</code> 在那些类的实例经常改变状态的时候会非常有效。调用这个实例是一种改变这个对象状态的直接和优雅的做法。用一个实例来表达最好不过了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Entity</span>:</span></span><br><span class="line"><span class="string">'''调用实体来改变实体的位置。'''</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size, x, y)</span>:</span></span><br><span class="line">    self.x, self.y = x, y</span><br><span class="line">    self.size = size</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">    <span class="string">'''改变实体的位置'''</span></span><br><span class="line">    self.x, self.y = x, y</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        print(args)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">b = B()</span><br><span class="line">a(<span class="number">3</span>)</span><br><span class="line">b(<span class="number">3</span>)</span><br><span class="line">==============</span><br><span class="line">(<span class="number">3</span>,)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"/Users/edsion/Documents/qqmusic/11111.py"</span>, line <span class="number">23</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    b(<span class="number">3</span>)</span><br><span class="line">TypeError: <span class="string">'B'</span> object <span class="keyword">is</span> <span class="keyword">not</span> callable</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>首先，来看一个最简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uiautomator2</span><br><span class="line"></span><br><span class="line">d = uiautomator2.connect(<span class="string">"a2c0fe65"</span>)</span><br><span class="line">d(text=<span class="string">"我的"</span>).click()</span><br></pre></td></tr></table></figure>
+
+<p>第一行代码，执行导入 uiautomator2 这个库。这个没什么可解释的，python的基础语法。</p>
+<p>第三行，执行 <code>connect()</code>，参数是<code>&quot;a2c0fe65&quot;</code>，按字面意思是连接设备，并将返回的对象赋值给变量<code>d</code>。</p>
+<p>第四行，给<code>d</code>传递一个参数<code>text</code>，值为<code>&quot;我的&quot;</code>，然后调用执行<code>click()</code>方法。</p>
+<p>下面我们来看一下代码的具体实现。打开 pycharm，把这一段代码敲进去。首先从<code>connect()</code>入手，所以<code>^ + 鼠标左键单击</code>，跳转到源代码。此时发现，这段代码位于<code>site-packages/uiautomator2/__init__.py</code>文件中。</p>
+<p>对于第三方模块，最佳实践是拆分成多个模块（.py文件），然后在<code>__init__.py</code>里逐个<code>import</code>，这样可以清晰地指定某些模块和方法暴露出来供第三方调用，某些模块和方法作为“隐藏”的仅供内部使用。uiautomator2 这个库，可能是作者考虑代码量不是很多，并没有对其进行拆分，而是所有代码一股脑写在了<code>__init__.py</code>里，这样也问题不大。</p>
+
+
+<p>根据代码量和用途，例如某些一眼就能看出来的工具类和异常类，总结一下最终此模块的核心代码：</p>
+<ul>
+<li>函数：connect()（包括connect_usb() 和 connect_wifi()）</li>
+<li>类：Selector(), Session(), UIAutomatorServer(), UIObject()</li>
+</ul>
+<p>查看 connect() 的逻辑发现，这里主要实现了根据你传入的参数判断是走usb连接还是Wi-Fi连接（当然，最终的本质还是通过 http ）。如果连接成功，最后返回一个 UIAutomatorServer 实例。</p>
+<p>代码继续往下走，下面就是执行“查找控件并点击（前面例子里的第四行代码）”操作了。根据前面的基础知识，结合刚才的分析，可以知道这里的 <code>d</code>是 UIAutomatorServer 的实例，如果要想让实例作为一个可调用的对象，需要在类里面实现<code>__call__()</code>方法。所以在 UIAutomatorServer 找一下<code>__call__()</code>方法，发现最终是调用的 Session 这个类。在找 Session 里的<code>__call__()</code>方法，最终发现参数<code>text=&quot;我的&quot;</code>被传递到 Selector，然后调用的 UiObject 类的 <code>click()</code>方法。再然后，就是把参数和方法转为http请求发送至服务端（手机）去执行了。至此完整的调用逻辑已经基本理清了。</p>
+<p>我们先看一下 google uiautomator 的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mDevice = UiDevice.getInstance(getInstrumentation());</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bring up the default launcher by searching for a UI component</span></span><br><span class="line"><span class="comment">// that matches the content description for the launcher button.</span></span><br><span class="line">UiObject allAppsButton = mDevice</span><br><span class="line">        .findObject(<span class="keyword">new</span> UiSelector().description(<span class="string">"Apps"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perform a click on the button to load the launcher.</span></span><br><span class="line">allAppsButton.clickAndWaitForNewWindow();</span><br></pre></td></tr></table></figure>
+
+
+
+<p>按照我的粗浅理解，如果这段代码转为 python 的话，大概是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">device = uiautomator2.connect(<span class="string">"a2c0fe65"</span>)</span><br><span class="line"></span><br><span class="line">selector = Selector(description=<span class="string">"Apps"</span>)</span><br><span class="line">button = device.findObject(selector)</span><br><span class="line">button.click()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者简写成</span></span><br><span class="line">device.findObject(Selector(description=<span class="string">"Apps"</span>)).click()</span><br></pre></td></tr></table></figure>
+
+<p>可以看出来，缺点是比前面的例子书写起来更费力，当然可能从语义上来讲可能表达的更清晰。 另一个常用的自动化测试框架 —— Appium，风格就更接近这个。</p>
+<p>两者孰优孰略不做评论，主要是通过理清这个过程，加深对框架的理解。因为文档不完善，有些细节其实需要我们深入研究代码才能掌握。</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><h3 id="implicitly-wait-与-wait-timeout"><a href="#implicitly-wait-与-wait-timeout" class="headerlink" title="implicitly_wait() 与 wait_timeout"></a>implicitly_wait() 与 wait_timeout</h3><p>在文档中搜索wait，关于默认等待控件出现的默认时间，有<code>implicitly_wait()</code>和<code>wait_timeout</code>两处。</p>
+<p>纸面的区别，一个是 Session 类的方法，一个是 UIAutomatorServer 类的属性。但是深入到逻辑来看，最终<code>implicitly_wait()</code>方法也是去设置的 UIAutomatorServer 的 wait_timeout 属性。所以从效果来看，应该是一样的。</p>
+<h3 id="click-与-click-exists"><a href="#click-与-click-exists" class="headerlink" title="click() 与 click_exists()"></a>click() 与 click_exists()</h3><ol>
+<li><p><code>click()</code>不含异常捕获逻辑，找不到控件会报错（代码不会继续执行）；<code>click_exists()</code>包含异常捕获逻辑，当发生<code>UiObjectNotFoundError</code>时不会报错（代码可以继续执行下去）</p>
+</li>
+<li><p><code>click()</code>永远返回<code>None</code>，<code>click_exists()</code>会根据是否触发<code>UiObjectNotFoundError</code>返回<code>True</code>或<code>False</code></p>
+</li>
+<li><p><code>click()</code>的默认参数是<code>timeout=None</code>，<code>click_exists()</code>的默认参数是<code>timeout=0</code>，逻辑上会根据<code>timeout is None</code>判断。即当直接使用<code>click()</code>（不指定 timeout 参数）时，等待最多<code>wait_timeout</code>秒后，如果控件存在执行点击操作；当直接使用<code>click_exists()</code>（不指定 timeout 参数）时，立刻执行点击操作。如果都指定了timeout参数，则遵照此参数。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/wechat-reward-image.png" alt=" 微信支付"/>
+        </picture>
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/20190707155823.png" alt=" 支付宝"/>
+        </picture>
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a></li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://blog.i1hao.com/2018/12/28/uiautomator2-codes/" title="Uiautomator2 源码分析">https:&#x2F;&#x2F;blog.i1hao.com&#x2F;2018&#x2F;12&#x2F;28&#x2F;uiautomator2-codes&#x2F;</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-creative-commons&quot;&gt;&lt;&#x2F;i&gt;BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" rel="tag"># 自动化测试</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/uiautomator2/" rel="tag"># uiautomator2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/08/oauth-and-api-test/" rel="next" title="几种常见的身份认证方案和接口测试中的应用">
+                <i class="fa fa-chevron-left"></i> 几种常见的身份认证方案和接口测试中的应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/30/adb-optimization/" rel="prev" title="浅析adb原理和优化">
+                浅析adb原理和优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+              <div class="site-description motion-element" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/%20%7C%7C%20th">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/%20%7C%7C%20tags">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/edsion1107" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-github&quot;&gt;&lt;&#x2F;i&gt;GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:edsion@i1hao.com" title="E-Mail &amp;rarr; mailto:edsion@i1hao.com" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-envelope&quot;&gt;&lt;&#x2F;i&gt;E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/1962828603" title="Weibo &amp;rarr; https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-weibo&quot;&gt;&lt;&#x2F;i&gt;Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank">&lt;img src&#x3D;&quot;&#x2F;images&#x2F;cc-by-nc-sa.svg&quot; alt&#x3D;&quot;Creative Commons&quot;&#x2F;&gt;</a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Uiautomator2-源码分析"><span class="nav-number">1.</span> <span class="nav-text">Uiautomator2 源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-基础知识"><span class="nav-number">1.2.</span> <span class="nav-text">Python 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类和实例"><span class="nav-number">1.2.1.</span> <span class="nav-text">类和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#魔术方法-call"><span class="nav-number">1.2.2.</span> <span class="nav-text">魔术方法__call__</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">1.3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战"><span class="nav-number">1.4.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#implicitly-wait-与-wait-timeout"><span class="nav-number">1.4.1.</span> <span class="nav-text">implicitly_wait() 与 wait_timeout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#click-与-click-exists"><span class="nav-number">1.4.2.</span> <span class="nav-text">click() 与 click_exists()</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+
+  <div class="waifu">
+      <div class="waifu-tips"></div>
+      <canvas id="live2d" class="live2d"></canvas>
+      <div class="waifu-tool">
+      <span class="fui-home"></span>
+      <span class="fui-chat"></span>
+      <span class="fui-eye"></span>
+      <span class="fui-user"></span>
+      <span class="fui-photo"></span>
+      <span class="fui-info-circle"></span>
+      <span class="fui-cross"></span>
+      </div>
+  </div>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>&copy; 2018 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.2.0</div>
+
+
+
+  <div class="footer-custom"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" target="_blank" rel="noopener">辽公网安备21029602000155号</a></div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/pangu/dist/pangu.min.js?v=3.3"></script>
+  <script>pangu.spacingPage();</script>
+
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+  <script src="/lib/live2d/assets/waifu-tips.js"></script>
+  <script src="/lib/live2d/assets/live2d.js"></script>
+  <script type="text/javascript">$(document).ready(function(){
+    let live2d_custom = {"enable":true,"modelAPI":"//live2d.fghrsh.net/api/","tipsMessage":"waifu-tips.json","hitokotoAPI":"lwl12.com","modelId":2,"modelTexturesId":1,"showToolMenu":true,"canCloseLive2d":true,"canSwitchModel":true,"canSwitchTextures":true,"canSwitchHitokoto":true,"canTakeScreenshot":true,"canTurnToHomePage":true,"canTurnToAboutPage":true,"modelStorage":true,"modelRandMode":"switch","modelTexturesRandMode":"rand","showHitokoto":true,"showF12Status":true,"showF12Message":false,"showF12OpenMsg":true,"showCopyMessage":true,"showWelcomeMessage":true,"waifuSize":"280x250","waifuTipsSize":"250x70","waifuFontSize":"12px","waifuToolLine":"20px","waifuToolFont":"14px","waifuToolTop":"0px","waifuMinWidth":"768px","waifuEdgeSide":"right:80","waifuDraggable":"disable","waifuDraggableRevert":true,"homePageUrl":"auto","aboutPageUrl":"https://github.com/edsion1107/theme-next-live2d","screenshotCaptureName":"live2d.png"};
+    for (let key in live2d_custom){
+      console.debug(key+':'+live2d_custom[key]);
+      live2d_settings[key] = live2d_custom[key];
+      }
+    initModel("/lib/live2d/assets/waifu-tips.json");
+  })</script>
+
+
+</body>
+</html>

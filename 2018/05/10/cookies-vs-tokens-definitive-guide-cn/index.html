@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans,zh-CN,default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="nbJQD3t9R8"/>
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"/>
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="stylesheet" href="/lib/live2d/assets/waifu.css"/>
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文译自：Cookies vs Tokens: The Definitive Guide  TL;DR基于令牌的身份验证（Tokens-based authentication，下文简写为token）正在变得越来越流行。 我们将研究cookie和token之间的区别和相似之处，使用token的优势，以及解决开发人员关于token的常见问题和疑虑。 最后，我们将构建一个使用token并使其成为渐进式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]Cookies vs Tokens : 权威指南">
+<meta property="og:url" content="https://blog.i1hao.com/2018/05/10/cookies-vs-tokens-definitive-guide-cn/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="本文译自：Cookies vs Tokens: The Definitive Guide  TL;DR基于令牌的身份验证（Tokens-based authentication，下文简写为token）正在变得越来越流行。 我们将研究cookie和token之间的区别和相似之处，使用token的优势，以及解决开发人员关于token的常见问题和疑虑。 最后，我们将构建一个使用token并使其成为渐进式">
+<meta property="article:published_time" content="2018-05-10T02:59:24.000Z">
+<meta property="article:modified_time" content="2020-04-20T12:13:35.643Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="cookies">
+<meta property="article:tag" content="tokens">
+<meta property="article:tag" content="JWT">
+<meta name="twitter:card" content="summary">
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="edsion的博客" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://blog.i1hao.com/2018/05/10/cookies-vs-tokens-definitive-guide-cn/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[译]Cookies vs Tokens : 权威指南 | edsion的博客</title>
+  
+
+
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124909298-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-124909298-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">edsion的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;归档&lt;span class&#x3D;&quot;badge&quot;&gt;17&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-tags&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;标签&lt;span class&#x3D;&quot;badge&quot;&gt;34&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-th&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;分类&lt;span class&#x3D;&quot;badge&quot;&gt;3&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sitemap.xml" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-sitemap&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;站点地图</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/05/10/cookies-vs-tokens-definitive-guide-cn/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>"/>
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[译]Cookies vs Tokens : 权威指南
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-05-10 10:59:24" itemprop="dateCreated datePublished" datetime="2018-05-10T10:59:24+08:00">2018-05-10</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-20 20:13:35" itemprop="dateModified" datetime="2020-04-20T20:13:35+08:00">2020-04-20</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">接口测试</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文译自：<a href="https://auth0.com/blog/cookies-vs-tokens-definitive-guide/" target="_blank" rel="noopener">Cookies vs Tokens: The Definitive Guide</a></p>
+<hr>
+<h1 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h1><p>基于令牌的身份验证（Tokens-based authentication，下文简写为token）正在变得越来越流行。 我们将研究cookie和token之间的区别和相似之处，使用token的优势，以及解决开发人员关于token的常见问题和疑虑。 最后，我们将构建一个使用token并使其成为渐进式Web应用程序（PWA）的应用程序。</p>
+<p>我们将编写一个使用JWT进行身份验证的Angular 2应用程序。源码在此: <a href="https://github.com/auth0-blog/angular-auth0-aside" target="_blank" rel="noopener">GitHub repo</a>。</p>
+<a id="more"></a>
+<hr>
+<p>我们<a href="https://auth0.com/blog/2014/01/07/angularjs-authentication-with-cookies-vs-token/" target="_blank" rel="noopener">上一篇</a>对比cookie和token的文章是在两年前<em>(译者注：本文发表于2016年5月31日)</em>。从那以后，我们已经写了很多关于如何在不同语言和框架中集成token的文章。</p>
+<p>单页面应用程序（SPA）的兴起以及前后端分离是非常有效的。 像Angular、React和Vue这样的框架允许开发人员构建比以前更强大、更高性能的单页应用程序。 而token可以与这些框架结合在一起使用。</p>
+<blockquote>
+<p>“Token-based authentication goes hand in hand with SPA frameworks like Angular, React and Vue.”</p>
+</blockquote>
+<h1 id="Cookie-vs-Token-Authentication-概览"><a href="#Cookie-vs-Token-Authentication-概览" class="headerlink" title="Cookie vs Token Authentication - 概览"></a>Cookie vs Token Authentication - 概览</h1><p>在我们进一步深入之前，让我们快速回顾一下这两种认证系统是如何工作的。如果您已经熟悉cookie和token的工作原理，请跳过本节，否则请继续阅读。</p>
+<p>下图简要概述了cookie和token认证方法之间的区别。</p>
+
+
+<h2 id="基于Cookie的身份验证"><a href="#基于Cookie的身份验证" class="headerlink" title="基于Cookie的身份验证"></a>基于Cookie的身份验证</h2><p>基于Cookie的身份验证早已成为处理用户认证的默认和可靠的方法。</p>
+<p>基于cookie的身份验证是<strong>有状态的</strong>。这意味着认证记录或会话（session）在服务器端和客户端都要保存。服务器需要跟踪数据库中的活动session，而在前端也要创建一个包含session标识符的cookie，从而实现基于cookie的身份验证。我们来看看传统的基于cookie的认证流程：</p>
+<ol>
+<li>用户输入他们的登录凭证</li>
+<li>服务器验证凭据是否正确，并创建一个session，然后将其存储在数据库中</li>
+<li>具有session ID的cookie被放置在用户浏览器中（译者注：注意这里是session ID，不是session）</li>
+<li>在随后的请求中，将根据数据库验证session ID，并且判断请求是否有效</li>
+<li>一旦用户注销了应用程序，客户端和服务器端的session就会被销毁</li>
+</ol>
+<h2 id="基于Token的身份验证"><a href="#基于Token的身份验证" class="headerlink" title="基于Token的身份验证"></a>基于Token的身份验证</h2><p>由于SPA、Web API和物联网（IoT）的兴起，token在过去几年得到了普及。当我们谈论token时，我们通常会谈论使用<a href="https://jwt.io/introduction" target="_blank" rel="noopener">JSON Web Tokens</a>（JWT）进行身份验证。尽管实现token的方式有所不同，但JWT已成为事实上的标准。考虑到这种情况，本文的其余部分将交替使用token和JWT。</p>
+<p>基于token的认证是<strong>无状态的</strong>。服务器不记录哪些用户已登录或哪些JWT已发出。与之相对，对服务器的每个请求都伴随着一个token，服务器使用该token来验证请求的真实性。该token通常以{JWT}的形式作为附加header发送，但也可以在POST请求的主体中发送，甚至作为查询参数发送。让我们看看这个流程是如何工作的：</p>
+<ol>
+<li>用户输入他们的登录凭证</li>
+<li>服务器验证凭据是否正确并返回签名过的token</li>
+<li>该token存储在客户端，通常存储在本地存储（local storage）中，但也可以存储在会话存储（session storage）或cookie中</li>
+<li>对服务器的后续请求将此token包含为额外的header，或通过上述其他方法之一</li>
+<li>服务器解码JWT，如果token有效，则处理该请求</li>
+<li>一旦用户注销，token就会被销毁，并且客户端不需要与服务器交互</li>
+</ol>
+<h1 id="基于Token身份验证的优势"><a href="#基于Token身份验证的优势" class="headerlink" title="基于Token身份验证的优势"></a>基于Token身份验证的优势</h1><p>只了解认证过程还不够。接下来，我们将介绍token优于cookie方案的原因。</p>
+<h2 id="无状态，可扩展和解耦"><a href="#无状态，可扩展和解耦" class="headerlink" title="无状态，可扩展和解耦"></a>无状态，可扩展和解耦</h2><p>将token存储在cookie中，最大的好处可能在于token是无状态的。后端不需要记录token。每个token都是独立的，包含检查其有效性以及通过声明传达用户信息所需的所有数据。</p>
+<p>服务器的唯一工作就是在成功的登录请求上签名token，并验证传入token是否有效。<del>事实上，服务器甚至不需要对token进行签名。第三方服务（如Auth0）可以处理token的发放，然后服务器只需验证token的有效性。</del>（译者注：作者夹带私货）</p>
+<h2 id="跨域（Cross-Domain）和跨域资源共享（CORS）"><a href="#跨域（Cross-Domain）和跨域资源共享（CORS）" class="headerlink" title="跨域（Cross Domain）和跨域资源共享（CORS）"></a>跨域（Cross Domain）和跨域资源共享（CORS）</h2><p>Cookie可以很好地处理单个域名和子域名，但是当涉及跨不同域名管理Cookie时，它可能会变得复杂。相反，token使得将API公开给不同的服务和域变得简单。每次调用后端时，都通过JWT对token进行校验，只要token有效就可以处理请求。这里有一些注意事项，我们将在下面的常见问题和关注部分讨论这些问题。</p>
+<h2 id="将数据存储在JWT中"><a href="#将数据存储在JWT中" class="headerlink" title="将数据存储在JWT中"></a>将数据存储在JWT中</h2><p>在使用基于cookie的身份验证时，您只是将session ID存储在cookie中。而JWT则允许您存储任何类型的元数据，只要它是有效的JSON。<a href="https://tools.ietf.org/html/rfc7519" target="_blank" rel="noopener">JWT规范</a>指定了元数据中可以包含的不同类型的声明，例如保留声明，公共声明和私有声明。您可以通过<a href="https://jwt.io/introduction/" target="_blank" rel="noopener">jwt.io网站</a>了解各种声明的具体情况和差异。</p>
+<p>实际上，这意味着JWT可以包含任何类型的数据。根据您的使用情况，您可以选择提供最少的声明，例如用户ID和token到期时间；或者您可以决定添加其他声明，例如用户电子邮件地址，颁发token的人员，范围或用户权限等等。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>在使用基于cookie的身份验证时，后端必须执行查询，无论是传统SQL数据库还是NoSQL，并且与解码token相比，整个流程可能需要更长的时间。此外，由于您可以将其他数据存储在JWT中，例如用户权限级别，因此您可以省去额外的获取和处理请求的数据的调用。<br>例如，假设您有一个，用于检索最新订单的API<code>/api/orders</code>，但只有admin权限的角色才能查看此数据。在基于cookie的方法中，一旦发出请求，您将需要一次请求数据库来验证会话有效，另一次请求以获取用户数据并验证用户是否具有admin权限，最后是第三个请求来获取数据。使用JWT方法，您可以将用户角色存储在JWT中，因此一旦提出请求并验证了JWT，您就可以对数据库进行唯一一次请求以检索订单。</p>
+<h2 id="移动端支持"><a href="#移动端支持" class="headerlink" title="移动端支持"></a>移动端支持</h2><p>现代API不仅与浏览器交互。正确编写一个API也可以为iOS和Android等浏览器和Native APP提供服务。原生移动平台和Cookie不能很好地融合。虽然可能，但在移动平台上使用cookie有许多限制和考虑因素。另一方面，token在iOS和Android上都更容易实现。对于没有cookie存储概念的物联网应用程序和服务，令牌也更容易实现。</p>
+<h1 id="常见问题和疑虑"><a href="#常见问题和疑虑" class="headerlink" title="常见问题和疑虑"></a>常见问题和疑虑</h1><p>在本节中，我们将看看token认证时经常出现的一些常见问题和疑虑。这里关注的焦点将是安全性，同时我们也会关注token的大小、存储和加密。</p>
+<h2 id="JWT的大小"><a href="#JWT的大小" class="headerlink" title="JWT的大小"></a>JWT的大小</h2><p>token认证的最大缺点是JWT的大小。session cookie甚至比最小的JWT还要小。根据您的使用情况，如果您添加了多个声明，token的大小可能会变成一个问题。请记住，对服务器的每个请求都必须包含JWT。</p>
+<h2 id="在哪里存储token？"><a href="#在哪里存储token？" class="headerlink" title="在哪里存储token？"></a>在哪里存储token？</h2><p>使用基于token的身份验证，您可以选择在哪里存储JWT。通常，JWT放置在浏览器本地存储（local storage）中，对于大多数使用情况来说，这种方式非常有效。将JWT存储在local storage中时需要注意一些问题。与cookie不同的是，local storage被沙箱化为特定的域，其数据不能被任何其他域（包括子域）访问。<br>您可以将token存储在cookie中，但cookie的最大大小仅为4kb，因此如果您有多个声明，则可能会产生问题。此外，您可以将token存储在与local storage类似的session storage中，但只要用户关闭浏览器就会被清除。</p>
+<h2 id="XSS和XSRF防护"><a href="#XSS和XSRF防护" class="headerlink" title="XSS和XSRF防护"></a>XSS和XSRF防护</h2><p>保护用户和服务器始终是首要任务。开发人员在决定是否使用基于token的身份验证时最常遇到的问题之一是安全隐患。面向网站的两种最常见的攻击媒介是跨站脚本（XSS）和跨站请求伪造（XSRF或CSRF）。<br><a href="https://zh.wikipedia.org/wiki/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC" target="_blank" rel="noopener">XSS</a> - 当外部实体能够在您的网站或应用程序内执行代码时发生攻击。这里最常见的攻击方法是，如果你的网站允许输入的信息没有被正确处理。如果攻击者可以在您的域上执行代码，那么您的JWT token易受攻击。我们的首席技术官<a href="https://auth0.com/blog/ten-things-you-should-know-about-tokens-and-cookies/#xss-xsrf" target="_blank" rel="noopener">过去认为</a>，与XSRF攻击相比，XSS攻击更容易防范。许多框架，包括Angular，都会自动清理输入并防止任意代码执行。如果你没有使用框架来清理输入/输出，你可以尝试像google开发的<a href="https://github.com/google/caja" target="_blank" rel="noopener">caja插件</a>。过滤输入是许多框架和语言中尝试解决的问题，我会推荐使用框架或插件来构建自己的输入。<br>如果您在local storage中使用JWT，则跨站请求伪造攻击不是问题。另一方面，如果您期望JWT存储在cookie中，则需要防范XSRF。XSRF的原理不像XSS攻击那么容易理解。解释XSRF攻击如何工作可能非常耗时，所以，请查看<a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery" target="_blank" rel="noopener">本指南</a>，深入解释XSRF攻击如何工作。幸运的是，防范XSRF攻击是一件相当简单的事情。为了防止XSRF攻击，您的服务器在建立与客户端的会话时将生成唯一的token（请注意，这不是JWT）。然后，无论何时将数据提交给服务器，隐藏的输入字段都将包含此token，并且服务器将检查以确保token匹配。同样，由于我们的建议是将JWT存储在local storage中，因此您可能不必担心XSRF攻击。<br>保护用户和服务器的最佳方式之一是token的过期时间很短。这样，即使token被泄露，它也会很快变得无效。此外，您可能会维护一个被盗用token的<a href="https://auth0.com/blog/2015/03/10/blacklist-json-web-token-api-keys/" target="_blank" rel="noopener">黑名单</a>，并且不允许这些令牌访问系统。您还可以通过改变签名算法作为最终手段，这会使所有有效令牌失效并要求所有用户再次登录。当然这种方法不推荐，但在严重情况下可用。</p>
+<h2 id="token已签名，未加密"><a href="#token已签名，未加密" class="headerlink" title="token已签名，未加密"></a>token已签名，未加密</h2><p>一个JWT由三部分组成：header, payload和signature。JWT的格式是<code>header.payload.signature</code>。如果我们要用HMACSHA256算法签名JWT，secret是’shhhh’和下面的payload：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"sub"</span>: <span class="string">"1234567890"</span>,</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"Ado Kukic"</span>,</span><br><span class="line">  <span class="attr">"admin"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的JWT将是：</p>
+<pre><code>QiOjE0NjQyOTc4ODV9.Y47kJvnHzU9qeJIN48_bVna6O0EDFiMiQ9LpNVDFymM</code></pre><p>这里需要<strong>注意</strong>的是，这个token是由HMACSHA256算法签名的，header和payload是Base64URL编码的，它<strong>没有加密</strong>。如果我访问<a href="https://jwt.io/" target="_blank" rel="noopener">jwt.io</a>，粘贴此token并选择HMACSHA256算法，我可以解码并读取其内容。因此，不应该将敏感数据（如密码）存储在payload中。<br>如果您必须将敏感数据存储在有效内容中，或者您需要屏蔽JWT，则可以使用JSON Web Encryption（JWE）。JWE允许您加密JWT的内容，以便除服务器之外的任何人都无法读取它。<a href="http://jose.readthedocs.io/en/latest/" target="_blank" rel="noopener">JOSE</a>为JWE提供了一个很好的框架和不同的选项，并且为许多流行的框架（包括<a href="https://github.com/cisco/node-jose" target="_blank" rel="noopener">NodeJS</a>和<a href="https://bitbucket.org/connect2id/nimbus-jose-jwt/wiki/Home" target="_blank" rel="noopener">Java</a>）提供了SDK。无论如何，我鼓励您了解更多关于<a href="https://auth0.com/learn/angularjs-authentication/" target="_blank" rel="noopener">AngularJS身份验证</a>的信息。</p>
+<h1 id="使用Auth0进行基于Token的身份验证"><a href="#使用Auth0进行基于Token的身份验证" class="headerlink" title="使用Auth0进行基于Token的身份验证"></a>使用Auth0进行基于Token的身份验证</h1><p><em>以下为机翻内容</em><br>在Auth0中，我们编写了SDK，指南和快速入门，用于与JWT一起使用多种语言和框架，包括<a href="https://github.com/auth0/express-jwt" target="_blank" rel="noopener">NodeJS</a>，<a href="https://github.com/auth0/java-jwt" target="_blank" rel="noopener">Java</a>，<a href="https://github.com/auth0/auth0-python" target="_blank" rel="noopener">Python</a>，<a href="https://github.com/auth0/go-jwt-middleware" target="_blank" rel="noopener">GoLang</a>, <a href="https://auth0.com/docs" target="_blank" rel="noopener">等等</a>。我们最后的“Cookies与Tokens”文章使用了AngularJS框架，所以今天我们的代码样本适合使用Angular 2。<br>您可以从我们的由<a href="https://twitter.com/kimmaida" target="_blank" rel="noopener">Kim Maida</a>创建的<a href="https://github.com/auth0-blog/angular-auth0-aside" target="_blank" rel="noopener">GitHub仓库</a>中下载示例代码。下载代码样本比较好，因为Angular 2需要很多初始设置才能开始。如果您尚未注册，请<a href="https://auth0.com/signup" target="_blank" rel="noopener">注册</a>一个免费的Auth0帐户，以便您可以自己执行实施并尝试不同的功能和选项。让我们开始吧</p>
+<h1 id="另外：使用Auth0验证Angular-App和Node-API"><a href="#另外：使用Auth0验证Angular-App和Node-API" class="headerlink" title="另外：使用Auth0验证Angular App和Node API"></a>另外：使用Auth0验证Angular App和Node API</h1><p>我们可以保护我们的应用程序和API，以便只有经过身份验证的用户才能访问它们。我们来看看如何使用<a href="https://auth0.com/" target="_blank" rel="noopener">Auth0</a>来实现Angular应用程序和Node API。您可以从<a href="https://github.com/auth0-blog/angular-auth0-aside" target="_blank" rel="noopener">GitHub</a>上的angular-auth0-aside回购中克隆此示例应用程序和API。</p>
+
+
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>示例Angular应用程序和API具有以下功能：</p>
+<ul>
+<li>Angular CLI生成Angular应用程序，并在<code>http://localhost:4200</code>处提供服务</li>
+<li>使用登录页面进行<a href="https://auth0.com/docs/libraries/auth0js/v8" target="_blank" rel="noopener">auth0.js</a>身份验证</li>
+<li>节点服务器保护的API路由<code>http://localhost:3001/api/dragons</code>返回经过验证的<code>GET</code>请求的JSON数据</li>
+<li>一旦用户使用Auth0进行身份验证，Angular app就会从API中获取数据</li>
+<li>配置文件页面需要使用路由防护进行身份验证</li>
+<li>身份验证服务使用主题将身份验证状态事件传播到整个应用程序</li>
+<li>用户配置文件在认证时被提取并存储在认证服务中</li>
+<li>访问令牌，配置文件和令牌到期存储在本地存储中，并在注销时删除</li>
+</ul>
+<h2 id="注册Auth0"><a href="#注册Auth0" class="headerlink" title="注册Auth0"></a>注册Auth0</h2><p>您需要一个<a href="https://auth0.com/" target="_blank" rel="noopener">Auth0</a>帐户来管理身份验证。您可以在<a href="https://auth0.com/signup" target="_blank" rel="noopener">这里</a>注册一个免费帐户。接下来，设置Auth0应用程序和API，以便Auth0可以与Angular应用程序和Node API进行交互。</p>
+<h2 id="设置一个Auth0应用程序"><a href="#设置一个Auth0应用程序" class="headerlink" title="设置一个Auth0应用程序"></a>设置一个Auth0应用程序</h2><ol>
+<li>转到您的Auth0仪表板并点击“创建新应用程序”按钮。</li>
+<li>命名您的新应用程序并选择“单页网络应用程序”。</li>
+<li>在新的Auth0应用的设置中，将<code>http://localhost:4200/callback</code>添加到<strong>允许的回调URL</strong>中。点击“保存更改”按钮。</li>
+<li>如果你愿意，你可以<a href="https://manage.auth0.com/#/connections/social" target="_blank" rel="noopener">建立一些社交关系</a>。然后，您可以在<strong>连接</strong>选项卡下的<strong>应用程序</strong>选项中为您的应用程序启用它们。上面的屏幕截图中显示的示例使用用户名/密码数据库，Facebook，Google和Twitter。对于制作，请确保您设置了自己的社交密钥，并且不要将社交连接设置为使用Auth0开发密钥。</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：在<strong>高级设置</strong>的<strong>OAuth</strong>选项卡下（<strong>设置</strong>部分的底部），您应该看到<strong>JsonWebToken签名算法</strong>设置为<code>RS256</code>。这是新应用程序的默认设置。如果设置为<code>HS256</code>，请将其更改为<code>RS256</code>。您可以在<a href="https://community.auth0.com/questions/6942/jwt-signing-algorithms-rs256-vs-hs256" target="_blank" rel="noopener">这里</a>阅读有关RS256与HS256 JWT签名算法的更多信息。</p>
+</blockquote>
+<h2 id="设置一个API"><a href="#设置一个API" class="headerlink" title="设置一个API"></a>设置一个API</h2><ol>
+<li>转到Auth0仪表板中的<strong><a href="https://manage.auth0.com/#/apis" target="_blank" rel="noopener">API</a></strong>，然后单击“创建API”按钮。输入API的名称。将<strong>标识符</strong>设置为您的API端点URL。在这个例子中，这是<code>http://localhost:3001/api/</code>。签名算法应该是<code>RS256</code>。</li>
+<li>您可以参阅新API的设置中的<strong>快速启动</strong>选项卡下的Node.js示例。我们将以这种方式实现我们的Node API，使用<a href="https://expressjs.com/" target="_blank" rel="noopener">Express</a>，<a href="https://github.com/auth0/express-jwt" target="_blank" rel="noopener">express-jwt</a>和<a href="https://github.com/auth0/node-jwks-rsa" target="_blank" rel="noopener">jwks-rsa</a>。</li>
+</ol>
+<p>我们现在准备在我们的Angular客户端和Node后端API上实现Auth0认证。</p>
+<h2 id="依赖和设置"><a href="#依赖和设置" class="headerlink" title="依赖和设置"></a>依赖和设置</h2><p>Angular应用程序使用<a href="https://github.com/angular/angular-cli" target="_blank" rel="noopener">Angular CLI</a>。确保您已全局安装CLI：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @angular/cli</span><br></pre></td></tr></table></figure>
+
+<p>在克隆<a href="https://github.com/auth0-blog/angular-auth0-aside" target="_blank" rel="noopener">项目</a>后，通过在项目文件夹的根目录中运行以下命令来安装Angular应用程序和Node服务器的节点依赖项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line"><span class="built_in">cd</span> server</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>Node API位于示例应用程序根目录下的<a href="https://github.com/auth0-blog/angular-auth0-aside/tree/master/server" target="_blank" rel="noopener"><code>/server</code>文件夹</a>中。<br>找到<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/server/config.js.example" target="_blank" rel="noopener"><code>config.js.example</code>文件</a>并从文件名中删除<code>.example</code>扩展名。然后打开文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server/config.js (formerly config.js.example)</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  CLIENT_DOMAIN: <span class="string">'[AUTH0_CLIENT_DOMAIN]'</span>, <span class="comment">// e.g. 'you.auth0.com'</span></span><br><span class="line">  AUTH0_AUDIENCE: <span class="string">'http://localhost:3001/api/'</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将<code>AUTH0_CLIENT_DOMAIN</code>标识符更改为您的Auth0应用程序域，并将<code>AUTH0_AUDIENCE</code>设置为您的受众（在本例中为<code>http://localhost:3001/api/</code>）。 <code>/api/dragons</code>路由将受到<a href="https://github.com/auth0/express-jwt" target="_blank" rel="noopener">express-jwt</a>和<a href="https://github.com/auth0/node-jwks-rsa" target="_blank" rel="noopener">jwks-rsa</a>的保护。</p>
+<blockquote>
+<p><strong>注意</strong>：要了解有关RS256和JSON Web密钥集的更多信息，请阅读<a href="https://auth0.com/blog/navigating-rs256-and-jwks/" target="_blank" rel="noopener">导航RS256和JWKS</a>。</p>
+</blockquote>
+<p>我们的API现在受到保护，所以让我们确保我们的Angular应用程序也可以与Auth0进行交互。为此，我们将通过从文件扩展名中删除<code>.example</code>来激活<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/auth0-variables.ts.example" target="_blank" rel="noopener"><code>src/app/auth/auth0-variables.ts.example</code>文件</a>。然后打开文件并将<code>[AUTH0_CLIENT_ID]</code>和<code>[AUTH0_CLIENT_DOMAIN]</code>字符串更改为Auth0信息：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/auth/auth0-variables.ts (formerly auth0-variables.ts.example)</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> AUTH_CONFIG: AuthConfig = &#123;</span><br><span class="line">  CLIENT_ID: <span class="string">'[AUTH0_CLIENT_ID]'</span>,</span><br><span class="line">  CLIENT_DOMAIN: <span class="string">'[AUTH0_CLIENT_DOMAIN]'</span>,</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+<p>我们的应用和API现在已经建立。它们可以通过运行根文件夹中的<code>ng serve</code>和来自<code>/server</code>文件夹的<code>node server.js</code>来运行。<br>随着Node API和Angular应用程序的运行，让我们来看看如何实现身份验证。</p>
+<h2 id="认证服务"><a href="#认证服务" class="headerlink" title="认证服务"></a>认证服务</h2><p>使用<code>AuthService</code>认证服务处理前端的认证逻辑：<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/auth.service.ts" target="_blank" rel="noopener"><code>src/app/auth/auth.service.ts</code>文件</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/auth/auth.service.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BehaviorSubject &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> auth0 <span class="keyword">from</span> <span class="string">'auth0-js'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AUTH_CONFIG &#125; <span class="keyword">from</span> <span class="string">'./auth0-variables'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UserProfile &#125; <span class="keyword">from</span> <span class="string">'./profile.model'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="built_in">window</span> <span class="keyword">as</span> any).global = <span class="built_in">window</span>;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthService</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Create Auth0 web auth instance</span></span><br><span class="line">  <span class="comment">// @<span class="doctag">TODO:</span> Update AUTH_CONFIG and remove .example extension in src/app/auth/auth0-variables.ts.example</span></span><br><span class="line">  private _auth0 = <span class="keyword">new</span> auth0.WebAuth(&#123;</span><br><span class="line">    clientID: AUTH_CONFIG.CLIENT_ID,</span><br><span class="line">    domain: AUTH_CONFIG.CLIENT_DOMAIN,</span><br><span class="line">    responseType: <span class="string">'token'</span>,</span><br><span class="line">    redirectUri: AUTH_CONFIG.REDIRECT,</span><br><span class="line">    audience: AUTH_CONFIG.AUDIENCE,</span><br><span class="line">    scope: AUTH_CONFIG.SCOPE</span><br><span class="line">  &#125;);</span><br><span class="line">  userProfile: UserProfile;</span><br><span class="line">  accessToken: string;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create a stream of logged in status to communicate throughout app</span></span><br><span class="line">  loggedIn: boolean;</span><br><span class="line">  loggedIn$ = <span class="keyword">new</span> BehaviorSubject&lt;boolean&gt;(<span class="keyword">this</span>.loggedIn);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="comment">// You can restore an unexpired authentication session on init</span></span><br><span class="line">    <span class="comment">// by using the checkSession() endpoint from auth0.js:</span></span><br><span class="line">    <span class="comment">// https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  private _setLoggedIn(value: boolean) &#123;</span><br><span class="line">    <span class="comment">// Update login status subject</span></span><br><span class="line">    <span class="keyword">this</span>.loggedIn$.next(value);</span><br><span class="line">    <span class="keyword">this</span>.loggedIn = value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  login() &#123;</span><br><span class="line">    <span class="comment">// Auth0 authorize request</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.authorize();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  handleLoginCallback() &#123;</span><br><span class="line">    <span class="comment">// When Auth0 hash parsed, get profile</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.parseHash(<span class="function">(<span class="params">err, authResult</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (authResult &amp;&amp; authResult.accessToken) &#123;</span><br><span class="line">        <span class="built_in">window</span>.location.hash = <span class="string">''</span>;</span><br><span class="line">        <span class="keyword">this</span>.getUserInfo(authResult);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.error(<span class="string">`Error: <span class="subst">$&#123;err.error&#125;</span>`</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getUserInfo(authResult) &#123;</span><br><span class="line">    <span class="comment">// Use access token to retrieve user's profile and set session</span></span><br><span class="line">    <span class="keyword">this</span>._auth0.client.userInfo(authResult.accessToken, (err, profile) =&gt; &#123;</span><br><span class="line">      <span class="keyword">this</span>._setSession(authResult, profile);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  private _setSession(authResult, profile) &#123;</span><br><span class="line">    <span class="keyword">const</span> expTime = authResult.expiresIn * <span class="number">1000</span> + <span class="built_in">Date</span>.now();</span><br><span class="line">    <span class="comment">// Save session data and update login status subject</span></span><br><span class="line">    localStorage.setItem(<span class="string">'expires_at'</span>, <span class="built_in">JSON</span>.stringify(expTime));</span><br><span class="line">    <span class="keyword">this</span>.accessToken = authResult.accessToken;</span><br><span class="line">    <span class="keyword">this</span>.userProfile = profile;</span><br><span class="line">    <span class="keyword">this</span>._setLoggedIn(<span class="literal">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  logout() &#123;</span><br><span class="line">    <span class="comment">// Remove token and profile and update login status subject</span></span><br><span class="line">    localStorage.removeItem(<span class="string">'expires_at'</span>);</span><br><span class="line">    <span class="keyword">this</span>.accessToken = <span class="literal">undefined</span>;</span><br><span class="line">    <span class="keyword">this</span>.userProfile = <span class="literal">undefined</span>;</span><br><span class="line">    <span class="keyword">this</span>._setLoggedIn(<span class="literal">false</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> authenticated(): boolean &#123;</span><br><span class="line">    <span class="comment">// Check if current date is greater than expiration</span></span><br><span class="line">    <span class="comment">// and user is currently logged in</span></span><br><span class="line">    <span class="keyword">const</span> expiresAt = <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">'expires_at'</span>));</span><br><span class="line">    <span class="keyword">return</span> (<span class="built_in">Date</span>.now() &lt; expiresAt) &amp;&amp; <span class="keyword">this</span>.loggedIn;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该服务使用来自<code>auth0-variables.ts</code>的配置变量实例化<code>auth0.js</code>WebAuth实例。<br><a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/subjects/behaviorsubject.md" target="_blank" rel="noopener">RxJS <code>BehaviorSubject</code></a>用于提供一系列身份验证状态事件，您可以在应用程序的任何位置订阅这些事件。<br><code>login()</code>方法使用你的配置变量授权带有Auth0的认证请求。登录页面将显示给用户，然后他们可以登录。</p>
+<blockquote>
+<p><strong>注意</strong>：如果用户第一次访问我们的应用程序，并且我们的回调位于<code>localhost</code>，那么他们还会看到一个同意屏幕，他们可以授予对我们API的访问权限。非本地主机域上的第一方客户端将被高度信任，因此在这种情况下不会出现同意对话框。您可以通过编辑<a href="https://manage.auth0.com/#/apis" target="_blank" rel="noopener">Auth0 Dashboard API</a><strong>设置</strong>来修改此内容。查找“允许跳过用户同意”切换。</p>
+</blockquote>
+<p>返回到我们的应用程序时，我们将在Auth0的哈希中接收<code>accessToken</code>和<code>expiresIn</code>。 <code>handleLoginCallback()</code>方法使用Auth0的<code>parseHash()</code>方法回调来获取用户的配置文件（<code>getUserInfo()</code>），并通过保存令牌，配置文件和令牌过期并更新<code>loggedIn$</code>主题来设置会话（<code>_setSession()</code>），通知应用程序中订阅的组件已通过身份验证。</p>
+<blockquote>
+<p><strong>注意</strong>：该配置文件采用<a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims" target="_blank" rel="noopener">OpenID标准声明</a>中<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/profile.model.ts" target="_blank" rel="noopener"><code>profile.model.ts</code></a>的形式。</p>
+</blockquote>
+<p>最后，我们有一个<code>logout()</code>方法，用于清除数据并更新<code>loggedIn$</code>主题。我们也有一个<code>authenticated</code>的访问者，根据令牌的存在和令牌的有效期限返回当前的身份验证状态。<br>一旦在<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/app.module.ts#L32" target="_blank" rel="noopener"><code>app.module.ts</code>中提供了<code>AuthService</code></a>，其方法和属性就可以在我们的应用程序的任何地方使用，例如<a href="https://github.com/auth0-blog/angular-auth0-aside/tree/master/src/app/home" target="_blank" rel="noopener">家庭组件</a>。</p>
+<h2 id="回调组件"><a href="#回调组件" class="headerlink" title="回调组件"></a>回调组件</h2><p><a href="https://github.com/auth0-blog/angular-auth0-aside/tree/master/src/app/callback" target="_blank" rel="noopener">回调组件</a>是认证后应用程序重定向的地方。该组件只是在登录过程完成之前显示加载消息。它执行<code>handleLoginCallback()</code>方法来解析散列并提取认证信息。它在我们的认证服务中订阅了<code>loggedIn$</code> Behaviour Subject，以便在用户登录后重定向回主页，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/callback/callback.component.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Component, OnInit, OnDestroy &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Subscription &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'./../auth/auth.service'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Router &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: <span class="string">'app-callback'</span>,</span><br><span class="line">  templateUrl: <span class="string">'./callback.component.html'</span>,</span><br><span class="line">  styleUrls: [<span class="string">'./callback.component.css'</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">CallbackComponent</span> <span class="title">implements</span> <span class="title">OnInit</span>, <span class="title">OnDestroy</span> </span>&#123;</span><br><span class="line">  loggedInSub: Subscription;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(private auth: AuthService, private router: Router) &#123;</span><br><span class="line">    <span class="comment">// Parse authentication hash</span></span><br><span class="line">    auth.handleLoginCallback();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.loggedInSub = <span class="keyword">this</span>.auth.loggedIn$.subscribe(</span><br><span class="line">      loggedIn =&gt; loggedIn ? <span class="keyword">this</span>.router.navigate([<span class="string">'/'</span>]) : <span class="literal">null</span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnDestroy() &#123;</span><br><span class="line">    <span class="keyword">this</span>.loggedInSub.unsubscribe();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="进行经过身份验证的API请求"><a href="#进行经过身份验证的API请求" class="headerlink" title="进行经过身份验证的API请求"></a>进行经过身份验证的API请求</h2><p>为了进行经过验证的HTTP请求，我们需要在我们的<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/api.service.ts" target="_blank" rel="noopener"><code>api.service.ts</code>文件</a>中添加带有<code>Authorization</code>的标头。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/api.service.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; throwError, Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HttpClient, HttpHeaders, HttpErrorResponse &#125; <span class="keyword">from</span> <span class="string">'@angular/common/http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; catchError &#125; <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'./auth/auth.service'</span>;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiService</span> </span>&#123;</span><br><span class="line">  private baseUrl = <span class="string">'http://localhost:3001/api/'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(</span><br><span class="line">    private http: HttpClient,</span><br><span class="line">    private auth: AuthService</span><br><span class="line">  ) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  getDragons$(): Observable&lt;any[]&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">      .get&lt;any[]&gt;(<span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.baseUrl&#125;</span>dragons`</span>, &#123;</span><br><span class="line">        headers: <span class="keyword">new</span> HttpHeaders().set(</span><br><span class="line">          <span class="string">'Authorization'</span>, <span class="string">`Bearer <span class="subst">$&#123;<span class="keyword">this</span>.auth.accessToken&#125;</span>`</span></span><br><span class="line">        )</span><br><span class="line">      &#125;)</span><br><span class="line">      .pipe(</span><br><span class="line">        catchError(<span class="keyword">this</span>._handleError)</span><br><span class="line">      );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  private _handleError(err: HttpErrorResponse | any) &#123;</span><br><span class="line">    <span class="keyword">const</span> errorMsg = err.message || <span class="string">'Unable to retrieve data'</span>;</span><br><span class="line">    <span class="keyword">return</span> throwError(errorMsg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最后：路由保护和配置文件页面"><a href="#最后：路由保护和配置文件页面" class="headerlink" title="最后：路由保护和配置文件页面"></a>最后：路由保护和配置文件页面</h2><p><a href="https://github.com/auth0-blog/angular-auth0-aside/tree/master/src/app/profile" target="_blank" rel="noopener">个人资料页面组件</a>可以显示已验证的用户个人资料信息。但是，我们只希望该组件在用户登录时可访问。<br><a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/home/home.component.ts" target="_blank" rel="noopener">通过认证的API请求和登录/注销</a>实施，最后一步是保护我们的个人资料路线免受未经授权的访问。 <a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/auth/auth.guard.ts" target="_blank" rel="noopener"><code>auth.guard.ts</code>路由守卫</a>可以检查身份验证并有条件地激活路由。守卫在<a href="https://github.com/auth0-blog/angular-auth0-aside/blob/master/src/app/app-routing.module.ts" target="_blank" rel="noopener"><code>app-routing.module.ts</code>文件</a>中的特定路由上实现，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/app/app-routing.module.ts</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; AuthGuard &#125; <span class="keyword">from</span> <span class="string">'./auth/auth.guard'</span>;</span><br><span class="line">...</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">'profile'</span>,</span><br><span class="line">        component: ProfileComponent,</span><br><span class="line">        canActivate: [</span><br><span class="line">          AuthGuard</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="更多资源"><a href="#更多资源" class="headerlink" title="更多资源"></a>更多资源</h2><p>我们拥有经过验证的Node API和Angular应用程序，包括登录，注销，个人资料信息和受保护的路线。要了解更多信息，请查看以下资源：</p>
+<ul>
+<li><a href="https://auth0.com/blog/why-should-use-accesstokens-to-secure-an-api/" target="_blank" rel="noopener">Why You Should Always Use Access Tokens to Secure an API</a></li>
+<li><a href="https://auth0.com/blog/navigating-rs256-and-jwks/" target="_blank" rel="noopener">Navigating RS256 and JWKS</a></li>
+<li><a href="https://auth0.com/docs/tokens/access-token" target="_blank" rel="noopener">Access Token</a></li>
+<li><a href="https://auth0.com/docs/api-auth/tutorials/verify-access-token" target="_blank" rel="noopener">Verify Access Tokens</a></li>
+<li><a href="https://auth0.com/docs/api-auth/grant/implicit" target="_blank" rel="noopener">Call APIs from Client-side Web Apps</a></li>
+<li><a href="https://auth0.com/docs/api-auth/tutorials/implicit-grant" target="_blank" rel="noopener">How to implement the Implicit Grant</a></li>
+<li><a href="https://auth0.com/docs/libraries/auth0js" target="_blank" rel="noopener">Auth0.js Documentation</a></li>
+<li><a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims" target="_blank" rel="noopener">OpenID Standard Claims</a></li>
+</ul>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>在今天的文章中，我们比较了Cookie和基于令牌的身份验证之间的区别。我们强调了使用令牌的优势和关注点，并撰写了一个简单的应用程序来展示JWT在实践中的工作方式。使用令牌有很多原因，Auth0在这里确保实现令牌认证非常简单和安全。最后，我们引入了渐进式Web应用程序，帮助您的Web应用程序在移动设备上感受更原生。今天<a href="https://auth0.com/signup" target="_blank" rel="noopener">注册</a>一个免费帐户，并在几分钟内启动并运行。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/wechat-reward-image.png" alt=" 微信支付"/>
+        </picture>
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/20190707155823.png" alt=" 支付宝"/>
+        </picture>
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a></li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://blog.i1hao.com/2018/05/10/cookies-vs-tokens-definitive-guide-cn/" title="[译]Cookies vs Tokens : 权威指南">https:&#x2F;&#x2F;blog.i1hao.com&#x2F;2018&#x2F;05&#x2F;10&#x2F;cookies-vs-tokens-definitive-guide-cn&#x2F;</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-creative-commons&quot;&gt;&lt;&#x2F;i&gt;BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/cookies/" rel="tag"># cookies</a>
+          
+            <a href="/tags/tokens/" rel="tag"># tokens</a>
+          
+            <a href="/tags/jwt/" rel="tag"># JWT</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/16/android-read-database-with-adb/" rel="next" title="如何通过命令行读取android app的数据库">
+                <i class="fa fa-chevron-left"></i> 如何通过命令行读取android app的数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/03/interface-test-under-pyunit-1/" rel="prev" title="PyUnit下的接口测试（一）：组织测试用例">
+                PyUnit下的接口测试（一）：组织测试用例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+              <div class="site-description motion-element" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/%20%7C%7C%20th">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/%20%7C%7C%20tags">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/edsion1107" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-github&quot;&gt;&lt;&#x2F;i&gt;GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:edsion@i1hao.com" title="E-Mail &amp;rarr; mailto:edsion@i1hao.com" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-envelope&quot;&gt;&lt;&#x2F;i&gt;E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/1962828603" title="Weibo &amp;rarr; https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-weibo&quot;&gt;&lt;&#x2F;i&gt;Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank">&lt;img src&#x3D;&quot;&#x2F;images&#x2F;cc-by-nc-sa.svg&quot; alt&#x3D;&quot;Creative Commons&quot;&#x2F;&gt;</a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TL-DR"><span class="nav-number">1.</span> <span class="nav-text">TL;DR</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie-vs-Token-Authentication-概览"><span class="nav-number">2.</span> <span class="nav-text">Cookie vs Token Authentication - 概览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于Cookie的身份验证"><span class="nav-number">2.1.</span> <span class="nav-text">基于Cookie的身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于Token的身份验证"><span class="nav-number">2.2.</span> <span class="nav-text">基于Token的身份验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于Token身份验证的优势"><span class="nav-number">3.</span> <span class="nav-text">基于Token身份验证的优势</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无状态，可扩展和解耦"><span class="nav-number">3.1.</span> <span class="nav-text">无状态，可扩展和解耦</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域（Cross-Domain）和跨域资源共享（CORS）"><span class="nav-number">3.2.</span> <span class="nav-text">跨域（Cross Domain）和跨域资源共享（CORS）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将数据存储在JWT中"><span class="nav-number">3.3.</span> <span class="nav-text">将数据存储在JWT中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能"><span class="nav-number">3.4.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动端支持"><span class="nav-number">3.5.</span> <span class="nav-text">移动端支持</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见问题和疑虑"><span class="nav-number">4.</span> <span class="nav-text">常见问题和疑虑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JWT的大小"><span class="nav-number">4.1.</span> <span class="nav-text">JWT的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在哪里存储token？"><span class="nav-number">4.2.</span> <span class="nav-text">在哪里存储token？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS和XSRF防护"><span class="nav-number">4.3.</span> <span class="nav-text">XSS和XSRF防护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#token已签名，未加密"><span class="nav-number">4.4.</span> <span class="nav-text">token已签名，未加密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Auth0进行基于Token的身份验证"><span class="nav-number">5.</span> <span class="nav-text">使用Auth0进行基于Token的身份验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#另外：使用Auth0验证Angular-App和Node-API"><span class="nav-number">6.</span> <span class="nav-text">另外：使用Auth0验证Angular App和Node API</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-number">6.1.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册Auth0"><span class="nav-number">6.2.</span> <span class="nav-text">注册Auth0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置一个Auth0应用程序"><span class="nav-number">6.3.</span> <span class="nav-text">设置一个Auth0应用程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置一个API"><span class="nav-number">6.4.</span> <span class="nav-text">设置一个API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖和设置"><span class="nav-number">6.5.</span> <span class="nav-text">依赖和设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#认证服务"><span class="nav-number">6.6.</span> <span class="nav-text">认证服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回调组件"><span class="nav-number">6.7.</span> <span class="nav-text">回调组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进行经过身份验证的API请求"><span class="nav-number">6.8.</span> <span class="nav-text">进行经过身份验证的API请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后：路由保护和配置文件页面"><span class="nav-number">6.9.</span> <span class="nav-text">最后：路由保护和配置文件页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多资源"><span class="nav-number">6.10.</span> <span class="nav-text">更多资源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+
+  <div class="waifu">
+      <div class="waifu-tips"></div>
+      <canvas id="live2d" class="live2d"></canvas>
+      <div class="waifu-tool">
+      <span class="fui-home"></span>
+      <span class="fui-chat"></span>
+      <span class="fui-eye"></span>
+      <span class="fui-user"></span>
+      <span class="fui-photo"></span>
+      <span class="fui-info-circle"></span>
+      <span class="fui-cross"></span>
+      </div>
+  </div>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>&copy; 2018 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.2.0</div>
+
+
+
+  <div class="footer-custom"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" target="_blank" rel="noopener">辽公网安备21029602000155号</a></div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/pangu/dist/pangu.min.js?v=3.3"></script>
+  <script>pangu.spacingPage();</script>
+
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+  <script src="/lib/live2d/assets/waifu-tips.js"></script>
+  <script src="/lib/live2d/assets/live2d.js"></script>
+  <script type="text/javascript">$(document).ready(function(){
+    let live2d_custom = {"enable":true,"modelAPI":"//live2d.fghrsh.net/api/","tipsMessage":"waifu-tips.json","hitokotoAPI":"lwl12.com","modelId":2,"modelTexturesId":1,"showToolMenu":true,"canCloseLive2d":true,"canSwitchModel":true,"canSwitchTextures":true,"canSwitchHitokoto":true,"canTakeScreenshot":true,"canTurnToHomePage":true,"canTurnToAboutPage":true,"modelStorage":true,"modelRandMode":"switch","modelTexturesRandMode":"rand","showHitokoto":true,"showF12Status":true,"showF12Message":false,"showF12OpenMsg":true,"showCopyMessage":true,"showWelcomeMessage":true,"waifuSize":"280x250","waifuTipsSize":"250x70","waifuFontSize":"12px","waifuToolLine":"20px","waifuToolFont":"14px","waifuToolTop":"0px","waifuMinWidth":"768px","waifuEdgeSide":"right:80","waifuDraggable":"disable","waifuDraggableRevert":true,"homePageUrl":"auto","aboutPageUrl":"https://github.com/edsion1107/theme-next-live2d","screenshotCaptureName":"live2d.png"};
+    for (let key in live2d_custom){
+      console.debug(key+':'+live2d_custom[key]);
+      live2d_settings[key] = live2d_custom[key];
+      }
+    initModel("/lib/live2d/assets/waifu-tips.json");
+  })</script>
+
+
+</body>
+</html>

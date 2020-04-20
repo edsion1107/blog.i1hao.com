@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans,zh-CN,default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="nbJQD3t9R8"/>
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"/>
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="stylesheet" href="/lib/live2d/assets/waifu.css"/>
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="2018最新 Hexo + GitHub Pages + Travis CI 自动化部署静态博客最佳实践。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo + GitHub Pages + Travis CI 自动化部署静态博客">
+<meta property="og:url" content="https://blog.i1hao.com/2018/09/01/hexo-and-githubpages-best-practices/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="2018最新 Hexo + GitHub Pages + Travis CI 自动化部署静态博客最佳实践。">
+<meta property="article:published_time" content="2018-09-01T08:58:09.000Z">
+<meta property="article:modified_time" content="2020-04-20T12:13:35.643Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="GitHub Pages">
+<meta property="article:tag" content="Travis CI">
+<meta property="article:tag" content="最佳实践">
+<meta property="article:tag" content="2018">
+<meta name="twitter:card" content="summary">
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="edsion的博客" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://blog.i1hao.com/2018/09/01/hexo-and-githubpages-best-practices/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Hexo + GitHub Pages + Travis CI 自动化部署静态博客 | edsion的博客</title>
+  
+
+
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124909298-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-124909298-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">edsion的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;归档&lt;span class&#x3D;&quot;badge&quot;&gt;17&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-tags&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;标签&lt;span class&#x3D;&quot;badge&quot;&gt;34&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-th&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;分类&lt;span class&#x3D;&quot;badge&quot;&gt;3&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sitemap.xml" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-sitemap&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;站点地图</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/09/01/hexo-and-githubpages-best-practices/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>"/>
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Hexo + GitHub Pages + Travis CI 自动化部署静态博客
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-01 16:58:09" itemprop="dateCreated datePublished" datetime="2018-09-01T16:58:09+08:00">2018-09-01</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-20 20:13:35" itemprop="dateModified" datetime="2020-04-20T20:13:35+08:00">2020-04-20</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name">经验分享</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+            <div class="post-description">2018最新 Hexo + GitHub Pages + Travis CI 自动化部署静态博客最佳实践。</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Hexo-GitHub-Pages-Travis-CI-自动化部署静态博客"><a href="#Hexo-GitHub-Pages-Travis-CI-自动化部署静态博客" class="headerlink" title="Hexo + GitHub Pages + Travis CI 自动化部署静态博客"></a>Hexo + GitHub Pages + Travis CI 自动化部署静态博客</h1><p>[TOC]</p>
+<h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>做测试已经8年了，之前没有写博客的习惯，一方面对于知识沉淀做的不好，另一方面不符合分享的互联网精神。而且因为做的项目很杂，踩了很多坑，都说好记性不如烂笔头，所以今年初就萌生了写博客的想法。</p>
+<p>本文主要以踩坑为主，对于一些过于基本的操作，比如安装各种工具，可能不会详细到步骤的介绍。</p>
+<p>Let’s go!</p>
+<h2 id="方案选择"><a href="#方案选择" class="headerlink" title="方案选择"></a>方案选择</h2><h3 id="静态博客生成"><a href="#静态博客生成" class="headerlink" title="静态博客生成"></a>静态博客生成</h3><p>市面上静态博客的生成方案很多，开始我尝试了自建服务器 + caddy + hugo，折腾了一下感觉还是有些缺点：</p>
+<ul>
+<li>hugo 虽然速度快，但是主题偏少，各种功能插件还比较欠缺，需要自己动手的地方比较多</li>
+<li>Hugo 还比较“年轻”，文档比较简单，遇到问题查起来也比较痛苦</li>
+</ul>
+<p>当然还有静态博客的方案，但是一番纠结最终选择了 hexo。</p>
+<blockquote>
+<p>有种说法：hexo 毕竟是 node.js 开发的，搞前端的也比较擅长各种布局，所以主题的数量和质量都相对较高</p>
+</blockquote>
+<h3 id="部署环境"><a href="#部署环境" class="headerlink" title="部署环境"></a>部署环境</h3><p>最开始使用的是腾讯云服务器+CDN+对象存储等各种云服务，好处就是自定义程度高，可优化空间大（比如都不支持 tls1.3 的时候，自己编译 Nginx 实现），不足的地方就是太折腾了，而且每年各种服务的费用加起来也要两三百块钱，如果不想打广告这钱就得自己掏腰包。</p>
+<p>所以最终我使用的是 Github Pages，一方面免费、对程序员友好，另一方面大厂的服务非常可靠，唯一缺点就是偶尔被墙，不过因为我考虑的是自建服务器作备用站，所以问题不大。</p>
+<h3 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h3><p>markdown的好处我就不啰嗦了，我列举几个注意的地方：</p>
+<ul>
+<li><p>markdown 编辑器非常多，我本人最喜欢的是 vscode（尤其是 markdownlint 插件，帮我写出符合标准的文档）和 Typora（免费、跨平台，可以自定义主题、css），根据个人喜好选择。</p>
+</li>
+<li><p>写了静态博客，可能忍不住想顺手把微信公众号也搞定。但是公众号编辑器不支持 markdown，因为很多文章涉及代码、引用外部图片资源等，简单搜了下还没找到我认为合理的解决方案，所以这个问题先放置。</p>
+</li>
+<li><p>基本的 markdown 虽然够用，但是很多标准对其做了扩展，推荐使用比较流行的<code>GitHub Flavored Markdown</code>（简称<code>GFW</code>）。</p>
+</li>
+</ul>
+<h3 id="代码托管（数据备份）"><a href="#代码托管（数据备份）" class="headerlink" title="代码托管（数据备份）"></a>代码托管（数据备份）</h3><p>为了数据安全（这里指的是不丢失，不是不被盗用）我们一定要做数据备份。数据备份有个 3-2-1 规则（您的数据应该被存储3次，你应该使用2种不同的技术，应始终将1个备份保存在工作场所之外）。既然博客是公开的，而且也希望更多的人看到和分享，那么，博客的“代码”（markdown等）都应该是开源的。如果我们把文章都当作代码来处理，那么有个非常好用的工具是 git。而 git 有本地分支和远程分支的概念，而且远程分支可以指定多个。</p>
+<p>所以，我们可以把代码分为 本地分支、远程分支-GitHub、远程分支-Gogs（自建的轻量级代码托管服务）。而且 Gogs 可以搭建在家里的 NAS （没有的话路由器+外挂硬盘也可以），通过路由的端口转发，实现完备的数据备份方案。</p>
+<p>当然，如果你不想开源，用 Github 的私有仓库（收费）或者仅使用自建的代码托管服务也是可行的。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>经过一番考察，最终我的环境是这样的：</p>
+<ul>
+<li><p>开发（书写）环境： </p>
+<ul>
+<li>macOS 10.13.6 （Windows当然也可以）</li>
+<li><a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">vscode</a> （有些地方需要修改配置/代码，选一个顺手的编辑器就行）</li>
+<li><a href="https://typora.io" target="_blank" rel="noopener">Typora</a> (Markdown编辑器，也是选自己顺手的)</li>
+</ul>
+</li>
+<li><p>正式服务器：<a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></p>
+</li>
+<li><p>备用服务器：</p>
+</li>
+<li><ul>
+<li><a href="https://gogs.io" target="_blank" rel="noopener">gogs</a> ，自建的轻量级代码托管服务</li>
+<li><a href="https://cloud.tencent.com/redirect.php?redirect=1001&cps_key=d61d10b4df29eee56b529f879e701bb2&from=console" target="_blank" rel="noopener">腾讯云主机</a> ，1C1G1M的最低配即可</li>
+<li><a href="https://cloud.tencent.com/redirect.php?redirect=1027&cps_key=d61d10b4df29eee56b529f879e701bb2&from=console" target="_blank" rel="noopener">腾讯云CDN</a> </li>
+<li><a href="https://cloud.tencent.com/redirect.php?redirect=1005&cps_key=d61d10b4df29eee56b529f879e701bb2&from=console" target="_blank" rel="noopener">腾讯云对象存储</a> </li>
+<li><a href="https://letsencrypt.org/" target="_blank" rel="noopener">Let’s Encrypt</a> + Google DNS ，或 <a href="https://cloud.tencent.com/redirect.php?redirect=1009&cps_key=d61d10b4df29eee56b529f879e701bb2&from=console" target="_blank" rel="noopener">腾讯云SSL证书与Dnspod</a> 。推荐 Google DNS（支持DNS CAA），每月仅需0.29美元，但是我在申请 Let’s Encrypt 的通配符证书时用的是 dns 的方式验证域名所有权，<a href="https://acme.sh" target="_blank" rel="noopener">acme.sh</a> 这个工具不支持 Google DNS ，所以最后不得不迁回国内（国内DNS得实名，比较麻烦，但是有对国内运营商优化；国内DNS在使用国外服务时，有可能对方解析不出来，导致使用异常）</li>
+</ul>
+</li>
+<li><p>部署： <a href="https://travis-ci.com" target="_blank" rel="noopener">Travis CI</a> 注意：Travis CI分 <a href="https://travis-ci.com" target="_blank" rel="noopener">https://travis-ci.com</a> 和 <a href="https://travis-ci.org" target="_blank" rel="noopener">https://travis-ci.org</a> ，目前（2018年）正在从 org 迁移到 com，两者并不通用。打开网站时，一定要多多注意域名，进错了会导致命令行工具不可用、授权配置等出错</p>
+</li>
+<li><p>监控和其他服务：</p>
+<ul>
+<li><p>腾讯云网站备案（只用 GitHub Pages 不需要备案，但是为了将来使用各种服务免去麻烦，还是走一下流程吧，只是比较慢而已，并不麻烦。另外，别忘了还有个公安机关备案）</p>
+</li>
+<li><p>腾讯云拨测 （告警服务，网站挂了第一时间得到通知；如果想得到微信通知可以试试<code>server酱</code>这个免费服务）</p>
+</li>
+<li><p>百度统计</p>
+</li>
+<li><p>谷歌分析</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>废话有点多了，下面就正式开始了。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>我把这套方案，分为简单和完整两种环境。</p>
+<h3 id="书写环境"><a href="#书写环境" class="headerlink" title="书写环境"></a>书写环境</h3><p>参照下面的完整环境，如果把整站搭建起来、自动化部署都完成以后，实际本地撰写文章时，只需要一个 git 客户端、一个 markdown 编辑器即可。</p>
+<p>极端情况，只要能访问 github，本地什么软件都不需要安装，可以直接在 github 网站上编写和修改博客。</p>
+<h3 id="完整环境"><a href="#完整环境" class="headerlink" title="完整环境"></a>完整环境</h3><p>这里默认你是一个程序员，对<code>git</code>、<code>homebrew</code>等命令行工具能熟练使用。（不会的话，遇到不懂的勤用 google ，强烈不建议用百度，因为你搜到的大概率是错误的教程和示范）。</p>
+<h4 id="1-安装-Node-js"><a href="#1-安装-Node-js" class="headerlink" title="1. 安装 Node.js"></a>1. 安装 Node.js</h4><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a> macOS 使用homebrew 安装，win 直接下载安装包双击即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>推荐使用 <a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">nvm</a> 解决需要多个 node.js 并存的问题。如果你不知道这一条什么意思，那忽略即可。</p>
+</blockquote>
+<h4 id="2-安装-yarn（可选）"><a href="#2-安装-yarn（可选）" class="headerlink" title="2. 安装 yarn（可选）"></a>2. 安装 yarn（可选）</h4><p>安装了 node.js 以后，自带包管理工具 <code>npm</code>，但是比较慢、还有些其他缺点我觉得比较难接受，所以如果你坚持用<code>npm</code>，那么请自行查阅文档，替换之后的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install yarn	<span class="comment"># 这个工具是全局安装的，与 node.js 版本无关</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>yarn 不能解决墙的问题。如果没有稳定的梯子，可以使用国内镜像来解决</p>
+</blockquote>
+<h4 id="3-安装-hexo，并执行初始化"><a href="#3-安装-hexo，并执行初始化" class="headerlink" title="3. 安装 hexo，并执行初始化"></a>3. 安装 hexo，并执行初始化</h4><p>直接上命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn global add hexo	<span class="comment"># 全局安装</span></span><br><span class="line">hexo init blog.i1hao.com    <span class="comment"># 初始化，blog.i1hao.com 是我的文件夹（工程）的名字，可自行修改</span></span><br></pre></td></tr></table></figure>
+
+<p>全局安装，是为了初始化和之后使用比较方便，但是有可能会导致切换 node.js 版本后 hexo 丢失，重装即可。</p>
+<p>当然，你如果有洁癖，也可以像我一样尝试非全局安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir blog.i1hao.com	<span class="comment"># 创建一个文件夹</span></span><br><span class="line">yarn add hexo    <span class="comment"># 非全局安装hexo（安装在当前目录的 node_modules 文件夹）</span></span><br><span class="line">node_modules/.bin/hexo init blog.i1hao.com    <span class="comment"># 初始化一个文件夹（临时）</span></span><br><span class="line">mv blog.i1hao.com/* . &amp;&amp; rm -rf blog.i1hao.com    <span class="comment"># 把 hexo 生成的文件移到当前目录，并删除临时文件夹</span></span><br></pre></td></tr></table></figure>
+
+<p>安装到当前路径，使用 hexo 的命令是<code>node_modules/.bin/hexo</code>，相对麻烦一点。</p>
+<blockquote>
+<p>后面部署会用到 Travis-CI，你会发现我在 <code>.travis.yml</code>中没有使用全局安装。这是因为我在log中发现有这么一行代码：<code>export PATH=./node_modules/.bin:$PATH</code>，也就是说平台会把它加到环境变量里。所以为了精简构建的脚本，我采用的是非全局安装</p>
+</blockquote>
+<h4 id="4-验证-hexo-安装成功，安装依赖并初始化-git-仓库"><a href="#4-验证-hexo-安装成功，安装依赖并初始化-git-仓库" class="headerlink" title="4. 验证 hexo 安装成功，安装依赖并初始化 git 仓库"></a>4. 验证 hexo 安装成功，安装依赖并初始化 git 仓库</h4><p>上一节已经安装的 hexo ，其实全名是 hexo-cli，也就是hexo的命令行工具，hexo 要运行本身还有各种依赖，另外 hexo 还有插件机制，这里列出安装依赖和插件的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yarn install    <span class="comment"># 安装依赖（hexo init的时候生成 package.json，里面列出了所需依赖）</span></span><br><span class="line">yarn add hexo-pdf    <span class="comment"># 安装 pdf 插件，安装其他插件也是一样的</span></span><br><span class="line"></span><br><span class="line">yarn upgrade    <span class="comment"># 如果希望更新依赖执行此步，正常不需要</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>先验证一下hexo没问题（下文如果你采用了非全局安装，脑内自动补全 hexo 的路径吧）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+
+<p>如果看到类似这样的 log，证明启动成功，浏览器再打开<code>http://localhost:4000</code>确认下没问题即可。</p>
+<p>之前提到过，基于数据备份的考量，需要使用 git 对项目进行管理，所以我们先初始化当前文件夹为 git 仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git init </span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> /Users/edsion/Documents/blog.i1hao.com/.git/</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果没问题，再配置当前项目的用户名和邮件地址（用于 github 和 gogs 识别你的身份）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里我建议不要用全局配置，配置只针对当前项目</span></span><br><span class="line">git config --<span class="built_in">local</span> user.name edsion1107    <span class="comment"># 配置用户名</span></span><br><span class="line">git config --<span class="built_in">local</span> user.email xxx@xxx.com    <span class="comment"># 配置电子邮件地址</span></span><br><span class="line">git config --<span class="built_in">local</span> -l    <span class="comment"># 查看配置的结果</span></span><br></pre></td></tr></table></figure>
+<p>注意：用户名和邮箱不要配置错了，最容易犯的错误就是用户名、登录账号、昵称等不一致，不知道该用哪个。这里有个小技巧，不管是 GitHub 、Gogs 、Gitlab，只要你建一个仓库，那你的仓库一定是 <code>user.name</code>/<code>仓库名</code>的格式命名的，所以用这个就对了。</p>
+<blockquote>
+<p>用户名、电子邮件地址如果配置错误，不影响你的推送和拉取代码（根据你使用的是 HTTP(S) 协议，还是 SSH 协议，可能需要输入账号和密码），但是在平台展示的 log 里就会变成没有头像的“黑户”了</p>
+</blockquote>
+<p>下一步，在 Github 和 Gogs 平台上，分别手动创建一个仓库，同样命名为 <code>blog.i1hao.com</code>，成功后该仓库首页会显示地址，记下来一会儿用。</p>
+<h4 id="5-安装-Next-主题"><a href="#5-安装-Next-主题" class="headerlink" title="5. 安装 Next 主题"></a>5. 安装 Next 主题</h4><p>hexo 的主题是非常多的，去官网挑一个自己喜欢的就行了。这里我以常见的 <a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">Next</a> 主题为例介绍我是怎么安装和使用的。</p>
+<blockquote>
+<p>注意 Next 主题有两个仓库，一个是放在开发者 <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">iissnan</a> 个人名下的，一个是放在组织 <a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">theme-next</a> 名下的。6.x以后的新版本，都是放在后面这个仓库，前面那个已经不更新。有个BUG，Next 主题的官方网站和文档，还是指向已经废弃的仓库，这一点一定要小心。</p>
+</blockquote>
+<p>将 Next 主题的仓库作为子模块，添加到项目中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add https://github.com/theme-next/hexo-theme-next.git   themes/next</span><br></pre></td></tr></table></figure>
+
+<p>这里要注意在当前git仓库根目录下执行，也就是说，执行这条命令后，<code>themes</code>目录下会多出来一个<code>next</code>文件夹，它是我们要使用的主题。</p>
+<p>如果将来要更新主题（子模块），则执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方案一，在仓库根目录下执行</span></span><br><span class="line">git submodule foreach git pull</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"更新主题"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案二，在Submodule的目录下面更新</span></span><br><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">git pull</span><br><span class="line"><span class="built_in">cd</span> ../../ </span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"更新主题"</span></span><br></pre></td></tr></table></figure>
+
+<p>这种子模块的方式，可以保证你始终使用的是该主题最新代码。在子模块里可以切换到指定分支、指定tag等操作，使用起来非常灵活，但是需要较高的学习成本。如果无法接受，下载压缩包直接解压就好了。</p>
+<h4 id="6-修改配置"><a href="#6-修改配置" class="headerlink" title="6. 修改配置"></a>6. 修改配置</h4><p>关于 hexo 和主题的配置，网上的教程很多，单独拿出来能写好几篇文章了，太占篇幅所以我直接放例子供参考吧：</p>
+<p><a href="https://raw.githubusercontent.com/edsion1107/blog.i1hao.com/master/_config.yml" target="_blank" rel="noopener">blog.i1hao.com/_config.yml</a></p>
+<h4 id="7-添加和推送远程仓库"><a href="#7-添加和推送远程仓库" class="headerlink" title="7. 添加和推送远程仓库"></a>7. 添加和推送远程仓库</h4><p>网址就是前面通过 GitHub 和 Gogs 创建的仓库地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:edsion1107/blog.i1hao.com.git    <span class="comment"># 添加 github</span></span><br><span class="line">git remote add origin http://xxxx.com:edsion1107/blog.i1hao.com.git    <span class="comment"># 添加自建 gogs</span></span><br><span class="line">git remote -v    <span class="comment"># 查看远程仓库</span></span><br><span class="line">git push --<span class="built_in">set</span>-upstream origin master	<span class="comment"># (首次)推送到远程仓库</span></span><br></pre></td></tr></table></figure>
+
+<p>首次推送到远程仓库，会提示设置<code>upstream</code>，之后就可以只用<code>git push</code>命令了。</p>
+<p>细心的你，可能注意到了，我的 GitHub 地址为什么没带http(s)，这是因为我使用的是ssh协议；但是因为我自建的 Gogs 没有配置好证书和端口，所以只支持http。</p>
+<p>关于 git 的 ssh 协议使用，建议英语不是太差的，直接阅读 Github 文档；实在有困难，也尽量不要用百度搜索，搜出来的文章错误太多（写教程的太不专业，局限性很大，而且互相抄把错误也抄过来了）！</p>
+<blockquote>
+<p>注意，hexo 本地运行没问题了，需要先执行 <code>git add .</code>和<code>git commit -m &quot;initialization&quot;</code>，提交一次（到本地），再执行<code>git push</code>。否则，不会产生master分支。</p>
+</blockquote>
+<h4 id="8-Travis-CI-部署"><a href="#8-Travis-CI-部署" class="headerlink" title="8. Travis-CI 部署"></a>8. Travis-CI 部署</h4><p>首先，用 Github 账号登录Travis-CI网站 ：<a href="https://travis-ci.com" target="_blank" rel="noopener">https://travis-ci.com</a> （千万别用org的域名，那个是旧版网站，原因前面解释过）。</p>
+<p>等网站把你的项目同步过来，找到对应项目，点击 Settings ，跳转设置。这里面要添加一个<code>Environment Variables（即构建时用到的环境变量）</code>。</p>
+<blockquote>
+<p>旧版 (<a href="https://travis-ci.org" target="_blank" rel="noopener">https://travis-ci.org</a>) 是每个项目有个开关，控制是否开启 CI 服务。新版是所有项目默认开启的，所以看旧版教程的同学，找不到就别找了！如果你有强迫症，去 Github 的设置找这个开关。</p>
+</blockquote>
+<p>为了把构建结果再 push 给<code>GitHub Pages</code>，你需要生成一个 <code>Personal access tokens</code>。这个 token 作为环境变量提供给你的构建环境，相比于直接提供账号密码或 SSH Key，更安全，还能够控制权限。</p>
+<p>访问 Github，找到 settings -&gt; Developer settings -&gt; Personal access tokens，点击 Generate new token，给你的 token 起个易于辨识的名字，然后勾选第一组 repo 下的所有权限，点击 Generate token 。</p>
+<p>注意，生成的 <code>Personal access token</code> <strong>只显示一次</strong>，刷新、关闭当前页面后 token 不显示。安全起见，你不应该把它保存在任何文件中！正确的做法是，直接复制该 token，然后切换到刚刚的 Travis-CI 页面，创建一个环境变量名为 <code>GITHUB_TOKEN</code>（当然这个名字可以随意），把 token 粘贴进去然后保存，并立即清空剪贴板。</p>
+<p>Ps： 这里的环境变量也是，只在创建时显示一次，之后只能删除无法查看。</p>
+<p>此时打开我们的编辑器，创建一个名为<code>.travis.yml</code>的文件，保存在工程的根目录下。</p>
+<p>以下是我的例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">sudo:</span> <span class="string">required</span></span><br><span class="line"><span class="comment"># 指定node_js版本</span></span><br><span class="line"><span class="attr">node_js:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">lts/*</span></span><br><span class="line"><span class="attr">cache:</span>	<span class="comment"># 缓存，提高下次构建的效率</span></span><br><span class="line">  <span class="attr">yarn:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">directories:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="attr">install:</span>    <span class="comment"># 安装阶段（详细的各阶段顺序，请查询 Travis-CI 相关文档）</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">yarn</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="attr">script:</span>    <span class="comment"># 执行构建阶段</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">clean</span>    <span class="comment"># hexo 的清理命令</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span>    <span class="comment"># hexo 的生成（构建）命令，即最核心的生成静态文件过程</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># GitHub Pages Deployment</span></span><br><span class="line"><span class="attr">deploy:</span>    <span class="comment"># 部署阶段</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span>    <span class="comment"># 约定 pages 为 GitHub Pages 服务，必须且不可更改</span></span><br><span class="line">  <span class="attr">skip-cleanup:</span> <span class="literal">true</span>  <span class="comment"># 必须跳过清理，否则过程中生成的文件（要发布的静态资源）会被清理</span></span><br><span class="line">  <span class="attr">github-token:</span> <span class="string">$GITHUB_TOKEN</span>  <span class="comment"># 部署时使用的 token</span></span><br><span class="line">  <span class="attr">keep-history:</span> <span class="literal">false</span>   <span class="comment"># 设置为 false 时，使用 `git push --force` 命令覆盖历史记录</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">master</span>    <span class="comment"># 仅监听 master 分支的变化，才执行构建</span></span><br><span class="line">  <span class="attr">target-branch:</span> <span class="string">gh-pages</span>   <span class="comment"># 用于存放静态资源的分支</span></span><br><span class="line">  <span class="attr">local-dir:</span> <span class="string">public</span>   <span class="comment"># `hexo generate` 命令生成的静态资源所在路径</span></span><br><span class="line">  <span class="attr">fqdn:</span> <span class="string">blog.i1hao.com</span>    <span class="comment"># 自定义域名</span></span><br></pre></td></tr></table></figure>
+
+<p>这里面每一项几乎都有注释，完整的解释请翻阅 Travis-CI 官方文档，我认为这几乎是最精简的配置了，如果要修改请仔细查阅文档。</p>
+<p>我这里与其他人最大的不同，就是省去了“脱裤子放屁”环节，直接使用 Travis 的服务完成部署流程。如果你使用搜索引擎，那么能找到的方案不外乎以下两种：</p>
+<ol>
+<li>使用 hexo-deployer-git 插件</li>
+<li>使用脚本 <code>git push</code>生成的静态资源</li>
+</ol>
+<p>这两种方案，最大的隐患就是你的账号密码可能不安全，即使你使用的是环境变量，也不能保证你所使用的插件/脚本中不会将其输出到 log 中（ Travis-CI 不会明文输出环境变量到 log ）。</p>
+<p>可能有人会说通过 SSH key 代替账号密码。虽然上传的文件是经过加密存储的，但是这样又面临第二个问题：把完整的账号权限提供给了平台/构建脚本（前面提到了，token 有权限控制且可随时吊销），一旦泄漏产生的后果也是比较严重的。</p>
+<p>另外还需要注意：</p>
+<ol>
+<li>这里会把生成的静态博客发布到<code>gh-pages</code>分支。相对于采用两个仓库分开，这样设计管理起来更加容易。只需要你在当前仓库的 settings （注意不是个人的设置）-&gt; GitHub Pages -&gt; Source（来源）下面，切换到该分支（<code>gh-pages</code>）即可。</li>
+<li>设置了<code>keep-history: false</code>。保证该分支很“干净”，只有最后一次的提交记录。</li>
+<li>如果你看了帮助文档，其实还可以指定<code>gh-pages</code>分支的提交人，默认的是<code>traviscibot</code>，我觉得还挺萌的，就没改。</li>
+<li>通过<code>fqdn</code>字段，我指定了自定义域名。这个不是只在这配置就行了，还需要去 DNS 服务商那配置 CNAME，在项目的 settings 里也配置相同的自定义域名。</li>
+<li>之前没用 Travis-CI 自动部署的时候，我本地使用的是 hexo-deployer-git 插件，我发现每次更新了文章都要重新去 github 仓库重新配置一下自定义域名（自动丢失了），否则不生效。</li>
+<li>前面提到了 <code>gh-pages</code>分支，如果有强迫症，只想在 github 保留这个分支，本地和自建的 gogs 不要这个分支，那么：在本地先删除 gogs 远程仓库的 url -&gt; 创建 gh-pages 分支（不能直接创建远程分支、必须是本地建立分支推送到远程仓库，再删掉本地分支）-&gt; 推送到到远程仓库 -&gt; 删除本地分支 -&gt; 把 gogs 远程仓库的地址加回来</li>
+<li>虽然显示构建成功，但是部署不一定成功。平台通过命令执行的返回值去判断结果，<code>hexo generate</code>命令无论成功失败永远返回<code>0</code>（成功）。这个时候只能通过 log 排查，相信你遇到一次就知道以后怎么解决了。</li>
+</ol>
+<h4 id="9-其他问题和注意事项"><a href="#9-其他问题和注意事项" class="headerlink" title="9. 其他问题和注意事项"></a>9. 其他问题和注意事项</h4><p>如果你是首次使用和部署 hexo 到 GitHub pages，那么你可能还会遇到：</p>
+<ul>
+<li><p>部署成功，但是页面排版错乱（其实是css、js都404了）。此时分别创建文件<code>source/.nojekyll</code>和<code>deploy_git/.nojekyll</code>，内容为空。再在<code>_config.yml</code>的根结点添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">include:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">.nojekyll</span></span><br></pre></td></tr></table></figure>
+
+<p>即可解决。—— 应该是使用 hexo-deployer-git 插件的问题，不使用的话可能不需要。</p>
+</li>
+<li><p>首次部署，Github 设置 CDN 、配置服务器可能需要一点时间，耐心等待。</p>
+</li>
+</ul>
+<h4 id="10-待解决问题"><a href="#10-待解决问题" class="headerlink" title="10. 待解决问题"></a>10. 待解决问题</h4><ol>
+<li>Lighthouse 未达到满分（500分）—— 根据 v2ex 上网友分享的经验去解决</li>
+<li>开始说的备用服务器问题还未完全部署好，暂时不可用</li>
+<li>文章输出到公众号的问题，还没有一个自动化的、轻量级的方案（目前正文中含代码，会有排版错误/代码高亮问题），markdown here插件的效果很不理想</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>放上博客代码的 GitHub 地址： <a href="https://github.com/edsion1107/blog.i1hao.com.git" target="_blank" rel="noopener">https://github.com/edsion1107/blog.i1hao.com.git</a> </p>
+<p>如果有问题，欢迎来提 <a href="https://github.com/edsion1107/blog.i1hao.com/issues" target="_blank" rel="noopener">Issues</a>  （因为未开放评论功能）。</p>
+<p>欢迎打赏，或点击文中腾讯云服务（用的是推广链接）对我进行赞助。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/wechat-reward-image.png" alt=" 微信支付"/>
+        </picture>
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/20190707155823.png" alt=" 支付宝"/>
+        </picture>
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a></li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://blog.i1hao.com/2018/09/01/hexo-and-githubpages-best-practices/" title="Hexo + GitHub Pages + Travis CI 自动化部署静态博客">https:&#x2F;&#x2F;blog.i1hao.com&#x2F;2018&#x2F;09&#x2F;01&#x2F;hexo-and-githubpages-best-practices&#x2F;</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-creative-commons&quot;&gt;&lt;&#x2F;i&gt;BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/github-pages/" rel="tag"># GitHub Pages</a>
+          
+            <a href="/tags/travis-ci/" rel="tag"># Travis CI</a>
+          
+            <a href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag"># 最佳实践</a>
+          
+            <a href="/tags/2018/" rel="tag"># 2018</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/29/adb-start-app/" rel="next" title="通过"adb shell am start"启动app的一个坑">
+                <i class="fa fa-chevron-left"></i> 通过"adb shell am start"启动app的一个坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/03/api-test-efficiency/" rel="prev" title="从效率和难易程度的角度对接口测试用例进行分级">
+                从效率和难易程度的角度对接口测试用例进行分级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+              <div class="site-description motion-element" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/%20%7C%7C%20th">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/%20%7C%7C%20tags">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/edsion1107" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-github&quot;&gt;&lt;&#x2F;i&gt;GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:edsion@i1hao.com" title="E-Mail &amp;rarr; mailto:edsion@i1hao.com" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-envelope&quot;&gt;&lt;&#x2F;i&gt;E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/1962828603" title="Weibo &amp;rarr; https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-weibo&quot;&gt;&lt;&#x2F;i&gt;Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank">&lt;img src&#x3D;&quot;&#x2F;images&#x2F;cc-by-nc-sa.svg&quot; alt&#x3D;&quot;Creative Commons&quot;&#x2F;&gt;</a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo-GitHub-Pages-Travis-CI-自动化部署静态博客"><span class="nav-number">1.</span> <span class="nav-text">Hexo + GitHub Pages + Travis CI 自动化部署静态博客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开篇"><span class="nav-number">1.1.</span> <span class="nav-text">开篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案选择"><span class="nav-number">1.2.</span> <span class="nav-text">方案选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态博客生成"><span class="nav-number">1.2.1.</span> <span class="nav-text">静态博客生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署环境"><span class="nav-number">1.2.2.</span> <span class="nav-text">部署环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Markdown"><span class="nav-number">1.2.3.</span> <span class="nav-text">Markdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码托管（数据备份）"><span class="nav-number">1.2.4.</span> <span class="nav-text">代码托管（数据备份）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.2.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境搭建"><span class="nav-number">1.3.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#书写环境"><span class="nav-number">1.3.1.</span> <span class="nav-text">书写环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整环境"><span class="nav-number">1.3.2.</span> <span class="nav-text">完整环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-安装-Node-js"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">1. 安装 Node.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-安装-yarn（可选）"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">2. 安装 yarn（可选）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安装-hexo，并执行初始化"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">3. 安装 hexo，并执行初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-验证-hexo-安装成功，安装依赖并初始化-git-仓库"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">4. 验证 hexo 安装成功，安装依赖并初始化 git 仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-安装-Next-主题"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">5. 安装 Next 主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-修改配置"><span class="nav-number">1.3.2.6.</span> <span class="nav-text">6. 修改配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-添加和推送远程仓库"><span class="nav-number">1.3.2.7.</span> <span class="nav-text">7. 添加和推送远程仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Travis-CI-部署"><span class="nav-number">1.3.2.8.</span> <span class="nav-text">8. Travis-CI 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-其他问题和注意事项"><span class="nav-number">1.3.2.9.</span> <span class="nav-text">9. 其他问题和注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-待解决问题"><span class="nav-number">1.3.2.10.</span> <span class="nav-text">10. 待解决问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">1.4.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+
+  <div class="waifu">
+      <div class="waifu-tips"></div>
+      <canvas id="live2d" class="live2d"></canvas>
+      <div class="waifu-tool">
+      <span class="fui-home"></span>
+      <span class="fui-chat"></span>
+      <span class="fui-eye"></span>
+      <span class="fui-user"></span>
+      <span class="fui-photo"></span>
+      <span class="fui-info-circle"></span>
+      <span class="fui-cross"></span>
+      </div>
+  </div>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>&copy; 2018 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.2.0</div>
+
+
+
+  <div class="footer-custom"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" target="_blank" rel="noopener">辽公网安备21029602000155号</a></div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/pangu/dist/pangu.min.js?v=3.3"></script>
+  <script>pangu.spacingPage();</script>
+
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+  <script src="/lib/live2d/assets/waifu-tips.js"></script>
+  <script src="/lib/live2d/assets/live2d.js"></script>
+  <script type="text/javascript">$(document).ready(function(){
+    let live2d_custom = {"enable":true,"modelAPI":"//live2d.fghrsh.net/api/","tipsMessage":"waifu-tips.json","hitokotoAPI":"lwl12.com","modelId":2,"modelTexturesId":1,"showToolMenu":true,"canCloseLive2d":true,"canSwitchModel":true,"canSwitchTextures":true,"canSwitchHitokoto":true,"canTakeScreenshot":true,"canTurnToHomePage":true,"canTurnToAboutPage":true,"modelStorage":true,"modelRandMode":"switch","modelTexturesRandMode":"rand","showHitokoto":true,"showF12Status":true,"showF12Message":false,"showF12OpenMsg":true,"showCopyMessage":true,"showWelcomeMessage":true,"waifuSize":"280x250","waifuTipsSize":"250x70","waifuFontSize":"12px","waifuToolLine":"20px","waifuToolFont":"14px","waifuToolTop":"0px","waifuMinWidth":"768px","waifuEdgeSide":"right:80","waifuDraggable":"disable","waifuDraggableRevert":true,"homePageUrl":"auto","aboutPageUrl":"https://github.com/edsion1107/theme-next-live2d","screenshotCaptureName":"live2d.png"};
+    for (let key in live2d_custom){
+      console.debug(key+':'+live2d_custom[key]);
+      live2d_settings[key] = live2d_custom[key];
+      }
+    initModel("/lib/live2d/assets/waifu-tips.json");
+  })</script>
+
+
+</body>
+</html>

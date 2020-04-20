@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans,zh-CN,default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="nbJQD3t9R8"/>
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"/>
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+  <link rel="stylesheet" href="/lib/live2d/assets/waifu.css"/>
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一种评估接口测试用例编写效率的办法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从效率和难易程度的角度对接口测试用例进行分级">
+<meta property="og:url" content="https://blog.i1hao.com/2018/09/03/api-test-efficiency/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="一种评估接口测试用例编写效率的办法">
+<meta property="article:published_time" content="2018-09-03T12:41:46.000Z">
+<meta property="article:modified_time" content="2020-04-20T12:13:35.643Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="接口测试">
+<meta property="article:tag" content="经验分享">
+<meta name="twitter:card" content="summary">
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="edsion的博客" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://blog.i1hao.com/2018/09/03/api-test-efficiency/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>从效率和难易程度的角度对接口测试用例进行分级 | edsion的博客</title>
+  
+
+
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124909298-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-124909298-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">edsion的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;归档&lt;span class&#x3D;&quot;badge&quot;&gt;17&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-tags&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;标签&lt;span class&#x3D;&quot;badge&quot;&gt;34&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-th&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;分类&lt;span class&#x3D;&quot;badge&quot;&gt;3&lt;&#x2F;span&gt;</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sitemap.xml" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-sitemap&quot;&gt;&lt;&#x2F;i&gt; &lt;br&#x2F;&gt;站点地图</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/09/03/api-test-efficiency/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>"/>
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996"/>
+      <meta itemprop="image" content="/images/avatar.gif"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">从效率和难易程度的角度对接口测试用例进行分级
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-03 20:41:46" itemprop="dateCreated datePublished" datetime="2018-09-03T20:41:46+08:00">2018-09-03</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-20 20:13:35" itemprop="dateModified" datetime="2020-04-20T20:13:35+08:00">2020-04-20</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">接口测试</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+            <div class="post-description">一种评估接口测试用例编写效率的办法</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="从效率和难易程度的角度对接口测试用例进行分级"><a href="#从效率和难易程度的角度对接口测试用例进行分级" class="headerlink" title="从效率和难易程度的角度对接口测试用例进行分级"></a>从效率和难易程度的角度对接口测试用例进行分级</h1><p>[TOC]</p>
+<h2 id="简单用例-10条-天"><a href="#简单用例-10条-天" class="headerlink" title="简单用例 - 10条/天"></a>简单用例 - 10条/天</h2><p>接口文档中有详细描述，必须包含：</p>
+<ul>
+<li>参数的类型</li>
+<li>是否为可选参数</li>
+<li>明确该接口正常、异常返回值</li>
+</ul>
+<p>尽量包含：</p>
+<ul>
+<li>参数的可能取值范围</li>
+</ul>
+<blockquote>
+<p>有些参数，比如<code>int</code>，一般情况下取值范围是<code>-2147483648~2147483647</code>；比如 <code>timestamp</code>，一般指“unix时间戳”，即从1970年1月1日开始所经过的秒数。类似这种参数可以不用特殊声明。</p>
+</blockquote>
+<blockquote>
+<p>但是有些参数是该接口/项目特有参数，与通常意义上的取值不同，这种情况一定要说明。例如，微校的<code>school_code</code>（学校标识码），它的取值是<code>int(10)</code></p>
+</blockquote>
+<h2 id="进阶用例-7条-天"><a href="#进阶用例-7条-天" class="headerlink" title="进阶用例 - 7条/天"></a>进阶用例 - 7条/天</h2><p>相对简单用例，某些参数可能取值、或返回值的情况在文档中没有明确描述，例如：</p>
+<ul>
+<li><a href="https://weixiao.qq.com/wiki/index.html?content=noticeDetail" target="_blank" rel="noopener">微校-通知数据明细</a> 接口，<code>mark</code>参数：当给<code>mark</code>参数取值为一个不存在的值，<code>HTTP Status Code</code>为<code>200</code>，返回值<code>return code</code>为<code>1004</code>；当请求中不携带<code>mark</code>参数时，<code>HTTP Status Code</code>为<code>422</code>，返回值<code>return code</code>为<code>1000</code>。也就是说，两种情况的<code>HTTP Status Code</code>和<code>returun code</code>均不相同。这种情况接口文档中并未详细列出，在编写测试用例时需要进行调试，并且根据经验判断是否BUG，还有可能需要与项目团队进行二次确认。</li>
+</ul>
+<blockquote>
+<p>当<code>HTTP Status Code</code>能满足需求时，直接使用HTTP协议定义的返回值；当不满足需求（无法准确描述原因时），使用自定义返回值（<code>return code</code>）。这是一种常见的做法，并非BUG。</p>
+</blockquote>
+<ul>
+<li>文档中未明确写明返回值（<strong>比较常见</strong>），或者只有一个通用的规则。这种情况，需要测试人员根据常理推断、逐条调试，还需要经常与项目组接口人或对应开发沟通确认，相对比较耗时。</li>
+</ul>
+<h2 id="复杂用例-1～3条-天"><a href="#复杂用例-1～3条-天" class="headerlink" title="复杂用例 - 1～3条/天"></a>复杂用例 - 1～3条/天</h2><p>这里面可能包含几种情况：</p>
+<ul>
+<li>用例逻辑复杂，前置条件较多。例如，需要通过调用多个接口才能实现的复杂逻辑；有些接口需要动态构造参数/测试数据，不能写死。</li>
+<li>某些情况下复杂参数。例如，Tgit 的”给指定用户创建一个 SSH key”接口，这时候需要查阅资料才能知道<code>SSH KEY</code>除了<code>rsa</code>，还有<code>dsa</code>、<code>ecdsa</code>等类型；不同类型，取值范围也可能是<code>1024~2048</code>、<code>256~512</code>不等。并且因为平台不能安装第三方库，还需要借助外部（例如腾讯云的无服务器云函数-Serverless Cloud Function）来实现，有一定的开发工作量。</li>
+<li>平台的限制，如不能控制用例执行顺序、用例之间不能共享数据。遇到这种问题，需要借助第三方服务来实现。</li>
+<li>一些公有函数（方法）的封装，比较常见的就是签名/加密算法。一方面，接口文档未提供对应语言的实现（平台支持的是<code>python</code>），需要我们参照其他语言或干脆从零开始开发；另一方面，算法demo不能满足需求。例如，微校的接口文档明确指明了“如果参数的值为空不参与签名”，但是有种情况是参数值为’’(空字符串)，这里仅列出签名的第一步“排序”的不同：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 按照文档编写的签名“排序”算法：</span></span><br><span class="line">sorted_list = sorted(filter(<span class="keyword">lambda</span> x: x[<span class="number">-1</span>] <span class="keyword">and</span> x[<span class="number">0</span>].lower().strip() != <span class="string">'sign'</span>, kwargs.items()), key=<span class="keyword">lambda</span> x: x[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改进后的算法：</span></span><br><span class="line">sorted_list = sorted(filter(<span class="keyword">lambda</span> x: x[<span class="number">-1</span>] <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> x[<span class="number">0</span>].lower().strip() != <span class="string">'sign'</span>, kwargs.items()),key=<span class="keyword">lambda</span> x: x[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果不这么改进，测试接口时直接卡在了签名校验这一环节，不能真正到达“参数为空字符串”这一逻辑</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>因为测试人员不仅要在代码中找到编码实现的缺陷，更要发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。所以可能会提出一些，在开发人员看来“不合常理”的场景，而这些场景，可能需要测试人员花费精力去沟通，去编码和优化，所以遇到复杂的用例实际工作量是很难评估的，这里也只是根据经验提供一个效率供参考。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/wechat-reward-image.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/wechat-reward-image.png" alt=" 微信支付"/>
+        </picture>
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <picture>
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/webp" type="image/webp">
+          <source srcset="https://img.blog.i1hao.com/20190707155823.png?imageView2/format/png" type="image/png">
+          <img src="https://img.blog.i1hao.com/20190707155823.png" alt=" 支付宝"/>
+        </picture>
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a></li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://blog.i1hao.com/2018/09/03/api-test-efficiency/" title="从效率和难易程度的角度对接口测试用例进行分级">https:&#x2F;&#x2F;blog.i1hao.com&#x2F;2018&#x2F;09&#x2F;03&#x2F;api-test-efficiency&#x2F;</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-creative-commons&quot;&gt;&lt;&#x2F;i&gt;BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/" rel="tag"># 接口测试</a>
+          
+            <a href="/tags/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/" rel="tag"># 经验分享</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/01/hexo-and-githubpages-best-practices/" rel="next" title="Hexo + GitHub Pages + Travis CI 自动化部署静态博客">
+                <i class="fa fa-chevron-left"></i> Hexo + GitHub Pages + Travis CI 自动化部署静态博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/08/oauth-and-api-test/" rel="prev" title="几种常见的身份认证方案和接口测试中的应用">
+                几种常见的身份认证方案和接口测试中的应用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+              <div class="site-description motion-element" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/%20%7C%7C%20th">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/%20%7C%7C%20tags">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/edsion1107" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-github&quot;&gt;&lt;&#x2F;i&gt;GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:edsion@i1hao.com" title="E-Mail &amp;rarr; mailto:edsion@i1hao.com" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-envelope&quot;&gt;&lt;&#x2F;i&gt;E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/1962828603" title="Weibo &amp;rarr; https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener" target="_blank">&lt;i class&#x3D;&quot;fa fa-fw fa-weibo&quot;&gt;&lt;&#x2F;i&gt;Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank">&lt;img src&#x3D;&quot;&#x2F;images&#x2F;cc-by-nc-sa.svg&quot; alt&#x3D;&quot;Creative Commons&quot;&#x2F;&gt;</a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从效率和难易程度的角度对接口测试用例进行分级"><span class="nav-number">1.</span> <span class="nav-text">从效率和难易程度的角度对接口测试用例进行分级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单用例-10条-天"><span class="nav-number">1.1.</span> <span class="nav-text">简单用例 - 10条&#x2F;天</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶用例-7条-天"><span class="nav-number">1.2.</span> <span class="nav-text">进阶用例 - 7条&#x2F;天</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复杂用例-1～3条-天"><span class="nav-number">1.3.</span> <span class="nav-text">复杂用例 - 1～3条&#x2F;天</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+
+  <div class="waifu">
+      <div class="waifu-tips"></div>
+      <canvas id="live2d" class="live2d"></canvas>
+      <div class="waifu-tool">
+      <span class="fui-home"></span>
+      <span class="fui-chat"></span>
+      <span class="fui-eye"></span>
+      <span class="fui-user"></span>
+      <span class="fui-photo"></span>
+      <span class="fui-info-circle"></span>
+      <span class="fui-cross"></span>
+      </div>
+  </div>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">  <a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>&copy; 2018 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.2.0</div>
+
+
+
+  <div class="footer-custom"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" target="_blank" rel="noopener">辽公网安备21029602000155号</a></div>
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+  <script src="/js/js.cookie.js?v=7.2.0"></script>
+  <script src="/js/scroll-cookie.js?v=7.2.0"></script>
+
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/pangu/dist/pangu.min.js?v=3.3"></script>
+  <script>pangu.spacingPage();</script>
+
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      const selection = document.getSelection();
+      const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+      if (selected) {
+        selection.removeAllRanges();
+        selection.addRange(selected);
+      }
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+  
+  <script src="/lib/live2d/assets/waifu-tips.js"></script>
+  <script src="/lib/live2d/assets/live2d.js"></script>
+  <script type="text/javascript">$(document).ready(function(){
+    let live2d_custom = {"enable":true,"modelAPI":"//live2d.fghrsh.net/api/","tipsMessage":"waifu-tips.json","hitokotoAPI":"lwl12.com","modelId":2,"modelTexturesId":1,"showToolMenu":true,"canCloseLive2d":true,"canSwitchModel":true,"canSwitchTextures":true,"canSwitchHitokoto":true,"canTakeScreenshot":true,"canTurnToHomePage":true,"canTurnToAboutPage":true,"modelStorage":true,"modelRandMode":"switch","modelTexturesRandMode":"rand","showHitokoto":true,"showF12Status":true,"showF12Message":false,"showF12OpenMsg":true,"showCopyMessage":true,"showWelcomeMessage":true,"waifuSize":"280x250","waifuTipsSize":"250x70","waifuFontSize":"12px","waifuToolLine":"20px","waifuToolFont":"14px","waifuToolTop":"0px","waifuMinWidth":"768px","waifuEdgeSide":"right:80","waifuDraggable":"disable","waifuDraggableRevert":true,"homePageUrl":"auto","aboutPageUrl":"https://github.com/edsion1107/theme-next-live2d","screenshotCaptureName":"live2d.png"};
+    for (let key in live2d_custom){
+      console.debug(key+':'+live2d_custom[key]);
+      live2d_settings[key] = live2d_custom[key];
+      }
+    initModel("/lib/live2d/assets/waifu-tips.json");
+  })</script>
+
+
+</body>
+</html>
