@@ -89,9 +89,9 @@ theme_config:
       enable: true
       version: true
     since: 2018
-    custom_text: <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155">辽公网安备21029602000155号</a>
+    custom_text: <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155">辽公网安备21029602000155号</a>
     beian:
-      enable: true
+      enable: false
       icp: 辽ICP备18000098号
   seo: true
   menu:
