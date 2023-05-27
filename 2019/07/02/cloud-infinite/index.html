@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8">
+  <meta name="baidu-site-verification" content="nbJQD3t9R8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.i1hao.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本博客目前是使用 hexo + Next 主题搭建在 GitHub Pages 上的，使用 git 管理，并接入了 Travis-CI 自动发布。一直以来，对于图片的处理是我的一块心病。虽然hexo官方提出了资源文件夹的概念，但是&amp;#123;% asset_img example.jpg This is an example image %&amp;#125;这种方式几乎不被任何 Markdown 编辑器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="借助数据万象（原万象优图），让 hexo 也用上 webp">
+<meta property="og:url" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="本博客目前是使用 hexo + Next 主题搭建在 GitHub Pages 上的，使用 git 管理，并接入了 Travis-CI 自动发布。一直以来，对于图片的处理是我的一块心病。虽然hexo官方提出了资源文件夹的概念，但是&amp;#123;% asset_img example.jpg This is an example image %&amp;#125;这种方式几乎不被任何 Markdown 编辑器">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702221156">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702221642">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/cdn_console">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702222910">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702223537">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702224558">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702225242">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702233755">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702234727">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702235553">
+<meta property="og:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190703000042">
+<meta property="article:published_time" content="2019-07-02T12:58:37.000Z">
+<meta property="article:modified_time" content="2023-05-24T02:01:29.937Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="数据万象">
+<meta property="article:tag" content="腾讯云">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="webp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.i1hao.com/2019/07/02/cloud-infinite/20190702221156">
+
+
+<link rel="canonical" href="https://blog.i1hao.com/2019/07/02/cloud-infinite/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://blog.i1hao.com/2019/07/02/cloud-infinite/","path":"2019/07/02/cloud-infinite/","title":"借助数据万象（原万象优图），让 hexo 也用上 webp"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>借助数据万象（原万象优图），让 hexo 也用上 webp | edsion的博客</title>
+  
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-124909298-1","only_pageview":true}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">edsion的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">37</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%8C%E5%BC%80%E5%90%AF%E7%9B%B8%E5%85%B3%E6%9C%8D%E5%8A%A1%EF%BC%8C%E5%B9%B6%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">第一步，开启相关服务，并进行配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E5%AD%98%E5%82%A8%E6%A1%B6"><span class="nav-number">1.1.</span> <span class="nav-text">1. 创建存储桶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="nav-number">1.2.</span> <span class="nav-text">2. 绑定自定义域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E7%94%B3%E8%AF%B7-HTTPS-%E8%AF%81%E4%B9%A6"><span class="nav-number">1.3.</span> <span class="nav-text">3. 为自定义域名申请 HTTPS 证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AECDN"><span class="nav-number">1.4.</span> <span class="nav-text">4. 配置CDN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%BC%80%E5%90%AF%E5%AD%90%E8%B4%A6%E5%8F%B7%EF%BC%8C%E5%88%9B%E5%BB%BA-API-%E5%AF%86%E9%92%A5"><span class="nav-number">1.5.</span> <span class="nav-text">5. 开启子账号，创建 API 密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E4%B8%BA%E5%AD%90%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE-Bucket-%E7%9A%84%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90"><span class="nav-number">1.6.</span> <span class="nav-text">6. 为子账号配置 Bucket 的访问权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E9%85%8D%E7%BD%AE%E9%AA%8C%E8%AF%81"><span class="nav-number">1.7.</span> <span class="nav-text">7. 配置验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%8C%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E9%A1%BA%E6%89%8B%E7%9A%84%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">第二步，选择一个顺手的图片上传工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%8C%E4%BD%BF%E7%94%A8%E4%B8%AD%E6%84%8F%E7%9A%84-Markdown-%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%8C%E6%92%B0%E5%86%99%E6%96%87%E7%AB%A0"><span class="nav-number">3.</span> <span class="nav-text">第三步，使用中意的 Markdown 编辑器，撰写文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+  <div class="site-description" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edsion1107" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener me" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edsion@i1hao.com" title="E-Mail → mailto:edsion@i1hao.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/1962828603" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener me" target="_blank"><i class="weibo fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/07/02/cloud-infinite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="借助数据万象（原万象优图），让 hexo 也用上 webp | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          借助数据万象（原万象优图），让 hexo 也用上 webp
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-02 20:58:37" itemprop="dateCreated datePublished" datetime="2019-07-02T20:58:37+08:00">2019-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本博客目前是使用 hexo + Next 主题搭建在 GitHub Pages 上的，使用 git 管理，并接入了 Travis-CI 自动发布。一直以来，对于图片的处理是我的一块心病。虽然hexo官方提出了<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders.html">资源文件夹</a>的概念，但是<code>&#123;% asset_img example.jpg This is an example image %&#125;</code>这种方式几乎不被任何 Markdown 编辑器支持。</p>
+<blockquote>
+<p>个人习惯是使用 Typora 码字，然后再用 vscode 的 markdownlint 扩展进行语法检查（代码格式上的洁癖）—— vscode 用得顺手，甚至可以放弃 Typora。</p>
+</blockquote>
+<p>为了不滥用GitHub仓库、节省空间和提高访问速度，可以使用腾讯云的<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10644&cps_key=d61d10b4df29eee56b529f879e701bb2">对象存储（COS）</a> + <a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10502&cps_key=d61d10b4df29eee56b529f879e701bb2">内容分发网络（CDN）</a>。良心云每个月都赠送了一定的免费额度，对于个人博客来讲一般是够用的。</p>
+<p>最近CDN也不能满足我的胃口了，在尝试极限优化的路上，我又发现了一个更有想象力的方案，那就是借助腾讯云的<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10371&cps_key=d61d10b4df29eee56b529f879e701bb2">数据万象（原万象优图）</a>服务，对图片进行预处理或者实时处理，从而减小图片体积、提高打开速度。</p>
+<p>对于数据万象我在之前的一篇文章<a href="https://blog.i1hao.com/2018/06/29/qcloud-free/">薅羊毛党的胜利 —— 合理利用腾讯云搭建服务
+</a>提到过。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>如果看完这篇文章觉得有帮助，欢迎点击我的推广链接：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10371&cps_key=d61d10b4df29eee56b529f879e701bb2">https://cloud.tencent.com/redirect.php?redirect=10371&cps_key&#x3D;d61d10b4df29eee56b529f879e701bb2</a>，购买腾讯云相关服务，谢谢支持。</p>
+</blockquote>
+<h2 id="第一步，开启相关服务，并进行配置"><a href="#第一步，开启相关服务，并进行配置" class="headerlink" title="第一步，开启相关服务，并进行配置"></a>第一步，开启相关服务，并进行配置</h2><p>数据万象本身是基于对象存储服务的，并且也可以开启CDN对其进行加速。这里三者之间的关系有点难理清，我在尝试了一番之后，推荐按照如下顺序进行操作：</p>
+<h3 id="1-创建存储桶"><a href="#1-创建存储桶" class="headerlink" title="1. 创建存储桶"></a>1. 创建存储桶</h3><p>访问<a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/ci/bucket">数据万象控制台</a>，创建存储桶 Bucket（选择绑定-新建）。所属地域随便选择，访问权限“公有读私有写”，注意<strong>不要</strong>开启 CDN 加速。</p>
+<blockquote>
+<p>刚开始先不要开防盗链、原图保护等高级功能，先把流程跑通再回来处理。</p>
+</blockquote>
+<p>以下是我的配置页面，供参考：<br><picture><source srcset="https://img.blog.i1hao.com/20190702221156.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702221156.png?imageView2/format/png" type="image/png"><img data-src="20190702221156"></picture></p>
+<h3 id="2-绑定自定义域名"><a href="#2-绑定自定义域名" class="headerlink" title="2. 绑定自定义域名"></a>2. 绑定自定义域名</h3><p>为 Bucket 绑定自定义域名，并开启CDN。我的博客域名是<code>blog.i1hao.com</code>，所以我新建了一个子域名<code>img.blog.i1hao.com</code>用于此处。<strong>注意自己的域名要提前备案</strong>。使用自定义域名主要是好记，使用腾讯云提供的默认域名也不是不可以。</p>
+<blockquote>
+<p>不使用自定义域名，可以在第一步直接开启CDN。创建时不建议开是为了缩短 CDN 的部署时间，毕竟部署一次要5分钟，我是不太想等的。</p>
+</blockquote>
+<h3 id="3-为自定义域名申请-HTTPS-证书"><a href="#3-为自定义域名申请-HTTPS-证书" class="headerlink" title="3. 为自定义域名申请 HTTPS 证书"></a>3. 为自定义域名申请 HTTPS 证书</h3><p>都9102年了，HTTPS 应该是标配。证书颁发比较慢，所以尽量早点做好。这里就不推荐用 Let’s Encrypt 的证书了，因为证书要用到 CDN 上，如果每三个月更新一次，就有点小麻烦了。</p>
+<blockquote>
+<p>如果恰好用的是腾讯云的云解析，那你有福了。申请证书和配置到之后的CDN，只需要通过网页勾选几下就可以了，非常方便。</p>
+</blockquote>
+<p>具体过程这里就不展开了，网上有大量文章介绍。</p>
+<h3 id="4-配置CDN"><a href="#4-配置CDN" class="headerlink" title="4. 配置CDN"></a>4. 配置CDN</h3><p>这里主要分两步：配置 DNS 解析的 CNAME ，开启HTTPS。<br>下图是我在腾讯云云解析上的配置，如果用其它服务商，也可以参考：<br><picture><source srcset="https://img.blog.i1hao.com/20190702221642.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702221642.png?imageView2/format/png" type="image/png"><img data-src="20190702221642"></picture></p>
+<p>至于 CDN 的配置，要去<a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cdn">内容分发网络的控制台</a>，在对应域名的“高级配置”中开启：<br><picture><source srcset="https://img.blog.i1hao.com/cdn_console.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/cdn_console.png?imageView2/format/png" type="image/png"><img data-src="cdn_console"></picture></p>
+<blockquote>
+<p>上图中还开启了HTTP2.0，也能一定程度上提高访问速度，建议开启。</p>
+</blockquote>
+<p>稍等约5分钟，等待 CDN 部署完成。</p>
+<h3 id="5-开启子账号，创建-API-密钥"><a href="#5-开启子账号，创建-API-密钥" class="headerlink" title="5. 开启子账号，创建 API 密钥"></a>5. 开启子账号，创建 API 密钥</h3><p>为了您的账号安全，我强烈建议，对于腾讯云的每个产品都创建相应的子账号，并按照最小化权限原则进行设置。如果确定不想这么麻烦，可以省略这一步。</p>
+<p>打开腾讯云<a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cam/overview">访问管理控制台</a>，从用户列表新建用户 - 子用户。<br>这里只要跟着流程走就可以了，没什么坑，我只放一个最终配置好的图吧（不用跟我保持完全一致）：<br><picture><source srcset="https://img.blog.i1hao.com/20190702222910.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702222910.png?imageView2/format/png" type="image/png"><img data-src="20190702222910"></picture></p>
+<p>这一步完成后，需要记住账号ID、SecretId、SecretKey，之后会用到。</p>
+<h3 id="6-为子账号配置-Bucket-的访问权限"><a href="#6-为子账号配置-Bucket-的访问权限" class="headerlink" title="6. 为子账号配置 Bucket 的访问权限"></a>6. 为子账号配置 Bucket 的访问权限</h3><p>如果未启用子账号，则跳过此步骤。<br>打开腾讯云<a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cos5">对象存储控制台</a>（这里比较混乱，数据万象中没有权限配置的入口），在存储桶列表中找到数据万象中用到的 Bucket，在“权限管理”页面将子账号加入，并选择合适的权限：<br><picture><source srcset="https://img.blog.i1hao.com/20190702223537.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702223537.png?imageView2/format/png" type="image/png"><img data-src="20190702223537"></picture></p>
+<h3 id="7-配置验证"><a href="#7-配置验证" class="headerlink" title="7. 配置验证"></a>7. 配置验证</h3><p>到这里，有关腾讯云的基础配置就完成了。现在需要上传一张图片到 Bucket，然后通过自定义域名访问，验证整个流程是否打通。</p>
+<p>首先通过 web 页面上传一张名为<code>IMG_0526.png</code>的图片。此时通过页面可以查到，系统分配给我的原始URL为：<code>http://blog-i1hao-com-1251008864.picsh.myqcloud.com/IMG_0526.png</code>。如果此链接无法访问（一般不可能），说明是对象存储或数据万象的配置（例如读写权限）有问题。</p>
+<p>所以，通过我的自定义域名（CDN）访问此图片的地址为：<code>https://img.blog.i1hao.com/IMG_0526.png</code>。如果此处无法访问，大概率跟 CDN 有关。检查 CNAME 是否生效（nslookup命令），CDN 是否在部署中，和 HTTPS证书、回源策略等。</p>
+<p>通过数据万象处理为 webp 格式的图片链接为：<code>https://img.blog.i1hao.com/IMG_0526.png?imageView2/format/webp</code>。<br><picture><source srcset="https://img.blog.i1hao.com/20190702224558.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702224558.png?imageView2/format/png" type="image/png"><img data-src="20190702224558"></picture><br>数据万象添加水印后的图片链接为：<code>https://img.blog.i1hao.com/IMG_0526.png?watermark/2/text/YmxvZy5pMWhhby5jb20%3D</code><br><picture><source srcset="https://img.blog.i1hao.com/20190702225242.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702225242.png?imageView2/format/png" type="image/png"><img data-src="20190702225242"></picture></p>
+<p>后面这两个链接能访问，并且结果格式或显示不正确，可能是参数问题，或者样式分隔符设置问题，可以通过根据<a target="_blank" rel="noopener" href="https://cloud.tencent.com/document/product/460/6929">数据万象文档</a>，进行排查。</p>
+<blockquote>
+<p>图片上传后首次访问，可能由于 CDN 回源，或图片处理，速度不够理想，之后就没问题了。当然也可以手动去刷 CDN 缓存进行“预热”。<br>我这里只是用了数据万象中“图片格式转换”这一个功能，根据API在URL中附加参数，还可以实现图片缩放、裁剪、缩略图、文字和图像水印、获取EXIF信息、盲水印等等，很多高级的功能。</p>
+</blockquote>
+<h2 id="第二步，选择一个顺手的图片上传工具"><a href="#第二步，选择一个顺手的图片上传工具" class="headerlink" title="第二步，选择一个顺手的图片上传工具"></a>第二步，选择一个顺手的图片上传工具</h2><p>macOS 上的 <a target="_blank" rel="noopener" href="https://apps.apple.com/cn/app/ipic-markdown-%E5%9B%BE%E5%BA%8A-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B7%A5%E5%85%B7/id1101244278?mt=12">iPic</a> 产品理念、执行力，都非常令人佩服，难能可贵的还是由独立开发者完成的。之后涌现大量模仿者都或多或少受到了一定的启发。</p>
+<p>因为需要考虑到 webp 并非所有浏览器都兼容，所以我采用的是在 Markdown 中插入 html 的方案来解决的。另外还可以通过 JS 来检测，但是需要修改 hexo 代码，担心版本升级的时候还要自己处理冲突，所以没有采用。</p>
+<p>纯html代码解决兼容性的示例代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">picture</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">srcset</span>=<span class="string">&quot;https://img.blog.i1hao.com/IMG_0526.png?imageView2/format/webp&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/webp&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">source</span> <span class="attr">srcset</span>=<span class="string">&quot;https://img.blog.i1hao.com/IMG_0526.png?imageView2/format/png&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/png&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;IMG_0526.png&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">picture</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>非常遗憾的是，我没有使用 iPic，而是<a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo">PicGo</a>，因为通过它的“自定义链接格式”功能，可以生成模版代码，能提高一些效率。但是 PicGo 唯一令我不太满意的就是，我在配置腾讯云COS为图床时，遇到了点小问题，如果是新手可能会卡在这里一会。</p>
+<p>配置参照下图：<br><picture><source srcset="https://img.blog.i1hao.com/20190702233755.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702233755.png?imageView2/format/png" type="image/png"><img data-src="20190702233755"></picture></p>
+<blockquote>
+<p>需要注意的是，腾讯云COS分 V4 和 V5 两个版本，现在新用户应该是 V5 的了。如果不确定，或者想从 V4 升到 V5，请发工单。<br>存储空间名，并非 Bucket 的名字，而是 Bucket 名称 + APPID。从数据万象看到的只是 Bucket 名称，对象存储显示的才是正确的“Bucket 名称 + APPID”。这里可能责任也不在开发者，在我印象里腾讯云好像很久之前升级 SDK 修改过此处。总之知道怎么正确即可。</p>
+</blockquote>
+<p>接下来，在 PicGo 的设置里，将自定义链接格式修改为:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">picture</span>&gt;</span><span class="tag">&lt;<span class="name">source</span> <span class="attr">srcset</span>=<span class="string">&quot;$url?imageView2/format/webp&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/webp&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">source</span> <span class="attr">srcset</span>=<span class="string">&quot;$url?imageView2/format/png&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/png&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;$fileName&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">picture</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用的是<code>$url</code>和<code>$fileName</code>占位符，PicGo会自动帮你替换。</p>
+<p>最后，在 PicGo 的上传区，将链接格式改为<code>Custom</code>即可：<br><picture><source srcset="https://img.blog.i1hao.com/20190702234727.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702234727.png?imageView2/format/png" type="image/png"><img data-src="20190702234727"></picture></p>
+<p>一般来说，上传图片的流程可以是：</p>
+<ul>
+<li>右键点击一个图片文件，选择复制（macOS上选择”拷贝”），点击 PicGo 在系统托盘中的图标，点击待上传。</li>
+<li>打开 PicGo 的界面，或直接拖拽图片文件。</li>
+<li>使用截图软件、图片编辑软件，将图片复制到剪贴板，点击 PicGo 在系统托盘中的图标，点击待上传。</li>
+</ul>
+<p>以上三种方式任意一种，执行成功后，<code>Custom</code>那段代码都会自动复制到你的剪贴板，只要在需要的地方粘贴即可。</p>
+<h2 id="第三步，使用中意的-Markdown-编辑器，撰写文章"><a href="#第三步，使用中意的-Markdown-编辑器，撰写文章" class="headerlink" title="第三步，使用中意的 Markdown 编辑器，撰写文章"></a>第三步，使用中意的 Markdown 编辑器，撰写文章</h2><p>本文开始，我推荐过 Typora，自身能完美配合 iPic。但是由于它不能加载 html 中的图片，所以只能忍痛放弃。<br><picture><source srcset="https://img.blog.i1hao.com/20190702235553.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190702235553.png?imageView2/format/png" type="image/png"><img data-src="20190702235553"></picture></p>
+<p>vscode 对于程序员来说很容易上手，我只安装了<code>Markdown All in One</code>和<code>markdownlint</code>这两个插件，并且在（hexo 博客）工程根目录下创建了文件<code>.markdownlint.yml</code>，内容如下：<br><picture><source srcset="https://img.blog.i1hao.com/20190703000042.png?imageView2/format/webp" type="image/webp"><source srcset="https://img.blog.i1hao.com/20190703000042.png?imageView2/format/png" type="image/png"><img data-src="20190703000042"></picture></p>
+<p>使用 vscode 编辑好博客文章后，执行发布，即可通过 Chrome、Safari等浏览器来验证此方案。</p>
+<p>关于 Github Pages + Travis-CI 自动构建和发布的内容，可以参考我的 Github <a target="_blank" rel="noopener" href="https://github.com/edsion1107/blog.i1hao.com/tree/master">仓库</a>，不是本文主题就先不展开了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过我目前这套方案，可以较好做到博客文章和图片资源的分离，并且在支持 webp 的浏览器上得到更好的体验；大量使用免费资源，降低部署和维护博客的成本；使用COS存储图片，还可以降低博客迁移成本。何乐而不为呢？</p>
+<p>当然，缺点也不是没有，比如 vscode 如果作为 markdown 编辑器，距离专业的 Typora 还是有一定的差距，不支持 TOC 自动生成目录，不支持导出成PDF、图片等格式；访客达到一定量级后，可能会产生 CDN 费用。</p>
+<p>如果大家还有其它方案，欢迎一起讨论，通过 Github 的 Issues 或<a href="https://blog.i1hao.com/">博客</a>上的其它方式都可以联系到我。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a>
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.i1hao.com/2019/07/02/cloud-infinite/" title="借助数据万象（原万象优图），让 hexo 也用上 webp">https://blog.i1hao.com/2019/07/02/cloud-infinite/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E4%B8%87%E8%B1%A1/" rel="tag"># 数据万象</a>
+              <a href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/" rel="tag"># 腾讯云</a>
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+              <a href="/tags/webp/" rel="tag"># webp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/28/scf-cli/" rel="prev" title="【SCF CLI实践】腾讯云serverless + 企业微信群机器人，轻松解决告警通知问题">
+                  <i class="fa fa-chevron-left"></i> 【SCF CLI实践】腾讯云serverless + 企业微信群机器人，轻松解决告警通知问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/27/homebrew-tencent-mirror/" rel="next" title="使用腾讯软件源，为 homebrew 加速">
+                  使用腾讯软件源，为 homebrew 加速 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>
+      <img src="https://www.beian.gov.cn/portal/download" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" rel="noopener" target="_blank">辽公网安备21029602000155号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://blog.i1hao.com/2019/07/02/cloud-infinite/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

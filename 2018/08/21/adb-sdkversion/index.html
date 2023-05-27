@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8">
+  <meta name="baidu-site-verification" content="nbJQD3t9R8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.i1hao.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这里以chrome为例。其中apk文件为chrome-67-0-3396-87.apk，对应的包名为com.android.chrome 有apk方式一：minSdkVersion-可以、targetSdkVersion-可以123456789101112131415$ aapt list -a chrome-67-0-3396-87.apk |grep -i sdk    A: android:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令行获取minSdkVersion、targetSdkVersion">
+<meta property="og:url" content="https://blog.i1hao.com/2018/08/21/adb-sdkversion/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="这里以chrome为例。其中apk文件为chrome-67-0-3396-87.apk，对应的包名为com.android.chrome 有apk方式一：minSdkVersion-可以、targetSdkVersion-可以123456789101112131415$ aapt list -a chrome-67-0-3396-87.apk |grep -i sdk    A: android:">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-21T12:13:00.000Z">
+<meta property="article:modified_time" content="2023-05-24T02:01:29.930Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="adb">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.i1hao.com/2018/08/21/adb-sdkversion/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://blog.i1hao.com/2018/08/21/adb-sdkversion/","path":"2018/08/21/adb-sdkversion/","title":"命令行获取minSdkVersion、targetSdkVersion"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>命令行获取minSdkVersion、targetSdkVersion | edsion的博客</title>
+  
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-124909298-1","only_pageview":true}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">edsion的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">37</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%99%E9%87%8C%E4%BB%A5chrome%E4%B8%BA%E4%BE%8B%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">这里以chrome为例。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89apk"><span class="nav-number">1.1.</span> <span class="nav-text">有apk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9AminSdkVersion-%E5%8F%AF%E4%BB%A5%E3%80%81targetSdkVersion-%E5%8F%AF%E4%BB%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">方式一：minSdkVersion-可以、targetSdkVersion-可以</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9AminSdkVersion-%E5%8F%AF%E4%BB%A5%E3%80%81targetSdkVersion-%E5%8F%AF%E4%BB%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">方式二：minSdkVersion-可以、targetSdkVersion-可以</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89apk%EF%BC%88%E5%B7%B2%E5%AE%89%E8%A3%85%E5%9C%A8%E6%89%8B%E6%9C%BA%E4%B8%AD%EF%BC%89%EF%BC%9AminSdkVersion-%E4%B8%8D%E8%A1%8C%E3%80%81targetSdkVersion-%E5%8F%AF%E4%BB%A5"><span class="nav-number">1.2.</span> <span class="nav-text">没有apk（已安装在手机中）：minSdkVersion-不行、targetSdkVersion-可以</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+  <div class="site-description" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edsion1107" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener me" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edsion@i1hao.com" title="E-Mail → mailto:edsion@i1hao.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/1962828603" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener me" target="_blank"><i class="weibo fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/08/21/adb-sdkversion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="命令行获取minSdkVersion、targetSdkVersion | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          命令行获取minSdkVersion、targetSdkVersion
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-21 20:13:00" itemprop="dateCreated datePublished" datetime="2018-08-21T20:13:00+08:00">2018-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">自动化测试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="这里以chrome为例。"><a href="#这里以chrome为例。" class="headerlink" title="这里以chrome为例。"></a>这里以chrome为例。</h1><p>其中apk文件为<code>chrome-67-0-3396-87.apk</code>，对应的包名为<code>com.android.chrome</code></p>
+<h2 id="有apk"><a href="#有apk" class="headerlink" title="有apk"></a>有apk</h2><h3 id="方式一：minSdkVersion-可以、targetSdkVersion-可以"><a href="#方式一：minSdkVersion-可以、targetSdkVersion-可以" class="headerlink" title="方式一：minSdkVersion-可以、targetSdkVersion-可以"></a>方式一：minSdkVersion-可以、targetSdkVersion-可以</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">aapt list -a chrome-67-0-3396-87.apk |grep -i sdk</span></span><br><span class="line">    A: android:compileSdkVersion(0x01010572)=(type 0x10)0x1c</span><br><span class="line">    A: android:compileSdkVersionCodename(0x01010573)=&quot;9&quot; (Raw: &quot;9&quot;)</span><br><span class="line">    E: uses-sdk (line=3)</span><br><span class="line">      A: android:minSdkVersion(0x0101020c)=(type 0x10)0x10</span><br><span class="line">      A: android:targetSdkVersion(0x01010270)=(type 0x10)0x1c</span><br><span class="line">    E: uses-permission-sdk-23 (line=10)</span><br><span class="line">    E: uses-permission-sdk-23 (line=15)</span><br><span class="line">    E: uses-permission-sdk-23 (line=16)</span><br><span class="line">    E: uses-permission-sdk-23 (line=17)</span><br><span class="line">    E: uses-permission-sdk-23 (line=18)</span><br><span class="line">        A: android:name(0x01010003)=&quot;com.samsung.android.sdk.multiwindow.enable&quot; (Raw: &quot;com.samsung.android.sdk.multiwindow.enable&quot;)</span><br><span class="line">        A: android:name(0x01010003)=&quot;com.samsung.android.sdk.multiwindow.multiinstance.enable&quot; (Raw: &quot;com.samsung.android.sdk.multiwindow.multiinstance.enable&quot;)</span><br><span class="line">        A: android:name(0x01010003)=&quot;com.samsung.android.sdk.multiwindow.multiinstance.launchmode&quot; (Raw: &quot;com.samsung.android.sdk.multiwindow.multiinstance.launchmode&quot;)</span><br><span class="line">        A: android:name(0x01010003)=&quot;com.samsung.android.sdk.multiwindow.penwindow.enable&quot; (Raw: &quot;com.samsung.android.sdk.multiwindow.penwindow.enable&quot;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，这里取出来的值是16进制的，需要转换为10进制使用。<br>python 16进制转10进制： <code>int(&#39;0x10&#39;, 16) = 16</code></p>
+</blockquote>
+<h3 id="方式二：minSdkVersion-可以、targetSdkVersion-可以"><a href="#方式二：minSdkVersion-可以、targetSdkVersion-可以" class="headerlink" title="方式二：minSdkVersion-可以、targetSdkVersion-可以"></a>方式二：minSdkVersion-可以、targetSdkVersion-可以</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">aapt d badging chrome-67-0-3396-87.apk |grep -i sdk</span></span><br><span class="line">package: name=&#x27;com.android.chrome&#x27; versionCode=&#x27;339608700&#x27; versionName=&#x27;67.0.3396.87&#x27; compileSdkVersion=&#x27;28&#x27; compileSdkVersionCodename=&#x27;9&#x27;</span><br><span class="line">sdkVersion:&#x27;16&#x27;</span><br><span class="line">targetSdkVersion:&#x27;28&#x27;</span><br><span class="line">uses-permission-sdk-23: name=&#x27;android.permission.ACCESS_WIFI_STATE&#x27;</span><br><span class="line">uses-permission-sdk-23: name=&#x27;android.permission.BLUETOOTH&#x27;</span><br><span class="line">uses-permission-sdk-23: name=&#x27;android.permission.BLUETOOTH_ADMIN&#x27;</span><br><span class="line">uses-permission-sdk-23: name=&#x27;android.permission.REORDER_TASKS&#x27;</span><br><span class="line">uses-permission-sdk-23: name=&#x27;android.permission.REQUEST_INSTALL_PACKAGES&#x27;</span><br><span class="line">  uses-feature-sdk-23: name=&#x27;android.hardware.bluetooth&#x27;</span><br><span class="line">  uses-implied-feature-sdk-23: name=&#x27;android.hardware.bluetooth&#x27; reason=&#x27;requested android.permission.BLUETOOTH permission, requested android.permission.BLUETOOTH_ADMIN permission, and targetSdkVersion &gt; 4&#x27;</span><br><span class="line">  uses-feature-sdk-23: name=&#x27;android.hardware.wifi&#x27;</span><br><span class="line">  uses-implied-feature-sdk-23: name=&#x27;android.hardware.wifi&#x27; reason=&#x27;requested android.permission.ACCESS_WIFI_STATE permission&#x27;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>minSdkVersion</code>对应的应该是这里的<code>sdkVersion</code></p>
+</blockquote>
+<h2 id="没有apk（已安装在手机中）：minSdkVersion-不行、targetSdkVersion-可以"><a href="#没有apk（已安装在手机中）：minSdkVersion-不行、targetSdkVersion-可以" class="headerlink" title="没有apk（已安装在手机中）：minSdkVersion-不行、targetSdkVersion-可以"></a>没有apk（已安装在手机中）：minSdkVersion-不行、targetSdkVersion-可以</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">adb shell dumpsys package com.android.chrome|grep -i sdk</span></span><br><span class="line">    versionCode=339608700 targetSdk=28</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：<code>sdk</code>可能是小写、可能是大小写混合，所以<code>grep</code>命令要使用<code>-i</code>参数，指定忽略大小写</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a>
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.i1hao.com/2018/08/21/adb-sdkversion/" title="命令行获取minSdkVersion、targetSdkVersion">https://blog.i1hao.com/2018/08/21/adb-sdkversion/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/adb/" rel="tag"># adb</a>
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/06/29/qcloud-free/" rel="prev" title="薅羊毛党的胜利——合理利用腾讯云搭建服务">
+                  <i class="fa fa-chevron-left"></i> 薅羊毛党的胜利——合理利用腾讯云搭建服务
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/29/adb-start-app/" rel="next" title="通过"adb shell am start"启动app的一个坑">
+                  通过"adb shell am start"启动app的一个坑 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>
+      <img src="https://www.beian.gov.cn/portal/download" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" rel="noopener" target="_blank">辽公网安备21029602000155号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://blog.i1hao.com/2018/08/21/adb-sdkversion/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

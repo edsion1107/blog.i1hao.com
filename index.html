@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8">
+  <meta name="baidu-site-verification" content="nbJQD3t9R8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.i1hao.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。    -- 托尼·霍尔，1996">
+<meta property="og:type" content="website">
+<meta property="og:title" content="edsion的博客">
+<meta property="og:url" content="https://blog.i1hao.com/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。    -- 托尼·霍尔，1996">
+<meta property="og:locale">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.i1hao.com/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-Hans","comments":"","permalink":"","path":"index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>edsion的博客 - 分享和发现互联网<br>测试开发那些事</title>
+  
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-124909298-1","only_pageview":true}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">edsion的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">37</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+  <div class="site-description" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edsion1107" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener me" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edsion@i1hao.com" title="E-Mail → mailto:edsion@i1hao.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/1962828603" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener me" target="_blank"><i class="weibo fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/10/31/scripts-semver/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/10/31/scripts-semver/" class="post-title-link" itemprop="url">浅谈自动化测试的版本控制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-10-31 14:47:27" itemprop="dateCreated datePublished" datetime="2019-10-31T14:47:27+08:00">2019-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>随着项目逐步迭代，自动化覆盖率提升，自动化测试的脚本会变得越来越复杂，我们需要在脚本中引入版本控制。</p>
+<p>这里我举几个遇到过的例子：</p>
+<ul>
+<li>某项目需要同时测试多个app，并且最终的数据要汇总到一起。因为不同的app（的测试代码）由不同的人员去维护，经常会导致负责公共模块的同学更新后，某些app没有及时更新，最终执行时需要人为去调查和解决冲突问题。</li>
+<li>有这样一家公司，为了整合测试资源，在内部搭建了一个云测试平台，把部署在全国各地多个节点统一进行调度。但是由于平台不够稳定，经常是在平台测试不通过，但是相关同学在本地跑一样的代码却完全没有问题。经过一番调查，发现某个节点磁盘满了导致脚本没有更新。</li>
+<li>小A是某公司的测试开发，在内部作为多个项目公共资源，主要负责各项目核心自动化脚本的编写。因为各个项目的发布频率不同，有的项目设置需要两个月才需要维护一次。每次到这个项目上时，小A都要花很久时间回忆之前有什么改动，本次需要做什么。公司也面临着人员离职或者磁盘损坏导致代码丢失的风险。</li>
+</ul>
+<p>所以，为了解决这些复杂的问题，我们尝试在测试代码上也引入版本控制，并且参考了<a target="_blank" rel="noopener" href="https://semver.org/lang/zh-CN/">《语义化版本控制规范》</a>，为每一次交付的产物都制定一个版本。</p>
+<blockquote>
+<p>关于版本控制的工具，首先推荐 git（与svn的优劣对比，不是本文重点，这里不展开）。要明确一点的是，git 不等于 github，即使不涉及多人协作，不借助各种托管平台，也可以作为本地仓库使用。</p>
+</blockquote>
+<p>这里存在一个小小的问题，实际应用中怎么打包、确定版本号、有了版本号怎么快速找到对应代码，下文就逐步剖析我目前采用的方案和流程。</p>
+<p>ps：下文主要以 python 为例。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/10/31/scripts-semver/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/09/19/pytest1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/09/19/pytest1/" class="post-title-link" itemprop="url">pytest 优化 - fixture 中获取用例描述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-19 21:52:49" itemprop="dateCreated datePublished" datetime="2019-09-19T21:52:49+08:00">2019-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天在实践pytest过程中，有这么一条需求：</p>
+<blockquote>
+<p>用例描述写在<code>test_xxx</code>函数的docstring（文档字符串）中，如何在代码中获取该字符串？</p>
+</blockquote>
+<p>开始想到的笨办法，是通过 request 这个 fixture，拿到执行的case所在文件、行数等，去解析文件读取。</p>
+<p>翻了半天 pytest 文档中没有找到有用的信息，最后经过调试发现可以通过以下代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request._pyfuncitem._obj.__doc__</span><br></pre></td></tr></table></figure>
+
+<p>下一篇，分享向 xml 中添加字段、属性。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/07/27/homebrew-tencent-mirror/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/07/27/homebrew-tencent-mirror/" class="post-title-link" itemprop="url">使用腾讯软件源，为 homebrew 加速</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-27 19:31:55" itemprop="dateCreated datePublished" datetime="2019-07-27T19:31:55+08:00">2019-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://brew.sh/index_zh-cn">Homebrew</a> 是一款自由及开放源代码的软件包管理系统，用以简化macOS系统上的软件安装过程。<br>其核心是一个托管在 GitHub上 的 git 版本库，由于某些原因，国内访问速度不快，并且稳定性堪忧。  </p>
+<p>为了提高体验，我们可以用<a target="_blank" rel="noopener" href="https://mirrors.cloud.tencent.com/#/index">腾讯软件源</a>对其进行加速，打开“终端”，依次执行以下命令即可：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 替换 Homebrew 的 formula 索引的镜像（即 brew update 时所更新内容）</span></span><br><span class="line">git -C <span class="string">&quot;<span class="subst">$(brew --repo)</span>&quot;</span> remote set-url origin https://mirrors.cloud.tencent.com/homebrew/brew.git</span><br><span class="line">git -C <span class="string">&quot;<span class="subst">$(brew --repo homebrew/core)</span>&quot;</span> remote set-url origin https://mirrors.cloud.tencent.com/homebrew/homebrew-core.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换 Homebrew 二进制预编译包的镜像</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles&#x27;</span> &gt;&gt; ~/.bash_profile</span><br><span class="line"><span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="comment">#（可选）禁用“自动更新” —— 执行`brew install xxx`时会自动执行`brew update`，导致安装过程比较慢。</span></span><br><span class="line"><span class="comment"># 通过此方法禁用后，选择合适时机手动执行`brew update`</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export HOMEBREW_NO_AUTO_UPDATE=1&#x27;</span> &gt;&gt; ~/.bash_profile</span><br><span class="line"><span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新</span></span><br><span class="line">brew update</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">复原：</span><br><span class="line">```bash</span><br><span class="line">git -C <span class="string">&quot;<span class="subst">$(brew --repo)</span>&quot;</span> remote set-url origin https://github.com/Homebrew/brew.git</span><br><span class="line"></span><br><span class="line">git -C <span class="string">&quot;<span class="subst">$(brew --repo homebrew/core)</span>&quot;</span> remote set-url origin https://github.com/Homebrew/homebrew-core</span><br><span class="line"></span><br><span class="line">brew update</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew-bottles: 需要去`~/.bash_profile`中删除&#x27;HOMEBREW_BOTTLE_DOMAIN&#x27;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/07/02/cloud-infinite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/07/02/cloud-infinite/" class="post-title-link" itemprop="url">借助数据万象（原万象优图），让 hexo 也用上 webp</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-02 20:58:37" itemprop="dateCreated datePublished" datetime="2019-07-02T20:58:37+08:00">2019-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本博客目前是使用 hexo + Next 主题搭建在 GitHub Pages 上的，使用 git 管理，并接入了 Travis-CI 自动发布。一直以来，对于图片的处理是我的一块心病。虽然hexo官方提出了<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders.html">资源文件夹</a>的概念，但是<code>&#123;% asset_img example.jpg This is an example image %&#125;</code>这种方式几乎不被任何 Markdown 编辑器支持。</p>
+<blockquote>
+<p>个人习惯是使用 Typora 码字，然后再用 vscode 的 markdownlint 扩展进行语法检查（代码格式上的洁癖）—— vscode 用得顺手，甚至可以放弃 Typora。</p>
+</blockquote>
+<p>为了不滥用GitHub仓库、节省空间和提高访问速度，可以使用腾讯云的<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10644&cps_key=d61d10b4df29eee56b529f879e701bb2">对象存储（COS）</a> + <a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10502&cps_key=d61d10b4df29eee56b529f879e701bb2">内容分发网络（CDN）</a>。良心云每个月都赠送了一定的免费额度，对于个人博客来讲一般是够用的。</p>
+<p>最近CDN也不能满足我的胃口了，在尝试极限优化的路上，我又发现了一个更有想象力的方案，那就是借助腾讯云的<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10371&cps_key=d61d10b4df29eee56b529f879e701bb2">数据万象（原万象优图）</a>服务，对图片进行预处理或者实时处理，从而减小图片体积、提高打开速度。</p>
+<p>对于数据万象我在之前的一篇文章<a href="https://blog.i1hao.com/2018/06/29/qcloud-free/">薅羊毛党的胜利 —— 合理利用腾讯云搭建服务
+</a>提到过。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/07/02/cloud-infinite/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/06/28/scf-cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/28/scf-cli/" class="post-title-link" itemprop="url">【SCF CLI实践】腾讯云serverless + 企业微信群机器人，轻松解决告警通知问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-28 23:25:45" itemprop="dateCreated datePublished" datetime="2019-06-28T23:25:45+08:00">2019-06-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>市面上有什么好用的从服务器推报警和日志到手机的工具？之前私下用的是<a target="_blank" rel="noopener" href="http://sc.ftqq.com/3.version">[Server酱]</a>的服务，非常方便。<br>但是考虑到安全原因，这个服务如果用在生产环境心里还是有点慌（虽然我相信[Server酱]是很有节操的）。</p>
+<p>另外，出于想把工作和生活分开的私心（并不能），所以一直在探索使用企业微信来实现通知的方案（自建应用的话还要考虑通知的到达率，实在有心无力）。</p>
+<p>之前已经基于企业微信的自建应用API，开发和部署了一个服务，技术方案是 docker + django + mysql + celery + redis。开发时要达到高可用，涉及 access_token 的刷新，还要考虑任务队列、分布式锁等等，真是折腾。</p>
+<p>今天（2019-6-28）在更新企业微信时，发现增加了个群机器人的功能，赶紧查了一下文档发现挺符合需求的。群机器人的优点是，通知基于群组，有问题时直接可以在群内沟通，也不会存在重新拉群还需要介绍背景，人员发生变动时拉新人进群即可。</p>
+<p>监控报警的脚本可以放在自己的服务器上，但是一旦遇到光纤被挖断了、停电这种外部因素，就需要一些外部手段来监控了。这里我推荐一下<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10633&cps_key=d61d10b4df29eee56b529f879e701bb2">腾讯云无服务器云函数（Serverless Cloud Function，SCF）</a>，免费，如果用腾讯云的其它服务还有各种加成，现在还有【<a target="_blank" rel="noopener" href="https://cloud.tencent.com/redirect.php?redirect=10633&cps_key=d61d10b4df29eee56b529f879e701bb2">活动链接</a>】（写个简单的demo就行）送腾讯云的通用代金券、公仔等。</p>
+<p>这里我就写个简单的天气小助手，来演示一下整个流程。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/06/28/scf-cli/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2019/05/30/adb-optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/05/30/adb-optimization/" class="post-title-link" itemprop="url">浅析adb原理和优化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-30 15:53:41" itemprop="dateCreated datePublished" datetime="2019-05-30T15:53:41+08:00">2019-05-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">自动化测试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="浅析-ADB-原理和优化"><a href="#浅析-ADB-原理和优化" class="headerlink" title="浅析 ADB 原理和优化"></a>浅析 ADB 原理和优化</h1><p>最近研究小程序自动化的时候，拜读了几篇关于小程序原理的文章，其中提到了一个词”管控”。作为平台方，必须保证提供的服务是可控的（细节与主题无关，这里不再展开）。受此启发，对于我们的平台来说，如果希望对外提供自动化能力，就必须对执行环境做一定的保护。如果具体到 android 平台，那首先要研究的就是 ADB（Android Debug Bridge）。</p>
+<blockquote>
+<p>具体要管控什么？举个例子，执行<code>adb kill-server</code> 会使 adb server 退出——因为是 adb server 提供的接口，所以不涉及权限问题（即使 adb server 是通过 root 权限启动，普通用户通过 adb client 调用此接口，adb server 也会退出。）。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/30/adb-optimization/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/12/28/uiautomator2-codes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/12/28/uiautomator2-codes/" class="post-title-link" itemprop="url">Uiautomator2 源码分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-28 19:09:48" itemprop="dateCreated datePublished" datetime="2018-12-28T19:09:48+08:00">2018-12-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Uiautomator2-源码分析"><a href="#Uiautomator2-源码分析" class="headerlink" title="Uiautomator2 源码分析"></a>Uiautomator2 源码分析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>关于著名的软件测试金字塔理论，可以看一下 <a target="_blank" rel="noopener" href="https://martinfowler.com/articles/practical-test-pyramid.html">The Practical Test Pyramid</a> 这篇文章，译文在<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Dee2j_lhNkOSnkflagBohg">这里</a>。</p>
+<p>对于UI自动化测试，根据其实现原理可以大致分为：基于坐标的（monkeyrunner）、基于控件的（uiautomator）、基于图像识别的（sikuli）等。针对不同的测试场景，不同方案各有其用武之地。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/openatx/uiautomator2">Android Uiautomator2 Python Wrapper</a> 是基于 Google uiautomator2 库实现的自动化测试框架。该框架主要解决了两大痛点：</p>
+<ol>
+<li>测试脚本只能使用Java语言 </li>
+<li>测试脚本必须每次被上传到设备上运行</li>
+</ol>
+<p>其实现原理就是在手机上运行了一个 http 服务器，将 uiautomator 中的功能开放出来，然后再将这些 http 接口，封装成 Python 库。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/28/uiautomator2-codes/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/10/08/oauth-and-api-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/08/oauth-and-api-test/" class="post-title-link" itemprop="url">几种常见的身份认证方案和接口测试中的应用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-08 19:58:21" itemprop="dateCreated datePublished" datetime="2018-10-08T19:58:21+08:00">2018-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="几种常见的身份认证方案和接口测试中的应用"><a href="#几种常见的身份认证方案和接口测试中的应用" class="headerlink" title="几种常见的身份认证方案和接口测试中的应用"></a>几种常见的身份认证方案和接口测试中的应用</h1><p>最近做了几个项目的接口测试接入工作，主要是结合星海（内部的统一接口测试平台）完成各个项目基础框架的搭建，并结合项目实际情况混合普通（通过网页编辑）和高级模式（直接编写代码），来提升接口测试的整体效率。</p>
+<h2 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h2><p>几乎所有项目遇到的首个问题就是身份认证。因为大部分接口都不允许、也不应该匿名使用，所以一般都会通过<code>HTTP Header</code>或URL中的<code>Query String</code>携带一个令牌（token），来表明用户身份。</p>
+<p>一般来讲，token 如果根据有效期来分类的话，有永久有效（当然可以后台手动吊销）和一定时间内有效两类。根据权限又可以分为完全权限和指定作用阈。根据项目实际情况，可能还有更多的划分。</p>
+<p>一个典型的认证流程：</p>
+<ol>
+<li>用户向服务器发送用户名和密码。</li>
+<li>服务器验证通过后，在当前对话（session）里面保存相关数据，比如用户角色、登录时间等等。</li>
+<li>服务器向用户返回一个 session_id，写入用户的 Cookie。</li>
+<li>用户随后的每一次请求，都会通过 Cookie，将 session_id 传回服务器。</li>
+<li>服务器收到 session_id，找到前期保存的数据，由此得知用户的身份。</li>
+</ol>
+<p>这种模式的问题在于，扩展性（scaling）不好。单机当然没有问题，如果是服务器集群，或者是跨域的服务导向架构，就要求 session 数据共享，每台服务器都能够读取 session。</p>
+<p>所以，后来又有了 <code>JWT(JSON Web Token) </code>方案。详细的原理和用法这里就不展开了，可以读一下阮一峰的《<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html">JSON Web Token 入门教程</a>》，或 Auth0 出品的《<a target="_blank" rel="noopener" href="https://auth0.com/resources/ebooks/jwt-handbook">JWT Handbook</a>》。</p>
+<p>另外，前面提到的典型认证流程，第一步是通过用户名和密码认证。但是对于第三方服务（例如饿了么之于微信），还会用到 <code>OAuth2.0</code>的标准。简单描述就是，用户点击“同意”授权，由微信和饿了么在后台完成鉴权，最后颁发一个短期有效的令牌。具体的原理也可以通过阮一峰的《<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html">理解OAuth 2.0</a>》了解。</p>
+<h2 id="身份认证与接口测试"><a href="#身份认证与接口测试" class="headerlink" title="身份认证与接口测试"></a>身份认证与接口测试</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/08/oauth-and-api-test/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/09/03/api-test-efficiency/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/03/api-test-efficiency/" class="post-title-link" itemprop="url">从效率和难易程度的角度对接口测试用例进行分级</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-03 20:41:46" itemprop="dateCreated datePublished" datetime="2018-09-03T20:41:46+08:00">2018-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">接口测试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>一种评估接口测试用例编写效率的办法</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/09/03/api-test-efficiency/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/09/01/hexo-and-githubpages-best-practices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/01/hexo-and-githubpages-best-practices/" class="post-title-link" itemprop="url">Hexo + GitHub Pages + Travis CI 自动化部署静态博客</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-01 16:58:09" itemprop="dateCreated datePublished" datetime="2018-09-01T16:58:09+08:00">2018-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name">经验分享</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>2018最新 Hexo + GitHub Pages + Travis CI 自动化部署静态博客最佳实践。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/09/01/hexo-and-githubpages-best-practices/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>
+      <img src="https://www.beian.gov.cn/portal/download" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" rel="noopener" target="_blank">辽公网安备21029602000155号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://blog.i1hao.com/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

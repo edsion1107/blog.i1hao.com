@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8">
+  <meta name="baidu-site-verification" content="nbJQD3t9R8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.i1hao.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="最近写自动化脚本的时候，遇到一个问题：（为了便于理解，这里拿QQ音乐举例，实际是一个内部项目不方便透露），打开QQ音乐，选择一首歌曲-播放，在播放器界面按home键回到桌面，再点击桌面快捷方式返回QQ音乐，现象：手动操作返回的是播放器界面（即回到桌面之前的界面），但是通过代码执行，返回的却是QQ音乐的首页。本文就造成这一问题的原因和分析过程做个记录，便于以后回顾。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过&quot;adb shell am start&quot;启动app的一个坑">
+<meta property="og:url" content="https://blog.i1hao.com/2018/08/29/adb-start-app/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="最近写自动化脚本的时候，遇到一个问题：（为了便于理解，这里拿QQ音乐举例，实际是一个内部项目不方便透露），打开QQ音乐，选择一首歌曲-播放，在播放器界面按home键回到桌面，再点击桌面快捷方式返回QQ音乐，现象：手动操作返回的是播放器界面（即回到桌面之前的界面），但是通过代码执行，返回的却是QQ音乐的首页。本文就造成这一问题的原因和分析过程做个记录，便于以后回顾。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-29T07:52:00.000Z">
+<meta property="article:modified_time" content="2023-05-24T02:01:29.930Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="adb">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="am">
+<meta property="article:tag" content="dumpsys">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.i1hao.com/2018/08/29/adb-start-app/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://blog.i1hao.com/2018/08/29/adb-start-app/","path":"2018/08/29/adb-start-app/","title":"通过\"adb shell am start\"启动app的一个坑"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>通过"adb shell am start"启动app的一个坑 | edsion的博客</title>
+  
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-124909298-1","only_pageview":true}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">edsion的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">分享和发现互联网<br>测试开发那些事</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">37</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E2%80%9Dadb-shell-am-start%E2%80%9D%E5%90%AF%E5%8A%A8app%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91"><span class="nav-number">1.</span> <span class="nav-text">通过”adb shell am start”启动app的一个坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">初步分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E7%BB%AD%E6%80%9D%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">继续思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%96%B5%EF%BC%9F%EF%BC%9F%EF%BC%9F"><span class="nav-number">1.4.</span> <span class="nav-text">喵？？？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+  <div class="site-description" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edsion1107" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener me" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edsion@i1hao.com" title="E-Mail → mailto:edsion@i1hao.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/1962828603" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener me" target="_blank"><i class="weibo fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/08/29/adb-start-app/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="通过"adb shell am start"启动app的一个坑 | edsion的博客">
+      <meta itemprop="description" content="最近写自动化脚本的时候，遇到一个问题：（为了便于理解，这里拿QQ音乐举例，实际是一个内部项目不方便透露），打开QQ音乐，选择一首歌曲-播放，在播放器界面按home键回到桌面，再点击桌面快捷方式返回QQ音乐，现象：手动操作返回的是播放器界面（即回到桌面之前的界面），但是通过代码执行，返回的却是QQ音乐的首页。本文就造成这一问题的原因和分析过程做个记录，便于以后回顾。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通过"adb shell am start"启动app的一个坑
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-08-29 15:52:00" itemprop="dateCreated datePublished" datetime="2018-08-29T15:52:00+08:00">2018-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">自动化测试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">最近写自动化脚本的时候，遇到一个问题：（为了便于理解，这里拿QQ音乐举例，实际是一个内部项目不方便透露），打开QQ音乐，选择一首歌曲-播放，在播放器界面按home键回到桌面，再点击桌面快捷方式返回QQ音乐，现象：手动操作返回的是播放器界面（即回到桌面之前的界面），但是通过代码执行，返回的却是QQ音乐的首页。本文就造成这一问题的原因和分析过程做个记录，便于以后回顾。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="通过”adb-shell-am-start”启动app的一个坑"><a href="#通过”adb-shell-am-start”启动app的一个坑" class="headerlink" title="通过”adb shell am start”启动app的一个坑"></a>通过”adb shell am start”启动app的一个坑</h1><p>[TOC]</p>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>这里用的自动化框架是<a target="_blank" rel="noopener" href="https://github.com/openatx/uiautomator2">openatx&#x2F;uiautomator2</a>，测试框架是：<code>pytest</code> + <code>allure</code>。先上一下关键代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">import</span> allure</span><br><span class="line"><span class="keyword">from</span> .actions <span class="keyword">import</span> home, player, others   <span class="comment"># 一些常用操作步骤的封装，参考了一些PageObject的思想</span></span><br><span class="line"><span class="comment"># type hints</span></span><br><span class="line"><span class="keyword">from</span> uiautomator2 <span class="keyword">import</span> UIAutomatorServer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@allure.story(<span class="params"><span class="string">&quot;播放器界面&quot;</span></span>)</span></span><br><span class="line"><span class="meta">@allure.title(<span class="params"><span class="string">&quot;回到桌面再返回，依然保持在播放器界面&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_player_alive</span>(<span class="params">device: UIAutomatorServer, package_name: <span class="built_in">str</span>, app_start_success: <span class="built_in">bool</span></span>):</span><br><span class="line">    <span class="keyword">assert</span> app_start_success    <span class="comment"># 这里是pytest的fixture，封装了启动app和判断是否成功的逻辑</span></span><br><span class="line"></span><br><span class="line">    home.click_play_button(device, package_name)    <span class="comment"># 首页点击播放按钮，随机播放一首歌曲</span></span><br><span class="line">    home.open_player(device, package_name)      <span class="comment"># 打开播放器界面</span></span><br><span class="line">    <span class="keyword">assert</span> player.is_playing_page(device, package_name)   <span class="comment"># 断言是否成功进入播放器界面</span></span><br><span class="line">    others.back_to_launcher(device, package_name)   <span class="comment"># 按home键回到桌面</span></span><br><span class="line">    <span class="keyword">assert</span> device.current_app().get(<span class="string">&#x27;package&#x27;</span>) != package_name  <span class="comment"># 断言当前package_name与被测app不符（确认回到了桌面）</span></span><br><span class="line">    <span class="keyword">with</span> allure.step(<span class="string">&quot;重新进入APP&quot;</span>):    <span class="comment"># allure标记步骤</span></span><br><span class="line">        device.app_start(package_name)  <span class="comment"># 再次启动app</span></span><br><span class="line">        allure.attach(device.screenshot(<span class="built_in">format</span>=<span class="string">&#x27;raw&#x27;</span>), <span class="string">&quot;依然保持在播放器界面&quot;</span>, allure.attachment_type.JPG)  <span class="comment"># allure报告中添加截图</span></span><br><span class="line">    <span class="keyword">assert</span> player.is_playing_page(device, package_name)     <span class="comment"># 断言确实回到了播放器界面</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个时候遇到一个问题：</p>
+<blockquote>
+<p>为了便于理解，这里拿 QQ音乐 举例，实际是一个类似的 app </p>
+</blockquote>
+<ol>
+<li><p>打开QQ音乐，选择一首歌曲-播放，在播放器界面按 home 键回到桌面。</p>
+</li>
+<li><p>点击桌面快捷方式返回QQ音乐</p>
+</li>
+</ol>
+<p>现象：手动操作返回的是播放器界面（即回到桌面 launcher 之前的界面），但是通过代码执行，返回的却是QQ音乐的首页。</p>
+<h2 id="初步分析"><a href="#初步分析" class="headerlink" title="初步分析"></a>初步分析</h2><p>出了这个问题以后，查看了下uiautomator2中<code>app_start()</code>的代码，发现就是通过android的<code>am</code>命令实现的。</p>
+<p>这就很奇怪了，因为在写成脚本之前，我已经手动通过命令行验证了使用<code>am</code>命令是可行的，完整的命令是：<code>adb shell am start -n com.tencent.qqmusic/.activity.AppStarterActivity</code>，执行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">am start -n com.tencent.qqmusic/com.tencent.qqmusic.activity.AppStarterActivity</span></span><br><span class="line">Starting: Intent &#123; cmp=com.tencent.qqmusic/.activity.AppStarterActivity &#125;</span><br><span class="line">Warning: Activity not started, its current task has been brought to the front</span><br></pre></td></tr></table></figure>
+
+<p>难道 uiautomator2 的封装有问题，或者用了什么 amazing 的方法我没看懂？</p>
+<p>干脆在代码里直接把<code>app_start()</code>替换成了<code>shell(&quot;am start -n com.tencent.qqmusic/.activity.AppStarterActivity&quot;)</code>。</p>
+<p>但是执行一下，问题依旧。不过这个时候又有了新的发现：</p>
+<pre><code>手动执行的时候多了一个warning：`Warning: Activity not started, its current task has been brought to the front`，在脚本中执行shell命令却没有这个warning。
+</code></pre>
+<p>实在想不通了，给作者提了个issues。</p>
+<h2 id="继续思考"><a href="#继续思考" class="headerlink" title="继续思考"></a>继续思考</h2><p>在等待回复这段时间，整理了下思路，换了个角度去思考：</p>
+<p>既然在 android 系统里桌面 launcher 也是一个 app ，播放器是一个 app ，那么 app 的冷启动和热启动过程本质上就是从一个 app 拉起另外一个 app 。所以撸起袖子继续请教谷歌大神，发现拉起另外一个 app 的 demo ，核心代码都是在构造一个<code>Intent</code>，在这个过程中会传入 ACTION、CATEGORY 等各种参数。</p>
+<p>所以，有没有办法记录所有 Intent ？</p>
+<p>查了一圈没有找到答案，但是根据以往的经验，<code>dumpsys</code>这个命令可以查到系统里很多信息，但是不是没人详细介绍这个命令，就是开发写的源码分析，对于我来讲从 android 源码角度去分析还是有点难了。没办法，一条一条试吧！</p>
+<p>……（此处省略五千字）</p>
+<p>功夫不负有心人，当尝试<code>dumpsys activity recents</code>这条命令时，终于发现端倪了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">dumpsys activity recents</span></span><br><span class="line">ACTIVITY MANAGER RECENT TASKS (dumpsys activity recents)</span><br><span class="line">  Recent tasks:</span><br><span class="line">  * Recent #0: TaskRecord&#123;5fb7ac0 #5217 A=android.task.qqmusic U=0 StackId=1 sz=1&#125;</span><br><span class="line">    userId=0 effectiveUid=u0a140 mCallingUid=u0a161 mUserSetupComplete=true mCallingPackage=ch.deletescape.lawnchair.plah</span><br><span class="line">    affinity=android.task.qqmusic</span><br><span class="line">    intent=&#123;act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.tencent.qqmusic/.activity.AppStarterActivity&#125;</span><br><span class="line">    realActivity=com.tencent.qqmusic/.activity.AppStarterActivity</span><br><span class="line">    autoRemoveRecents=false isPersistable=true numFullscreen=1 taskType=0 mTaskToReturnTo=1</span><br><span class="line">    rootWasReset=true mNeverRelinquishIdentity=true mReuseTask=false mLockTaskAuth=LOCK_TASK_AUTH_PINNABLE</span><br><span class="line">    Activities=[ActivityRecord&#123;7339e65 u0 com.tencent.qqmusic/.activity.AppStarterActivity t5217&#125;]</span><br><span class="line">    askedCompatMode=false inRecents=true isAvailable=true</span><br><span class="line">    lastThumbnail=android.graphics.Bitmap@774cf23 lastThumbnailFile=/data/system_ce/0/recent_images/5217_task_thumbnail.png</span><br><span class="line">    stackId=1</span><br><span class="line">    hasBeenVisible=true mResizeMode=RESIZE_MODE_RESIZEABLE mSupportsPictureInPicture=false isResizeable=true supportsSplitScreen=true firstActiveTime=1535538967561 lastActiveTime=1535541667612 (inactive for 77s)</span><br><span class="line">  * Recent #1: TaskRecord&#123;eb21815 #5189 I=ch.deletescape.lawnchair.plah/ch.deletescape.lawnchair.Launcher U=0 StackId=0 sz=1&#125;</span><br><span class="line">    userId=0 effectiveUid=u0a161 mCallingUid=1000 mUserSetupComplete=true mCallingPackage=com.android.systemui</span><br><span class="line">    intent=&#123;act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10a00000 cmp=ch.deletescape.lawnchair.plah/ch.deletescape.lawnchair.Launcher&#125;</span><br><span class="line">    realActivity=ch.deletescape.lawnchair.plah/ch.deletescape.lawnchair.Launcher</span><br><span class="line">    autoRemoveRecents=false isPersistable=false numFullscreen=1 taskType=1 mTaskToReturnTo=0</span><br><span class="line">    rootWasReset=true mNeverRelinquishIdentity=true mReuseTask=false mLockTaskAuth=LOCK_TASK_AUTH_PINNABLE</span><br><span class="line">    Activities=[ActivityRecord&#123;209110f u0 ch.deletescape.lawnchair.plah/ch.deletescape.lawnchair.Launcher t5189&#125;]</span><br><span class="line">    askedCompatMode=false inRecents=true isAvailable=true</span><br><span class="line">    lastThumbnail=null lastThumbnailFile=/data/system_ce/0/recent_images/5189_task_thumbnail.png</span><br><span class="line">    stackId=0</span><br><span class="line">    hasBeenVisible=true mResizeMode=RESIZE_MODE_UNRESIZEABLE mSupportsPictureInPicture=false isResizeable=false supportsSplitScreen=false firstActiveTime=1535525128804 lastActiveTime=1535541667598 (inactive for 77s)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>按字面意思理解，这条命令查看的是最近的 activity ，这里通过手动切换多任务、尝试各个 app 之间互相拉起后查看结果，也验证了这一点。而且，第一个task（#0）是最新的一个 activity ，这里面有 Intent 等各种信息。<br>所以，就用这种办法分析试试。这里尝试手动桌面返回 app 和脚本自动化，再把两次的操作结果保存下来作对比，有了新的发现：</p>
+<ul>
+<li>出错的时候（脚本），Intent是：<code>intent=&#123;flg=0x10000000 cmp=com.tencent.qqmusic/.activity.AppStarterActivity&#125;</code></li>
+<li>正常的时候（手动），Intent是：<code>intent=&#123;act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.tencent.qqmusic/.activity.AppStarterActivity&#125;</code></li>
+</ul>
+<p><code>act</code>和<code>cat</code>这两个参数十分可疑！查看一下帮助信息<code>am -h</code>，发现这两个参数是<code>ACTION</code>和<code>CATEGORY</code>，赶紧加上试试！</p>
+<p>所以完整shell命令修改为：<code>adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n com.tencent.qqmusic/.activity.AppStarterActivity</code>。</p>
+<p>手动执行一下，没问题！那再回到代码，把桌面回到QQ音乐的代码改成：<code>shell(&quot;am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n com.tencent.qqmusic/.activity.AppStarterActivity&quot;)</code>。这次该解决了吧！执行一遍，又报错了！</p>
+<h2 id="喵？？？"><a href="#喵？？？" class="headerlink" title="喵？？？"></a>喵？？？</h2><p>上大招吧！这次干脆一点，直接在第一行代码就加上断点。不过，灵机一动，在断点这里停下时，手动执行了一下<code>dumpsys activity recents</code>，终于找到问题了！原来启动的时候没有<code>ACTION</code>和<code>CATEGORY</code>！</p>
+<p>这时候不禁恍然大悟，原来我把启动app封装在了 fixture 里，然而 fixture 里依然使用的是方法<code>app_start()</code>，而这个方法是不带参数的！</p>
+<p>所以其实问题出在app首次启动不带参数，实在是太马虎了。</p>
+<p>既然找到根本原因了，修改一下代码，反手给作者一记PR（ pull request ），折腾了小半天终于真正解决！</p>
+<blockquote>
+<p>这里故意忽略了<code>FLAG</code>这个参数，因为我也不是十分肯定我的理解是否正确：像<code>FLAG</code>、<code>EXTRA_KEY</code>、<code>DATA_URI</code>这类参数，传递的都是附加信息&#x2F;数据，通常来讲，开发同学在 coding 时不会通过这些个字段作为判断”跳转”来源的依据。</p>
+</blockquote>
+<blockquote>
+<p>举个不恰当的例子：这就像用<code>selenium</code>做 web 自动化测试，<code>driver</code>指定用什么浏览器测试，<code>driver.get(URL)</code>执行打开URL。我们一般不会去通过 URL（数据）判断用什么浏览器去测试。因为“数据”是外部传递过来的，它的内容是不可预期的；“行为”是系统规定的，只有几个选项可用。</p>
+</blockquote>
+<p>另外，</p>
+<blockquote>
+<p>最后还是再强调一下，因为场景比较复杂，单靠文字描述不太容易解释清楚，所以文中是用QQ音乐举例的，实际用QQ音乐是无法复现这个问题的。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>老话说的好：<strong>面试造火箭，入职拧螺丝</strong>。</p>
+<p>我印象最深的就是一般的面试题都有四大组件啊、android 系统架构这些东西，基本大家就是背一下而已，工作中觉得用不上。真正出了问题，能查到的资料大部分又大多是开发视角，对于测试来讲非常不友好。</p>
+<p>就拿这个<code>dumpsys</code>命令来说吧，大部分开发不会深入去研究具体逻辑和实现，因为这与实际业务逻辑无关。即使某些情况下需要，直接阅读源码就能快速理解。但是测试面临这个问题就很难办了：</p>
+<ol>
+<li>代码能力不一定够</li>
+<li>工具文档没有，或不够详细</li>
+<li>因为android开源，厂商可以对系统进行定制，所以在不同的厂商、不同的系统版本、甚至不同的ROM上，表现并不一致。亲眼见过，某个人定制 ROM ，作者把所有命令行工具都加上了自己的名字。</li>
+</ol>
+<p>作为一名小测试，可能很难改变这种现状，但是千万不要把自己的工作局限于每天点点点。打好基础，努力保持每天都在学习，才不会被淘汰。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a>
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.i1hao.com/2018/08/29/adb-start-app/" title="通过&quot;adb shell am start&quot;启动app的一个坑">https://blog.i1hao.com/2018/08/29/adb-start-app/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/adb/" rel="tag"># adb</a>
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/am/" rel="tag"># am</a>
+              <a href="/tags/dumpsys/" rel="tag"># dumpsys</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/21/adb-sdkversion/" rel="prev" title="命令行获取minSdkVersion、targetSdkVersion">
+                  <i class="fa fa-chevron-left"></i> 命令行获取minSdkVersion、targetSdkVersion
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/01/hexo-and-githubpages-best-practices/" rel="next" title="Hexo + GitHub Pages + Travis CI 自动化部署静态博客">
+                  Hexo + GitHub Pages + Travis CI 自动化部署静态博客 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>
+      <img src="https://www.beian.gov.cn/portal/download" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" rel="noopener" target="_blank">辽公网安备21029602000155号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://blog.i1hao.com/2018/08/29/adb-start-app/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
