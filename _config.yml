@@ -4,7 +4,7 @@
 
 # Site
 title: edsion的博客
-subtitle: 分享和发现互联网<br>测试开发那些事
+subtitle: 个人分享<br>分享和发现互联网<br>测试开发那些事
 description: 软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996
 keywords:
 author: <a href="mailto:edsion@i1hao.com">edsion</a>
@@ -104,4 +104,7 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: git@github.com:edsion1107/blog.i1hao.com.git
+  branch: gh-pages
+  message: 备案和版本更新
