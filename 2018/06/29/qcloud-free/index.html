@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="7cE4jc_Nm0HYd2dzMAlr17LfMFksTZEwluoLvT613g8">
+  <meta name="baidu-site-verification" content="nbJQD3t9R8">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.i1hao.com","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="TL;DR腾讯云因为低廉的价格和稳定的服务，以及各种优惠政策，一直被戏称为良心云。对于一些用户量不大、对保密性要求不是特别高的服务，如果充分利用腾讯云的各种优惠，几乎可以零成本搭建。要知道在内网搭建一个服务现在非常多复杂（申请资源、审批权限等等），而且还面临各种限制，运维方面费时费力，所以把服务搬到云上不失为一个好的解决方案。 腾讯云常用免费套餐 对象存储服务 —— 高可用、可靠、可扩展的对象存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="薅羊毛党的胜利——合理利用腾讯云搭建服务">
+<meta property="og:url" content="https://blog.i1hao.com/2018/06/29/qcloud-free/index.html">
+<meta property="og:site_name" content="edsion的博客">
+<meta property="og:description" content="TL;DR腾讯云因为低廉的价格和稳定的服务，以及各种优惠政策，一直被戏称为良心云。对于一些用户量不大、对保密性要求不是特别高的服务，如果充分利用腾讯云的各种优惠，几乎可以零成本搭建。要知道在内网搭建一个服务现在非常多复杂（申请资源、审批权限等等），而且还面临各种限制，运维方面费时费力，所以把服务搬到云上不失为一个好的解决方案。 腾讯云常用免费套餐 对象存储服务 —— 高可用、可靠、可扩展的对象存储">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog.i1hao.com/2018/06/29/qcloud-free/cos5_bucket_setting.png">
+<meta property="og:image" content="https://blog.i1hao.com/2018/06/29/qcloud-free/CDN_https_config.png">
+<meta property="og:image" content="https://blog.i1hao.com/2018/06/29/qcloud-free/ssltest_analyze_yyb.i1hao.com.png">
+<meta property="article:published_time" content="2018-06-29T06:56:28.000Z">
+<meta property="article:modified_time" content="2023-05-24T02:01:29.941Z">
+<meta property="article:author" content="&lt;a href&#x3D;&quot;mailto:edsion@i1hao.com&quot;&gt;edsion&lt;&#x2F;a&gt;">
+<meta property="article:tag" content="腾讯云">
+<meta property="article:tag" content="免费">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.i1hao.com/2018/06/29/qcloud-free/cos5_bucket_setting.png">
+
+
+<link rel="canonical" href="https://blog.i1hao.com/2018/06/29/qcloud-free/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://blog.i1hao.com/2018/06/29/qcloud-free/","path":"2018/06/29/qcloud-free/","title":"薅羊毛党的胜利——合理利用腾讯云搭建服务"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>薅羊毛党的胜利——合理利用腾讯云搭建服务 | edsion的博客</title>
+  
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-124909298-1","only_pageview":true}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?955e82b575b82c10ad113786238055b3"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">edsion的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">个人分享<br>分享和发现互联网<br>测试开发那些事</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">37</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TL-DR"><span class="nav-number">1.</span> <span class="nav-text">TL;DR</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%85%BE%E8%AE%AF%E4%BA%91%E5%B8%B8%E7%94%A8%E5%85%8D%E8%B4%B9%E5%A5%97%E9%A4%90"><span class="nav-number">2.</span> <span class="nav-text">腾讯云常用免费套餐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF%E6%A0%88%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">开发技术栈介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">本地开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E4%BA%91%E4%B9%8B%E5%89%8D%E7%9A%84%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9"><span class="nav-number">5.</span> <span class="nav-text">上云之前的方案选择</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%EF%BC%88COS%EF%BC%89%E4%B8%8E%E4%B8%87%E8%B1%A1%E4%BC%98%E5%9B%BE"><span class="nav-number">6.</span> <span class="nav-text">结果存储——对象存储（COS）与万象优图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%85%BE%E8%AE%AF%E4%BA%91%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%EF%BC%88COS%EF%BC%89%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">6.1.</span> <span class="nav-text">腾讯云对象存储（COS）的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">6.1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E4%B8%8E%E5%AE%89%E5%85%A8"><span class="nav-number">6.1.2.</span> <span class="nav-text">权限与安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E8%AE%BF%E9%97%AE%E5%9C%B0%E5%9D%80%E3%80%81CDN%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="nav-number">6.1.3.</span> <span class="nav-text">默认访问地址、CDN和自定义域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AFHTTPS"><span class="nav-number">6.1.4.</span> <span class="nav-text">开启HTTPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8E%E4%B8%8B%E8%BD%BD"><span class="nav-number">6.1.5.</span> <span class="nav-text">文件上传与下载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%87%E8%B1%A1%E4%BC%98%E5%9B%BE"><span class="nav-number">6.2.</span> <span class="nav-text">万象优图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E8%AE%BF%E9%97%AE%E5%9C%B0%E5%9D%80%E3%80%81CDN%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D%E5%92%8CHTTPS"><span class="nav-number">6.2.1.</span> <span class="nav-text">默认访问地址、CDN、自定义域名和HTTPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86-amp-%E6%A0%B7%E5%BC%8F"><span class="nav-number">6.2.2.</span> <span class="nav-text">图片处理&amp;样式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E5%AD%98%E5%82%A8%E2%80%94%E2%80%94%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93MySQL"><span class="nav-number">7.</span> <span class="nav-text">结果存储——关系型数据库MySQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">部署云服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E8%B4%AD"><span class="nav-number">8.1.</span> <span class="nav-text">选购</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8"><span class="nav-number">8.2.</span> <span class="nav-text">安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81"><span class="nav-number">8.3.</span> <span class="nav-text">部署代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E5%AE%83"><span class="nav-number">9.</span> <span class="nav-text">其它</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"><a href="mailto:edsion@i1hao.com">edsion</a></p>
+  <div class="site-description" itemprop="description">软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edsion1107" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edsion1107" rel="noopener me" target="_blank"><i class="github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edsion@i1hao.com" title="E-Mail → mailto:edsion@i1hao.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/1962828603" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;1962828603" rel="noopener me" target="_blank"><i class="weibo fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://blog.i1hao.com/2018/06/29/qcloud-free/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="<a href="mailto:edsion@i1hao.com">edsion</a>">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="edsion的博客">
+      <meta itemprop="description" content="软件测试的真正价值并不体现在代码中找出了多少缺陷，而是发现设计和编程人员解决问题方法上的局限、思路中的狭隘和技能方面的不足。<br>    -- 托尼·霍尔，1996">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="薅羊毛党的胜利——合理利用腾讯云搭建服务 | edsion的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          薅羊毛党的胜利——合理利用腾讯云搭建服务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-06-29 14:56:28" itemprop="dateCreated datePublished" datetime="2018-06-29T14:56:28+08:00">2018-06-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 10:01:29" itemprop="dateModified" datetime="2023-05-24T10:01:29+08:00">2023-05-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h1><p>腾讯云因为低廉的价格和稳定的服务，以及各种优惠政策，一直被戏称为<a target="_blank" rel="noopener" href="http://www.dayanmei.com/taoluyun-liangxinyun/">良心云</a>。对于一些用户量不大、对保密性要求不是特别高的服务，如果充分利用腾讯云的各种优惠，几乎可以零成本搭建。要知道在内网搭建一个服务现在非常多复杂（申请资源、审批权限等等），而且还面临各种限制，运维方面费时费力，所以把服务搬到云上不失为一个好的解决方案。</p>
+<h1 id="腾讯云常用免费套餐"><a href="#腾讯云常用免费套餐" class="headerlink" title="腾讯云常用免费套餐"></a>腾讯云常用免费套餐</h1><ol>
+<li>对象存储服务 —— 高可用、可靠、可扩展的对象存储。免费额度：每月50GB存储空间，免费流量共20G及读写请求数量共110万次</li>
+<li>内容分发网络CDN —— 将源站内容分发至最接近用户的节点，有效降低访问时延。免费额度：每月10G免费流量，新用户更有连续6个月50GB免费流量</li>
+<li>SSL证书 —— 腾讯云 SSL证书（SSL Certificates）提供了安全套接层（SSL）证书的一站式服务，包括证书申请、管理及部署功能，与顶级的数字证书授权（CA）机构和代理商合作，为您的网站、移动应用提供 HTTPS 解决方案。免费额度：同一主域最多只能申请20张亚洲诚信品牌免费型DV版SSL证书</li>
+<li>无服务器云函数 —— 自动、弹性、无需服务器管理的代码运行环境。免费额度：每月100万次调用，40万GBs 资源使用</li>
+<li>网站安全基础防护 —— 抵御2G DDos攻击的免费服务，实时检测，业界领先！免费使用</li>
+<li>云解析 —— 安全、稳定、快速的免费域名解析服务。免费额度：提供免费版云解析</li>
+<li>云拨测 —— 基于全球服务质量监测网络，助力保障网站、域名、后台接口服务质量。免费使用</li>
+<li>云监控 —— 多维度立体化云产品监控，智能化数据分析，定制化告警触达。免费使用</li>
+</ol>
+<blockquote>
+<p>万象优图 —— 腾讯云为客户提供的专业一体化的图片解决方案，涵盖图片上传、下载、存储、处理、识别等功能，将 QQ 空间相册积累的十年图片服务运作经验开放给开发者。目前有图片处理、原图保护、跨域访问设置、样式预设等功能。<br>经工单咨询确认，万象优图依赖对象存储服务，但两者的免费额度分别计算。例如，COS的外网下行流量免费额度是10GB，万象优图的外网下行流量免费额度也是10GB。所以我可以先用COS的10个G，当检测到流量用尽时，切换到万象优图继续使用。</p>
+</blockquote>
+<span id="more"></span>
+
+<h1 id="开发技术栈介绍"><a href="#开发技术栈介绍" class="headerlink" title="开发技术栈介绍"></a>开发技术栈介绍</h1><p>最近接到一个需求，关于某APP的push监控。需要实现：</p>
+<ul>
+<li>通过脚本自动化实现，对于PUSH消息的测试</li>
+<li>将测试结果通过web页面展示出来</li>
+</ul>
+<p>自动化部分，根据实际情况，采用的是 <code>python3</code> + <a target="_blank" rel="noopener" href="https://github.com/openatx/uiautomator2"><code>uiautomator2</code></a>。<br>对于web部分，使用的是<code>python3</code> + <code>Django2</code> + <a target="_blank" rel="noopener" href="https://demos.creative-tim.com/material-dashboard/docs/2.0/getting-started/introduction.html"><code>material-dashboard-html-v2.1.0</code></a> + <code>MySQL 5.6（腾讯云）</code>，部署时用到了<code>nginx 1.15.0</code>(自己编译，加入TLS1.3支持等) + <code>uwsgi</code> + <code>supervisor</code>。https证书：主站——Let’s Encrypt，CDN——腾讯云。</p>
+<p>IDE使用Pycharm。</p>
+<h1 id="本地开发"><a href="#本地开发" class="headerlink" title="本地开发"></a>本地开发</h1><p>目前自动化脚本是需要手动触发执行和上传结果的，之后还会继续优化。<br>web的开发，Django作为成熟的解决方案已经足够好了，要注意的就是各种安全方面的配置，严格按照文档来进行即可。对于一些敏感数据，如数据库账号密码等，我采取的措施是放在<code>.env</code>文件，然后把<code>.env</code>文件排除在git之外。这样还有一个好处：对于腾讯云的数据库不同环境使用不同配置，本地开发时使用外网端口（在腾讯云的防火墙只开通公司IP的访问权限），生产环境时配置为内网端口，保护数据库安全。<br>Pycharm作为最流行的IDE之一，除了开发调试的一些基本功能，database和Deployment功能十分强大，配置好以后提高效率很明显，强烈推荐。</p>
+<h1 id="上云之前的方案选择"><a href="#上云之前的方案选择" class="headerlink" title="上云之前的方案选择"></a>上云之前的方案选择</h1><p>对于测试结果，没有直接存储在服务器的硬盘中，而是采用了数据库（MySQL）和对象存储（COS）两部分。如果都存在单台服务器，对服务器的内存、硬盘和带宽（<strong>重要：带宽很贵！</strong>）都有一定的要求，不仅是成本，对于后续运维也是一个不小的挑战。如果分开使用腾讯云的各种基础服务，一方面可以利用各种免费额度降低成本，另一方面可以随时根据需要对各服务升降配&#x2F;扩容，灵活性更高。</p>
+<p>根据对数据访问频率的不同，分别存放到数据库和对象存储，各服务间是通过内网访问的，速度也可以接受。</p>
+<h1 id="结果存储——对象存储（COS）与万象优图"><a href="#结果存储——对象存储（COS）与万象优图" class="headerlink" title="结果存储——对象存储（COS）与万象优图"></a>结果存储——对象存储（COS）与万象优图</h1><h2 id="腾讯云对象存储（COS）的使用"><a href="#腾讯云对象存储（COS）的使用" class="headerlink" title="腾讯云对象存储（COS）的使用"></a>腾讯云对象存储（COS）的使用</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>存储桶 —— 即 Bucket ，在 COS 中用于存储对象。<em>简单理解为文件夹或者本地的一块硬盘</em></li>
+<li>对象 —— 即 Object，COS 中存储的基本单元。</li>
+<li>地域 —— 即 Region，表示 COS 的数据中心所在的地域。<em>根据地域选择，因为我的云服务器可用区是上海二区，根据就近原则这里选的是上海</em></li>
+<li>APPID —— 腾讯云账户的账户标识之一，用于关联云资源。在用户成功申请腾讯云账户后，系统自动为用户分配一个 APPID。</li>
+<li>API 密钥 —— 用户访问腾讯云 API 进行身份验证时需要用到的安全凭证，由 SecretId 和 SecretKey 一起组成。</li>
+<li>默认访问地址 —— 由存储桶名、COS 所属地标识和对象名组成，通过默认访问地址可寻址 COS 中唯一对应的对象。</li>
+<li>CDN 加速访问地址 —— 由存储桶名、CDN 加速标识以及对象名组成，通过该地址可寻址 COS 中唯一对应的对象。在用户上传对象并且开启 CDN 加速后，腾讯云会自动为对象创建 CDN 加速访问地址。</li>
+<li>自定义域名 —— 用户在托管网站时，根据需要，会更倾向于类似<code>www.example.com</code>的域名， 而不希望类似<code>example-1234567890.cosgz.myqcloud.com</code>等域名显示在网站或服务上。用户可以通过 COS 控制台为存储桶绑定自定义域名，绑定后可通过自定义域名直接访问存储桶。绑定自定义域名时，需要通过 CDN 控制台创建 CNAME 记录将 <code>www.example.com</code>映射到 <code>example-1234567890.cosgz.myqcloud.com</code>。</li>
+</ul>
+<blockquote>
+<p>COS有V4、v5两个版本，两个不同的版本，API不同，这点需要注意！！！目前新用户注册一般是v5（如果不是可以开工单申请升级到v5，因为v4的sdk不支持python3）。</p>
+</blockquote>
+<h3 id="权限与安全"><a href="#权限与安全" class="headerlink" title="权限与安全"></a>权限与安全</h3><p>Bucket 和 Object 的权限可以设置为：私有读写、公有读私有写、公有读写，Object 默认继承 Bucket 的权限。</p>
+<p>最开始的想法，为了安全肯定是设置私有读写（必须带签名才能访问），然后每次访问的时候通过SDK计算出签名再生成页面。但是这里如果想使用自定义域名或CDN，就遇上了个大坑，因为sdk中计算签名的接口写死了只支持默认访问地址。而签名的时候是把域名也算进去的，也就是说计算出签名以后，修改域名为自定义域名，签名失效会导致最终该资源无法访问。</p>
+<blockquote>
+<p>PS：这里起初因为搞不清默认访问地址、CDN和自定义域名如何设置，开工单咨询几次也没解决，所以把这个问题绕过去了。现在想想其实可以根据签名算法自己实现来解决（当然了，有点麻烦）</p>
+</blockquote>
+<p>最后，针对当前项目做了一番评估，通过<code>修改权限为公有读私有写</code>和<code>开启Referer防盗链</code>结合，勉强算是解决了这个问题。</p>
+<h3 id="默认访问地址、CDN和自定义域名"><a href="#默认访问地址、CDN和自定义域名" class="headerlink" title="默认访问地址、CDN和自定义域名"></a>默认访问地址、CDN和自定义域名</h3><p>理想情况下，我的期望是使用自定义域名并开启CDN。但是如果打开控制台就会发现，这里系统还分配了默认CDN加速域名。所以，我的自定义域名到底是绑在COS上，还是去CDN控制台绑定到默认CDN加速域名，文档中没有明确指引。</p>
+<p>这里开了N多工单，最后还是自己一番摸索才找到解决方案：</p>
+<ol>
+<li>关闭默认CDN加速域名（COS和CDN控制台都要关闭，正常情况这两个状态是同步的）</li>
+<li>在COS控制台绑定自定义域名，并且绑定时开启CDN，等待CDN部署完成</li>
+<li>在DNS服务商处，添加CNAME。CNAME的值，如果COS中看不到，可以到CDN控制台去查看</li>
+</ol>
+<p>附上一张图片供参考：<img data-src="/2018/06/29/qcloud-free/cos5_bucket_setting.png" class=""></p>
+<h3 id="开启HTTPS"><a href="#开启HTTPS" class="headerlink" title="开启HTTPS"></a>开启HTTPS</h3><p>如果是使用的默认CDN加速域名，CDN控制台中可以看到，HTTPS证书已经自动颁发和配置了，这一节可以略过。<br>但是如果是想对自定义域名开启HTTPS，那就必须得手动申请证书了。</p>
+<p>申请HTTPS证书有三种方式：</p>
+<ol>
+<li>腾讯云免费证书 —— 免费但有数量限制，但与腾讯云各产品已经打通，可以一键部署。</li>
+<li>其它服务商申请免费证书 —— 免费，数量限制未知，但是部署时需要手动上传。</li>
+<li>Let’s Encrypt —— 免费，3个月过期但有自动续期脚本，部署到云需要手动上传。</li>
+</ol>
+<p>按我个人来讲，Let’s Encrypt一般都是作为首选（可以颁发通配符证书、对各种HTTPS特性支持最好、可以自动续期）。主站服务器上使用问题不大，但是在CDN等产品上使用，续期的时候还需要手动上传就有点麻烦了，所以还是使用了腾讯云的免费证书。</p>
+<p>这里先去SSL证书管理的控制台，新购一张免费证书。验证方式，选择DNS（因为此时还没部署服务器，不能使用file验证），然后按照指引马上去DNS服务商处添加TXT记录，并且把TTL设置的尽量短。为什么说马上，因为根据我的经验，添加TXT记录能赶上证书机构第一轮验证DNS的话，可以在5～10分钟内成功颁发；但是如果慢了，就只能保证24小时内颁发。—— 这条经验，后面证书续期的时候有用。</p>
+<blockquote>
+<p><strong>注意：CNAME记录和TXT记录一般是不能同时设置的，所以临时删除CNAME记录，证书颁发后再改回来。</strong></p>
+</blockquote>
+<p>证书颁发成功后，再去CDN控制台开启HTTPS，证书选择自有的，就能在列表中直接选择并部署了。</p>
+<img data-src="/2018/06/29/qcloud-free/CDN_https_config.png" class="">
+
+<blockquote>
+<p>HTTP&#x2F;2 能有效提高网站的访问速度。而常见浏览器和客户端的HTTP&#x2F;2实现都依赖HTTPS。也就是说，要使用HTTP&#x2F;2就必须配置HTTPS。</p>
+</blockquote>
+<h3 id="文件上传与下载"><a href="#文件上传与下载" class="headerlink" title="文件上传与下载"></a>文件上传与下载</h3><p>文件上传有两种方式：命令行工具和SDK。命令行工具可以直接上传整个文件夹，通过SDK的话得自己遍历文件上传。具体的差别就是，命令行工具上传不会对比文件，每次都是全量上传，不但费流量，还会导致文件的创建&#x2F;修改时间发生变化；如果使用sdk，可以通过<code>head_object</code>接口（也就是HTTP HEAD请求）来和本地文件比对，实现“增量上传”，可以有效节省时间和带宽。</p>
+<p>至于下载（也就是文件对应URL的生成），私有读写的问题前面已经提过了。如果是公有读 + 自定义域名的情况，使用<code>list_objects</code>接口获取到<code>Key</code>（也就是文件的相对路径），再和域名手动拼接即可。</p>
+<blockquote>
+<p><code>list_objects</code>接口有个<code>Prefix</code>参数，可以指定路径实现部分遍历。</p>
+</blockquote>
+<h2 id="万象优图"><a href="#万象优图" class="headerlink" title="万象优图"></a>万象优图</h2><p>万象优图本身依赖对象存储，对于已经存在的Bucket直接绑定即可使用。</p>
+<blockquote>
+<p>万象优图的主要使用场景是图片的处理，所以非图片类型的文件建议还是通过COS来访问。<br>万象优图只提供API，未提供SDK，所以图片的上传依然使用COS的SDK和配置即可，内部是互通的。</p>
+</blockquote>
+<h3 id="默认访问地址、CDN、自定义域名和HTTPS"><a href="#默认访问地址、CDN、自定义域名和HTTPS" class="headerlink" title="默认访问地址、CDN、自定义域名和HTTPS"></a>默认访问地址、CDN、自定义域名和HTTPS</h3><p>参考COS即可，唯一需要注意的是自定义域名（和HTTPS证书）要再分配一个，不能与COS相同。<br>即为COS配置自定义域名：<code>static.xxx.com</code>，为万象优图配置域名：<code>img.xxx.com</code>。</p>
+<h3 id="图片处理-amp-样式"><a href="#图片处理-amp-样式" class="headerlink" title="图片处理&amp;样式"></a>图片处理&amp;样式</h3><p>万象优图核心能力是图片处理，而图片处理是根据你提供的样式来执行的。<br>样式的设置有两种方式：通过控制台预定义样式名和通过API传递参数。</p>
+<p>通过控制台预定义样式名，好处是操作便捷（通过鼠标点点点，而且还能实时预览），并且因为是通过别名来使用，更安全（参数都被隐藏起来，并且可以开启原图保护）；缺点就是生效慢，最长遇到过将近半个小时才可用。<br>通过API，优点是能够实时生效，而且参数通过代码控制灵活性高；缺点就是不能开启原图保护，并且基于管道操作符复合使用多个API时也会导致URL太长的问题。</p>
+<blockquote>
+<p>小提示： 如果是通过样式名的方式使用，建议样式名命名时以图片文件扩展名结尾（例如w320.png，h480.webp），并且样式分隔符使用中划线和下划线。否则，浏览器或代码中解析URL中的文件名容易出问题。<br>重要：webp格式非常小，但是兼容性比较差，像Safari、iOS一般都不支持，Chrome和Android则支持的比较好。可以通过UA判断来源，然后返回不同格式的链接。</p>
+</blockquote>
+<h1 id="结果存储——关系型数据库MySQL"><a href="#结果存储——关系型数据库MySQL" class="headerlink" title="结果存储——关系型数据库MySQL"></a>结果存储——关系型数据库MySQL</h1><p>数据库的配置，都是属于基本操作。这里列一些可能遇到的问题：</p>
+<ul>
+<li>数据库根据需求选配，为了保证速度，尽量与服务器在同一可用区</li>
+<li>正常情况下数据库是可以在控制台随时升降配的，但是活动促销产品可能不支持调整配置，购买时要注意</li>
+<li>为了调试方便，数据库可以开外网访问，开通时已自动分配域名和修改默认端口。但是要限制访问（创建账号时可以指定IP），注意公司有联通和电信两个固定IP的出口，都加上即可</li>
+<li>创建账号后如果遇到没有权限访问，控制台-数据库管理-账号管理-修改权限，可能是对象级特权没有分配</li>
+<li>如果想使用UTF-8编码，MySQL中的字符集要配置为<code>UTF8MB4</code>，而不是<code>utf8</code>。出处：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIwMzg1ODcwMw==&mid=2247487968&idx=1&sn=2ff7b511f6727c7816ab02fc0e1c0361&chksm=96c9a780a1be2e961cd5e7c5e5ff32961cd2b6c1bac480f8f1c3f281e5bf1504fecebdd59d48#rd">《记住，永远不要在MySQL中使用“utf8”编码》</a></li>
+<li>Django使用的MySQL驱动有点问题，我用的是pymysql（当前版本0.8.1）。在<code>settings.py</code>所在路径下的<code>__init__.py</code>文件中，插入如下代码即可：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line">pymysql.install_as_MySQLdb()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>最后再强调一遍，MySQL的配置放在单独的文件中（此文件不要加入版本控制）。在本地开发时使用外网端口和地址，生产环境使用内网端口和地址。</p>
+</blockquote>
+<h1 id="部署云服务器"><a href="#部署云服务器" class="headerlink" title="部署云服务器"></a>部署云服务器</h1><h2 id="选购"><a href="#选购" class="headerlink" title="选购"></a>选购</h2><p>腾讯云活动很多的，像最低配的1C1G1M的服务器，经常是600元&#x2F;3年，合理搭配CDN和云数据库，搭个小网站没什么问题。如果性能不够用了，也可以单独调整CPU、内存或带宽。</p>
+<blockquote>
+<p>一定要注意，如果是促销活动购买的，要仔细阅读活动说明，可能有限制条件。</p>
+</blockquote>
+<h2 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h2><p>装系统以后，创建用户，改SSH端口，（通过控制台）配置SSH密钥，限制登录。配置安全组（即防火墙）。用好云硬盘快照和系统镜像，勤做备份。<br>对于一些基础的安全配置，腾讯云的官方文档都有最佳实践了，照做即可。</p>
+<h2 id="部署代码"><a href="#部署代码" class="headerlink" title="部署代码"></a>部署代码</h2><p>服务器怎么装python3，Django2部署时的checklist，uwsgi和supervisor怎么配置，网上教程很多，我就不再赘述。</p>
+<p>这里还是重点提一下nginx和https。如果是部署在内网，不存在劫持，没有各种安全问题，为了简单起见一般都不需要优化nginx和配置https。但是即然服务放在外网就不一样了，这些工作非常有必要！！！</p>
+<blockquote>
+<p>Chrome 65 开始会默认开启并使用 TLSv1.3 Draft 23, 从 Chrome 68 开始支持 Draft 28</p>
+</blockquote>
+<p>关于nginx，我参考了这篇文章<a target="_blank" rel="noopener" href="https://love4taylor.me/archives/nginx-openssl-dev-tls1.3.html">《给 Nginx 添加 TLS1.3 支持   Love4Taylor’s Blog》</a>，主要的特性有：</p>
+<ul>
+<li>SPDY 补丁</li>
+<li>HTTP2 HPACK 补丁</li>
+<li>Dynamic TLS Record 补丁</li>
+<li>PRIORITIZE_CHACHA 补丁</li>
+<li>Fix Http2 Push Error 补丁</li>
+<li>TLS1.3 Draft 23,26,28 补丁</li>
+<li>Brotli</li>
+</ul>
+<p>安全原因，我这里就不放具体的配置了。可以参考Jerry Qu的<a target="_blank" rel="noopener" href="https://imququ.com/post/my-nginx-conf.html">《本博客 Nginx 配置之完整篇》</a>。</p>
+<blockquote>
+<p>PS：随着NGINX的更新和Let’s Encrypt的产品迭代，这里个别配置已经过时了，主要还是学习思路。<br>另外关于HTTPS的方方面面，<a target="_blank" rel="noopener" href="https://imququ.com/">Jerry Qu的博客</a>作为启蒙教程真的非常不错。</p>
+</blockquote>
+<p>对于HTTPS和提升网站安全，这里强烈推荐两篇文章：</p>
+<ul>
+<li>SSL Labs 的 <a target="_blank" rel="noopener" href="https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices">SSL and TLS Deployment Best Practices</a></li>
+<li>Stefán Orri Stefánsson 的 <a target="_blank" rel="noopener" href="https://httpsecurityreport.com/best_practice.html">HTTP Security Best Practice</a></li>
+</ul>
+<p>附上本系统的 SSL Labs 评分（还在继续优化中）：</p>
+<img data-src="/2018/06/29/qcloud-free/ssltest_analyze_yyb.i1hao.com.png" class="">
+
+<h1 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h1><p>除了前面提到那些，目前还需要用到的腾讯云解决方案有：</p>
+<ul>
+<li>云拨测</li>
+<li>云监控</li>
+<li>大禹网络安全（DDos攻击和CC攻击防护）</li>
+<li>云API密钥</li>
+<li>域名注册</li>
+<li>云解析</li>
+<li>网站备案</li>
+</ul>
+<p>这些产品基本照着文档做就可以了，有不明白的开工单，解答的迅速而且专业。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后再来说说成本问题。<br>目前云服务器，华东区1C1G1M，三年的费用是1386元；云数据库MySQL5.6最低配，三年的费用是1296元。<br>平均一年894元，这还是不参加任何活动的情况。像我去年双十一买的，不是最低配，云服务器+数据库八年左右加一起连500都不到。<br>这个成本，远低于我们用办公电脑搭的服务，并且用户体验是远超之前的。</p>
+<p>所以，腾讯云这个羊毛，值得薅！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay-reward-image.png" alt="<a href="mailto:edsion@i1hao.com">edsion</a> 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong><a href="mailto:edsion@i1hao.com">edsion</a>
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.i1hao.com/2018/06/29/qcloud-free/" title="薅羊毛党的胜利——合理利用腾讯云搭建服务">https://blog.i1hao.com/2018/06/29/qcloud-free/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/" rel="tag"># 腾讯云</a>
+              <a href="/tags/%E5%85%8D%E8%B4%B9/" rel="tag"># 免费</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/06/03/interface-test-under-pyunit-1/" rel="prev" title="PyUnit下的接口测试（一）：组织测试用例">
+                  <i class="fa fa-chevron-left"></i> PyUnit下的接口测试（一）：组织测试用例
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/21/adb-sdkversion/" rel="next" title="命令行获取minSdkVersion、targetSdkVersion">
+                  命令行获取minSdkVersion、targetSdkVersion <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备18000098号 </a>
+      <img src="https://www.beian.gov.cn/portal/download" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21029602000155" rel="noopener" target="_blank">辽公网安备21029602000155号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="mailto:edsion@i1hao.com">edsion</a></span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://blog.i1hao.com/2018/06/29/qcloud-free/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+
+</body>
+</html>
