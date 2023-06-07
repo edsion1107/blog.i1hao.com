@@ -107,4 +107,4 @@ deploy:
   type: git
   repo: git@github.com:edsion1107/blog.i1hao.com.git
   branch: gh-pages
-  message: 备案和版本更新
+  message: 重更新备案号
